@@ -1,15 +1,15 @@
 import { Grid } from '@material-ui/core'
 import React, { Component } from 'react'
-import Header from '../components/Header'
-class Mariages extends Component {
+import Header from '../../components/Header'
+
+class Deces extends Component {
     render() {
         return (
-            <div>
             <div>
                 <Header>
                     <Grid container justify="space-between">
                         <Grid item>
-                            <h2>Régistre des mariages</h2>
+                            <h2>Régistre des décès</h2>
                         </Grid>
                         <Grid item>
                             
@@ -17,9 +17,8 @@ class Mariages extends Component {
                     </Grid>
                 </Header>
             </div>
-            </div>
         );
     }
 }
 
-export default Mariages;
+export default Deces;
