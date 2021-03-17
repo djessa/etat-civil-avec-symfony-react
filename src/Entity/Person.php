@@ -47,8 +47,7 @@ class Person
     private $birthdate;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Le lieu de naissance doit être indiquer")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $birthplace;
 

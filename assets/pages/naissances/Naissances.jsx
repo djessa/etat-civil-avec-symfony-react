@@ -47,7 +47,9 @@ export default function Naissances () {
                 <Header> 
                     <Grid container justify="space-between">
                         <Grid item lg={4}><h2>Régistre des naissances</h2></Grid>
-                        <Grid item lg={8}></Grid>
+                        <Grid item lg={8}>
+                          
+                        </Grid>
                     </Grid>
                 </Header>
             </div>

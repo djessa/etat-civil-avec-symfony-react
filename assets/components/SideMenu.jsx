@@ -26,7 +26,6 @@ const ListItems = ({ items }) => items
     .filter(({ hidden }) => !hidden)
     .map(({ label, disabled, Icon, path }, i) => (
     <MenuItem
-    button
     key={i}
     disabled={disabled}
     style={{listStyleType: 'none', color: '#fff'}}
