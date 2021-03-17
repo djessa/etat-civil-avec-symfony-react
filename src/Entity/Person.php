@@ -35,7 +35,7 @@ class Person
     private $last_name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="Le sexe doit être préciser")
      */
     private $sexe;

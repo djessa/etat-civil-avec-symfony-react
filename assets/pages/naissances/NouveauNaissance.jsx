@@ -71,19 +71,79 @@ export default function NouveauNaissance () {
     }
 
     const save = () => {
-        const data = {type, numeroJugement, enfant, pere, mere, declarant};
-        axios.post('/birth/new', data)
+        const data = {
+            type_declaration: type,
+            judgment_number: numeroJugement,
+            person : {
+                first_name: enfant.nom, 
+                last_name: enfant.prenom,
+                birthdate: enfant.date_naissance + ' ' + enfant.heure_naissance,
+                sexe: enfant.sexe,
+                birthplace: enfant.lieu_naissance
+            },
+            father: {
+                first_name: pere.nom, 
+                last_name: pere.prenom,
+                birthdate: pere.date_naissance,
+                birthplace: pere.lieu_naissance,
+                profession: pere.profession
+            },
+            mother: {
+                first_name: mere.nom, 
+                last_name: mere.prenom,
+                birthdate: mere.date_naissance,
+                birthplace: mere.lieu_naissance,
+                profession: mere.profession
+            },
+            declarant: {
+                first_name: declarant.nom, 
+                last_name: declarant.prenom,
+                birthdate: declarant.date_naissance,
+                profession: declarant.profession
+            }
+        };
+       axios.post('/birth/new', data)
              .then((response) => {
                  console.log(response)
              })
              .then((error) => {
                  console.log(error)
-             });
+            });
+            setType('');
+            setNumeroJugement('');
+            setEnfant({
+                nom: '',
+                prenom: '',
+                date_naissance: '',
+                heure_naissance: '',
+                lieu_naissance: '',
+                sexe: '',
+            });
+            setPere({
+                nom: '',
+                prenom: '',
+                date_naissance: '',
+                lieu_naissance: '',
+                profession: '',
+            })
+             setMere({
+                nom: '',
+                prenom: '',
+                date_naissance: '',
+                lieu_naissance: '',
+                profession: '',
+            })
+            setDeclarant({
+                nom: '',
+                prenom: '',
+                date_naissance: '',
+                profession: '',
+            })
     }
     return (
         <ThemeProvider theme={theme}>
             <SideMenu />
-            <form method="post"  className={classes.appMain}>
+            <form method="post" onSubmit={(e) => {e.preventDefault(); save();}}  className={classes.appMain}>
                 <Header> 
                     <Grid container justify="space-between">
                         <Grid item lg={3}><h3>Enregistrement de  naissance</h3></Grid>
@@ -132,7 +192,7 @@ export default function NouveauNaissance () {
                             }
                         </Grid>
                         <Grid item lg={2}>
-                            <IconButton onClick={save} style={{transform: 'translateY(25%)'}}>
+                            <IconButton type="submit" style={{transform: 'translateY(25%)'}}>
                                 <Done/>
                             </IconButton>
                         </Grid>
