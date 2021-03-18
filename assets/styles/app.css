@@ -50,3 +50,10 @@ body {
     border-radius: 5px;
     box-shadow: 2px;
 }
+
+.MuiTabs-flexContainer {
+    margin-top: 25px;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+}

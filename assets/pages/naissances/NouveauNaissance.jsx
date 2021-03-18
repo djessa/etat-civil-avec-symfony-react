@@ -1,6 +1,22 @@
 import React, { Component, useState } from 'react'
 import SideMenu from "../../components/SideMenu";
-import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider, Grid, Select, MenuItem, FormControl, InputLabel, Input, TextField, Paper, Button, IconButton } from '@material-ui/core';
+import {
+    makeStyles,
+    CssBaseline,
+    createMuiTheme,
+    ThemeProvider,
+    Grid,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Input,
+    TextField,
+    Paper,
+    Button,
+    IconButton,
+    AppBar, Tabs, Tab, Snackbar, SnackbarContent
+} from '@material-ui/core';
 import Header from "../../components/Header";
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
@@ -8,11 +24,14 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Done } from '@material-ui/icons';
+import {Close, Done} from '@material-ui/icons';
 import  {useStyles, theme, jours, mois, dateDuJour} from  '../../variables/const';
 import axios from 'axios';
 
 export default function NouveauNaissance () {
+    const [openMessage, setOpenMessage] = useState(false);
+    const [backgroundMessage, setBackgroundMessage] = useState('');
+    const [message, setMessage] = useState('');
     const classes = useStyles();
     const [type, setType] = useState('');
     const [numeroJugement, setNumeroJugement] = useState('');
@@ -30,6 +49,8 @@ export default function NouveauNaissance () {
         date_naissance: '',
         lieu_naissance: '',
         profession: '',
+        ville: '',
+        adresse: ''
     })
     const [mere, setMere] = useState({
         nom: '',
@@ -37,12 +58,18 @@ export default function NouveauNaissance () {
         date_naissance: '',
         lieu_naissance: '',
         profession: '',
+        ville: '',
+        adresse: ''
     })
     const [declarant, setDeclarant] = useState({
         nom: '',
         prenom: '',
+        sexe: '',
         date_naissance: '',
+        lieu_naissance: '',
         profession: '',
+        ville: '',
+        adresse: ''
     })
     const onChangeType = e => {
         setNumeroJugement('')
@@ -69,7 +96,10 @@ export default function NouveauNaissance () {
         }
         setErrors(erreur);
     }
-
+    const [formCategory, setFormCategory] = useState(0);
+    const onChangeFormCategory = (e, value)  => {
+        setFormCategory(value);
+    }
     const save = () => {
         const data = {
             type_declaration: type,
@@ -86,59 +116,79 @@ export default function NouveauNaissance () {
                 last_name: pere.prenom,
                 birthdate: pere.date_naissance,
                 birthplace: pere.lieu_naissance,
-                profession: pere.profession
+                profession: pere.profession,
+                city: pere.ville,
+                address: pere.adresse
             },
             mother: {
                 first_name: mere.nom, 
                 last_name: mere.prenom,
                 birthdate: mere.date_naissance,
                 birthplace: mere.lieu_naissance,
-                profession: mere.profession
+                profession: mere.profession,
+                city: mere.ville,
+                address: mere.adresse
             },
             declarant: {
                 first_name: declarant.nom, 
                 last_name: declarant.prenom,
+                sexe: declarant.sexe,
                 birthdate: declarant.date_naissance,
-                profession: declarant.profession
+                birthplace: declarant.lieu_naissance,
+                profession: declarant.profession,
+                city: declarant.ville,
+                address: declarant.adresse
             }
         };
        axios.post('/birth/new', data)
              .then((response) => {
-                 console.log(response)
+                 setBackgroundMessage('green');
+                 setOpenMessage(true);
+                 setMessage(response.data.message);
+                 setType('');
+                 setNumeroJugement('');
+                 setEnfant({
+                     nom: '',
+                     prenom: '',
+                     date_naissance: '',
+                     heure_naissance: '',
+                     lieu_naissance: '',
+                     sexe: '',
+                 });
+                 setPere({
+                     nom: '',
+                     prenom: '',
+                     date_naissance: '',
+                     lieu_naissance: '',
+                     profession: '',
+                     ville: '',
+                     adresse: ''
+                 })
+                 setMere({
+                     nom: '',
+                     prenom: '',
+                     date_naissance: '',
+                     lieu_naissance: '',
+                     profession: '',
+                     ville: '',
+                     adresse: ''
+                 })
+                 setDeclarant({
+                     nom: '',
+                     prenom: '',
+                     sexe: '',
+                     date_naissance: '',
+                     lieu_naissance: '',
+                     profession: '',
+                     ville: '',
+                     adresse: ''
+                 })
              })
-             .then((error) => {
-                 console.log(error)
+             .catch((error) => {
+                 setBackgroundMessage('red');
+                 setOpenMessage(true);
+                 setMessage('Impossible d\'enregistrer');
             });
-            setType('');
-            setNumeroJugement('');
-            setEnfant({
-                nom: '',
-                prenom: '',
-                date_naissance: '',
-                heure_naissance: '',
-                lieu_naissance: '',
-                sexe: '',
-            });
-            setPere({
-                nom: '',
-                prenom: '',
-                date_naissance: '',
-                lieu_naissance: '',
-                profession: '',
-            })
-             setMere({
-                nom: '',
-                prenom: '',
-                date_naissance: '',
-                lieu_naissance: '',
-                profession: '',
-            })
-            setDeclarant({
-                nom: '',
-                prenom: '',
-                date_naissance: '',
-                profession: '',
-            })
     }
     return (
         <ThemeProvider theme={theme}>
@@ -173,7 +223,7 @@ export default function NouveauNaissance () {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item lg={2}>
+                        <Grid item lg={3}>
                             {
                                 (type === 'jugement')
                                 ?
@@ -191,91 +241,118 @@ export default function NouveauNaissance () {
                                 ''
                             }
                         </Grid>
-                        <Grid item lg={2}>
-                            <IconButton type="submit" style={{transform: 'translateY(25%)'}}>
+                        <Grid item lg={1}>
+                            <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
+                            <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
                                 <Done/>
                             </IconButton>
+                            </div>
                         </Grid>
                     </Grid>
                 </Header>
-                <Grid>
-                        <CardHeader 
-                            title="Enfant"
-                            avatar={
-                                <Avatar>
-                                <PersonIcon />
-                                </Avatar>
-                            }
-                        />
+                <Tabs  value={formCategory} onChange={onChangeFormCategory}>
+                    <Tab label="Enfant"></Tab>
+                    <Tab label="Père"></Tab>
+                    <Tab label="Mère"></Tab>
+                    <Tab label="Déclarant"></Tab>
+                </Tabs>
+                {formCategory === 0 && (
+                    <>
                         <div style={{flexGrow: 1}}>
                             <Grid container>
-                                <Grid item lg={3}>
-                                    <TextField 
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
                                         onChange={(e) => {
                                             const enfantChange = Object.assign({}, enfant);
                                             enfantChange.nom = e.target.value;
                                             setEnfant(enfantChange);
-                                        }} 
+                                        }}
                                         value={enfant.nom
-                                        }  
+                                        }
                                         label="Nom" className={classes.textField} fullWidth={true}/>
                                 </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                            label="Prénom" 
-                                            className={classes.textField} 
-                                            fullWidth={true}  
-                                            error={false} 
-                                            helperText=""
-                                            value={enfant.prenom}
-                                            onChange={(e) => {
-                                                const enfantChange = Object.assign({}, enfant);
-                                                enfantChange.prenom = e.target.value;
-                                                setEnfant(enfantChange);
-                                            }} 
-                                    />
-                                </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Date de naissance" 
-                                        type="date" 
+                                <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Prénom"
                                         className={classes.textField}
-                                        InputLabelProps={{
-                                            shrink: true
-                                        }}
                                         fullWidth={true}
-                                        value={enfant.date_naissance}
+                                        error={false}
+                                        helperText=""
+                                        value={enfant.prenom}
                                         onChange={(e) => {
                                             const enfantChange = Object.assign({}, enfant);
-                                            enfantChange.date_naissance = e.target.value;
+                                            enfantChange.prenom = e.target.value;
                                             setEnfant(enfantChange);
-                                        }} 
-                                    />
-                                </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Heure de naissance" 
-                                        type="time" 
-                                        className={classes.textField}
-                                        style= {{marginRight: '10px'}}
-                                        InputLabelProps={{
-                                            shrink: true
                                         }}
-                                        fullWidth={true}
-                                        value={enfant.heure_naissance}
-                                        onChange={(e) => {
-                                            const enfantChange = Object.assign({}, enfant);
-                                            enfantChange.heure_naissance = e.target.value;
-                                            setEnfant(enfantChange);
-                                        }} 
                                     />
                                 </Grid>
+                                <Grid item lg={1}></Grid>
                             </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
                             <Grid container>
-                                <Grid item lg={6}>
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel htmlFor="multi">Sexe</InputLabel>
-                                        <Select
+                                <Grid item lg={1}></Grid>
+                            <Grid item lg={4}>
+                                <TextField
+                                    label="Date de naissance"
+                                    type="date"
+                                    className={classes.textField}
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    fullWidth={true}
+                                    value={enfant.date_naissance}
+                                    onChange={(e) => {
+                                        const enfantChange = Object.assign({}, enfant);
+                                        enfantChange.date_naissance = e.target.value;
+                                        setEnfant(enfantChange);
+                                    }}
+                                />
+                            </Grid>
+                                <Grid item lg={2}></Grid>
+                            <Grid item lg={4}>
+                                <TextField
+                                    label="Heure de naissance"
+                                    type="time"
+                                    className={classes.textField}
+                                    style= {{marginRight: '10px'}}
+                                    InputLabelProps={{
+                                        shrink: true
+                                    }}
+                                    fullWidth={true}
+                                    value={enfant.heure_naissance}
+                                    onChange={(e) => {
+                                        const enfantChange = Object.assign({}, enfant);
+                                        enfantChange.heure_naissance = e.target.value;
+                                        setEnfant(enfantChange);
+                                    }}
+                                />
+                            </Grid>
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                                <Grid item lg={1}></Grid>
+                            <Grid item lg={4}>
+                                <TextField
+                                    value={enfant.lieu_naissance}
+                                    onChange={(e) => {
+                                        const enfantChange = Object.assign({}, enfant);
+                                        enfantChange.lieu_naissance = e.target.value;
+                                        setEnfant(enfantChange);
+                                    }}
+                                    label="Lieu de naissance"
+                                    className={classes.textField}
+                                    fullWidth={true}/>
+                            </Grid>
+                                <Grid item lg={2}></Grid>
+                            <Grid item lg={3}>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="multi">Sexe</InputLabel>
+                                    <Select
                                         value={enfant.sexe}
                                         onChange={(e) => {
                                             const enfantChange = Object.assign({}, enfant);
@@ -283,72 +360,63 @@ export default function NouveauNaissance () {
                                             setEnfant(enfantChange);
                                         }}
                                         input={<Input id="multi" />}
-                                        >
-                                            <MenuItem value="masculin">
+                                    >
+                                        <MenuItem value="masculin">
                                             Masculin
-                                            </MenuItem>
-                                            <MenuItem value="feminin">
+                                        </MenuItem>
+                                        <MenuItem value="feminin">
                                             Féminin
-                                            </MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item lg={6}>
-                                    <TextField 
-                                        value={enfant.lieu_naissance}
-                                        onChange={(e) => {
-                                            const enfantChange = Object.assign({}, enfant);
-                                            enfantChange.lieu_naissance = e.target.value;
-                                            setEnfant(enfantChange);
-                                        }} 
-                                        label="Lieu de naissance" 
-                                        className={classes.textField} 
-                                        fullWidth={true}/>
-                                </Grid>
+                                        </MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                                <Grid item lg={1}></Grid>
                             </Grid>
                         </div>
-                </Grid>
-                <Grid>
-                        <CardHeader 
-                            title="Père"
-                            avatar={
-                                <Avatar>
-                                <PersonIcon />
-                                </Avatar>
-                            }
-                        />
+                    </>
+                    )}
+                    {formCategory === 1 && (
+                        <>
                         <div style={{flexGrow: 1}}>
                             <Grid container>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Nom" 
-                                        className={classes.textField} 
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Nom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={pere.nom}
                                         onChange={(e) => {
                                             const pereChange = Object.assign({}, pere);
                                             pereChange.nom = e.target.value;
                                             setPere(pereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Prénom" 
-                                        className={classes.textField} 
+                                <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Prénom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={pere.prenom}
                                         onChange={(e) => {
                                             const pereChange = Object.assign({}, pere);
                                             pereChange.prenom = e.target.value;
                                             setPere(pereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Date de naissance" 
-                                        type="date" 
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                             <Grid container>
+                                 <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Date de naissance"
+                                        type="date"
                                         className={classes.textField}
                                         InputLabelProps={{
                                             shrink: true
@@ -359,79 +427,117 @@ export default function NouveauNaissance () {
                                             const pereChange = Object.assign({}, pere);
                                             pereChange.date_naissance = e.target.value;
                                             setPere(pereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Lieu de naissance" 
-                                        className={classes.textField} 
+                                 <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Lieu de naissance"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={pere.lieu_naissance}
                                         onChange={(e) => {
                                             const pereChange = Object.assign({}, pere);
                                             pereChange.lieu_naissance = e.target.value;
                                             setPere(pereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Profession" 
-                                        className={classes.textField} 
+                                 <Grid item lg={1}></Grid>
+                             </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                            <Grid item lg={1}></Grid>
+                            <Grid item lg={3}>
+                                    <TextField
+                                        label="Profession"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={pere.profession}
                                         onChange={(e) => {
                                             const pereChange = Object.assign({}, pere);
                                             pereChange.profession = e.target.value;
                                             setPere(pereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={2}>
+                                    <TextField
+                                        label="Ville"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={pere.ville}
+                                        onChange={(e) => {
+                                            const pereChange = Object.assign({}, pere);
+                                            pereChange.ville = e.target.value;
+                                            setPere(pereChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={3}>
+                                    <TextField
+                                        label="Adresse"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={pere.adresse}
+                                        onChange={(e) => {
+                                            const pereChange = Object.assign({}, pere);
+                                            pereChange.adresse = e.target.value;
+                                            setPere(pereChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
                             </Grid>
                         </div>
-                </Grid>
-                <Grid>
-                        <CardHeader 
-                            title="Mère"
-                            avatar={
-                                <Avatar>
-                                <PersonIcon />
-                                </Avatar>
-                            }
-                        />
+                        </>
+                    )}
+                {formCategory === 2 && (
+                    <>
                         <div style={{flexGrow: 1}}>
                             <Grid container>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Nom" 
-                                        className={classes.textField} 
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Nom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={mere.nom}
                                         onChange={(e) => {
                                             const mereChange = Object.assign({}, mere);
                                             mereChange.nom = e.target.value;
                                             setMere(mereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Prénom" 
-                                        className={classes.textField} 
+                                <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Prénom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={mere.prenom}
                                         onChange={(e) => {
                                             const mereChange = Object.assign({}, mere);
                                             mereChange.prenom = e.target.value;
                                             setMere(mereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Date de naissance" 
-                                        type="date" 
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Date de naissance"
+                                        type="date"
                                         className={classes.textField}
                                         InputLabelProps={{
                                             shrink: true
@@ -442,80 +548,141 @@ export default function NouveauNaissance () {
                                             const mereChange = Object.assign({}, mere);
                                             mereChange.date_naissance = e.target.value;
                                             setMere(mereChange);
-                                        }} 
+                                        }}
 
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Lieu de naissance" 
-                                        className={classes.textField} 
+                                <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Lieu de naissance"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={mere.lieu_naissance}
                                         onChange={(e) => {
                                             const mereChange = Object.assign({}, mere);
                                             mereChange.lieu_naissance = e.target.value;
                                             setMere(mereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={2}>
-                                    <TextField 
-                                        label="Profession" 
-                                        className={classes.textField} 
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={3}>
+                                    <TextField
+                                        label="Profession"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={mere.profession}
                                         onChange={(e) => {
                                             const mereChange = Object.assign({}, mere);
                                             mereChange.profession = e.target.value;
                                             setMere(mereChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={2}>
+                                    <TextField
+                                        label="Ville"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={mere.ville}
+                                        onChange={(e) => {
+                                            const mereChange = Object.assign({}, mere);
+                                            mereChange.ville = e.target.value;
+                                            setMere(mereChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={3}>
+                                    <TextField
+                                        label="Adresse"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={mere.adresse}
+                                        onChange={(e) => {
+                                            const mereChange = Object.assign({}, mere);
+                                            mereChange.adresse = e.target.value;
+                                            setMere(mereChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
                             </Grid>
                         </div>
-                </Grid>
-                <Grid>
-                        <CardHeader 
-                            title="Déclarant"
-                            avatar={
-                                <Avatar>
-                                <PersonIcon />
-                                </Avatar>
-                            }
-                        />
+                    </>
+
+                )}
+                {formCategory === 3 && (
+                    <>
                         <div style={{flexGrow: 1}}>
                             <Grid container>
+                                <Grid item lg={1}></Grid>
                                 <Grid item lg={3}>
-                                    <TextField 
-                                        label="Nom" 
-                                        className={classes.textField} 
+                                    <TextField
+                                        label="Nom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={declarant.nom}
                                         onChange={(e) => {
                                             const declarantChange = Object.assign({}, declarant);
                                             declarantChange.nom = e.target.value;
                                             setDeclarant(declarantChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
+                                <Grid item lg={1}></Grid>
                                 <Grid item lg={3}>
-                                    <TextField 
-                                        label="Prénom" 
-                                        className={classes.textField} 
+                                    <TextField
+                                        label="Prénom"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={declarant.prenom}
                                         onChange={(e) => {
                                             const declarantChange = Object.assign({}, declarant);
                                             declarantChange.prenom = e.target.value;
                                             setDeclarant(declarantChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
-                                <Grid item lg={3}>
-                                    <TextField 
-                                        label="Date de naissance" 
-                                        type="date" 
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={2}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel htmlFor="multi">Sexe</InputLabel>
+                                        <Select
+                                            value={declarant.sexe}
+                                            onChange={(e) => {
+                                                const declarantChange = Object.assign({}, declarant);
+                                                declarantChange.sexe = e.target.value;
+                                                setDeclarant(declarantChange);
+                                            }}
+                                            input={<Input id="multi" />}
+                                        >
+                                            <MenuItem value="masculin">
+                                                Masculin
+                                            </MenuItem>
+                                            <MenuItem value="feminin">
+                                                Féminin
+                                            </MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Date de naissance"
+                                        type="date"
                                         className={classes.textField}
                                         InputLabelProps={{
                                             shrink: true
@@ -526,25 +693,83 @@ export default function NouveauNaissance () {
                                             const declarantChange = Object.assign({}, declarant);
                                             declarantChange.date_naissance = e.target.value;
                                             setDeclarant(declarantChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
+                                <Grid item lg={2}></Grid>
+                                <Grid item lg={4}>
+                                    <TextField
+                                        label="Lieu de naissance"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={declarant.lieu_naissance}
+                                        onChange={(e) => {
+                                            const declarantChange = Object.assign({}, declarant);
+                                            declarantChange.lieu_naissance = e.target.value;
+                                            setDeclarant(declarantChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
+                            </Grid>
+                        </div>
+                        <div style={{flexGrow: 1}}>
+                            <Grid container>
+                                <Grid item lg={1}></Grid>
                                 <Grid item lg={3}>
-                                    <TextField 
-                                        label="Profession" 
-                                        className={classes.textField} 
+                                    <TextField
+                                        label="Profession"
+                                        className={classes.textField}
                                         fullWidth={true}
                                         value={declarant.profession}
                                         onChange={(e) => {
                                             const declarantChange = Object.assign({}, declarant);
                                             declarantChange.profession = e.target.value;
                                             setDeclarant(declarantChange);
-                                        }} 
+                                        }}
                                     />
                                 </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={2}>
+                                    <TextField
+                                        label="Ville"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={declarant.ville}
+                                        onChange={(e) => {
+                                            const declarantChange = Object.assign({}, declarant);
+                                            declarantChange.ville = e.target.value;
+                                            setDeclarant(declarantChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
+                                <Grid item lg={3}>
+                                    <TextField
+                                        label="Adresse"
+                                        className={classes.textField}
+                                        fullWidth={true}
+                                        value={declarant.adresse}
+                                        onChange={(e) => {
+                                            const declarantChange = Object.assign({}, declarant);
+                                            declarantChange.adresse = e.target.value;
+                                            setDeclarant(declarantChange);
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item lg={1}></Grid>
                             </Grid>
                         </div>
-                </Grid>
+                    </>
+                )}
+                <Snackbar autoHideDuration={6000} open={openMessage}>
+                    <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
+                        <Button onClick={()=>(setOpenMessage(false))} color="inherit" key='dismiss'>
+                            <Close/>
+                        </Button>
+                    ]}>
+                    </SnackbarContent>
+                </Snackbar>
             <CssBaseline />
             </form>
         </ThemeProvider>

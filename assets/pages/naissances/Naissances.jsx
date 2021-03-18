@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component, useState} from 'react'
 import SideMenu from "../../components/SideMenu";
 import { makeStyles, CssBaseline, createMuiTheme, ThemeProvider, Grid } from '@material-ui/core';
 import Header from "../../components/Header";
@@ -40,18 +40,20 @@ const useStyles = makeStyles({
 
 export default function Naissances () {
     const classes = useStyles();
+    const [naissances, setNaissances] = useState([]);
     return (
         <ThemeProvider theme={theme}>
             <SideMenu />
             <div className={classes.appMain}>
                 <Header> 
                     <Grid container justify="space-between">
-                        <Grid item lg={4}><h2>Régistre des naissances</h2></Grid>
+                        <Grid item lg={4}><h3>Régistre des naissances</h3></Grid>
                         <Grid item lg={8}>
                           
                         </Grid>
                     </Grid>
                 </Header>
+                
             </div>
             <CssBaseline />
         </ThemeProvider>
