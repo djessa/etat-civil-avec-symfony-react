@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Birth;
 use App\Entity\Person;
 use App\Repository\BirthRepository;
+use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class BirthController extends AbstractController
@@ -25,9 +28,13 @@ class BirthController extends AbstractController
      */
     public function new (Request $request, SerializerInterface $serializer): Response
     {
+        $data = $request->getContent();
         try {
-            $data = $request->getContent();
             $birth = $serializer->deserialize($data, Birth::class, 'json');
+        } catch (NotEncodableValueException $e) {
+            return $this->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
+        try {
             $person = $birth->getPerson();
             $this->manager->persist($person);
             $father = $birth->getFather();
@@ -45,18 +52,30 @@ class BirthController extends AbstractController
                 ->setDeclarant($declarant);
             $this->manager->persist($birth);
             $this->manager->flush();
-            return $this->json(['message' => 'Une fiche de naissance a bien été ajoutée avec succès', 'ok' => true], 200);
+            return $this->json(['message' => 'Une fiche de naissance a bien été ajoutée avec succès', 'birth' => $birth], 200);
         } catch (\Exception $e) {
-            return  $this->json(['message' => 'Il y a de problème au format de données que vous avez saisi', 'ok' => false], 400);
+            return $this->json(['status' => 400, 'message' => $e->getMessage()]);
         }
     }
 
     /**
      * @Route ("/births", name="birth")
      */
-    public function index(BirthRepository $birthRepository)
+    public function index(BirthRepository $birthRepository, SerializerInterface $serializer, PersonRepository $personRepository, NormalizerInterface  $normalizer)
     {
-        dd($birthRepository->find(3));
-        return $this->json($birthRepository->findAll(), 200);
+        $naissances = [];
+        $biths = $birthRepository->findAll();
+        foreach ($biths as $key => $birth) {
+            $naissance = [
+                    'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,
+                    'mere' => $serializer->serialize($personRepository->find($birth->getMother()->getId()), 'json', ['groups' => 'read']) ,
+                    'pere' => $serializer->serialize($personRepository->find($birth->getFather()->getId()), 'json', ['groups' => 'read']) ,
+                    'declarant' => $serializer->serialize($personRepository->find($birth->getDeclarant()->getId()), 'json', ['groups' => 'read']) ,
+                    'date_declaration' => $birth->getDateDeclaration(),
+                    'type_declaration' => $birth->getTypeDeclaration()
+             ];
+            $naissances[] = $serializer->serialize($naissance, 'json', []);
+        }
+        return $this->json($naissances, 200, []);
     }
 }

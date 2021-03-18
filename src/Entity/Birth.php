@@ -17,49 +17,52 @@ class Birth
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="La date n'est pas valide")
+     * @Groups ("read")
      */
     private $date_declaration;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le type de déclaration est obligatoire")
+     * @Groups ("read")
      */
     private $type_declaration;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups ("read")
      */
     private $judgment_number;
 
     /**
-     * @ORM\OneToOne(targetEntity=Person::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Person::class, inversedBy="birth", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $person;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Person::class)
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $declarant;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="sons")
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="son_father")
      * @ORM\JoinColumn(nullable=false)
      */
     private $father;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Person::class)
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="son_mother")
      * @ORM\JoinColumn(nullable=false)
      */
     private $mother;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="son_declarant")
+     */
+    private $declarant;
 
     public function getId(): ?int
     {
