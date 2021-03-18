@@ -57,3 +57,7 @@ body {
     flex-direction: row !important;
     justify-content: center !important;
 }
+
+th {
+    font-weight: bold;
+}
