@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BirthRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -37,7 +38,7 @@ class Birth
     private $judgment_number;
 
     /**
-     * @ORM\OneToOne(targetEntity=Person::class, inversedBy="birth", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Person::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $person;

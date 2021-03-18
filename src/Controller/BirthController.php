@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Birth;
 use App\Entity\Person;
+use App\Repository\BirthRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +23,7 @@ class BirthController extends AbstractController
     /**
      * @Route("/birth/new", name="birth_new")
      */
-    public function index(Request $request, SerializerInterface $serializer): Response
+    public function new (Request $request, SerializerInterface $serializer): Response
     {
         try {
             $data = $request->getContent();
@@ -48,5 +49,14 @@ class BirthController extends AbstractController
         } catch (\Exception $e) {
             return  $this->json(['message' => 'Il y a de problème au format de données que vous avez saisi', 'ok' => false], 400);
         }
+    }
+
+    /**
+     * @Route ("/births", name="birth")
+     */
+    public function index(BirthRepository $birthRepository)
+    {
+        dd($birthRepository->find(3));
+        return $this->json($birthRepository->findAll(), 200);
     }
 }
