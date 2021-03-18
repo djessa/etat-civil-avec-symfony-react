@@ -1,14 +1,6 @@
 import React, {Component, useState} from 'react';
 import SideMenu from "../../components/SideMenu";
-import {
-    CssBaseline,
-    createMuiTheme,
-    ThemeProvider,
-    Grid,
-    Table,
-    TableHead,
-    TableRow, TableCell, TableBody, withStyles, TableContainer
-} from '@material-ui/core';
+import { CssBaseline, createMuiTheme, ThemeProvider, Grid, Table, TableHead, TableRow, TableCell, TableBody, withStyles, TableContainer, Button } from '@material-ui/core';
 import Header from "../../components/Header";
 import axios from "axios";
 
@@ -46,17 +38,7 @@ const styles = theme => ({
         width: '100%'
     }
 });
-const getAll = () => {
-    let data;
-    axios.get('/births')
-        .then((response) => {
-            data = response.data;
-        })
-        .catch((error) => {
-            data = [];
-        });
-    return data;
-}
+
 
 class Naissances extends Component {
     constructor(props) {
@@ -91,14 +73,15 @@ class Naissances extends Component {
                         </Grid>
                     </Header>
                     <TableContainer>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead color="primary">
-                                <TableRow style={{fontWeight: 'bold'}}>
-                                    <TableCell>Nom</TableCell>
-                                    <TableCell>Prénom</TableCell>
-                                    <TableCell>Sexe</TableCell>
-                                    <TableCell>Date de naissance</TableCell>
-                                    <TableCell>Lieu de naissance</TableCell>
+                        <Table>
+                            <TableHead>
+                                <TableRow style={{backgroundColor: '#aaa'}}>
+                                    <TableCell style={{fontWeight: 'bold'}}>Nom</TableCell>
+                                    <TableCell style={{fontWeight: 'bold'}}>Prénom</TableCell>
+                                    <TableCell style={{fontWeight: 'bold'}}>Sexe</TableCell>
+                                    <TableCell style={{fontWeight: 'bold'}}>Date de naissance</TableCell>
+                                    <TableCell style={{fontWeight: 'bold'}}>Lieu de naissance</TableCell>
+                                    <TableCell style={{fontWeight: 'bold'}}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -111,6 +94,11 @@ class Naissances extends Component {
                                         <TableCell>{person.sexe}</TableCell>
                                         <TableCell>{person.birthdate}</TableCell>
                                         <TableCell>{person.birthplace}</TableCell>
+                                        <TableCell>
+                                            <Button>
+                                                Afficher
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 })}
                             </TableBody>
