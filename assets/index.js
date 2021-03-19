@@ -11,7 +11,6 @@ import NouveauNaissance from './pages/naissances/NouveauNaissance';
 import NouveauMariage from './pages/mariages/NouveauMariage';
 import NouveauDivorce from './pages/divorce/NouveauDivorce';
 import NouveauDeces from './pages/deces/NouveauDeces';
-
 ReactDOM.render(
   <BrowserRouter>
     <Switch>

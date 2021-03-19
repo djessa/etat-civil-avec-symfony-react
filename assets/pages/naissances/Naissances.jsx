@@ -1,8 +1,10 @@
 import React, {Component, useState} from 'react';
 import SideMenu from "../../components/SideMenu";
-import { CssBaseline, createMuiTheme, ThemeProvider, Grid, Table, TableHead, TableRow, TableCell, TableBody, withStyles, TableContainer, Button } from '@material-ui/core';
+import { CssBaseline, createMuiTheme, ThemeProvider, Grid, Table, TableHead, TableRow, TableCell, TableBody, TableFooter, withStyles, TableContainer,IconButton, Button, ButtonGroup } from '@material-ui/core';
 import Header from "../../components/Header";
 import axios from "axios";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const theme = createMuiTheme({
     palette: {
@@ -44,12 +46,24 @@ class Naissances extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fiches: []
+            fiches: [],
+            page: 1
         }
         this.readFiches();
+        this.next = this.next.bind(this);
+        this.prev = this.prev.bind(this);
     }
-    readFiches() {
-        axios.get('/births')
+    next () {
+        this.setState({page: (this.state.page) + 1});
+        this.readFiches();
+        console.log(this.state.fiches, this.state.page);
+    }
+    prev () {
+        this.setState({page: (this.state.page) - 1});
+        this.readFiches(this.state.page);
+    }
+    readFiches(page) {
+        axios.get('/births', {params: {page: this.state.page}})
             .then((response) => {
                 this.setState(
                     {fiches: response.data}
@@ -102,6 +116,20 @@ class Naissances extends Component {
                                     </TableRow>
                                 })}
                             </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TableCell>
+                                        <Button color="primary" variant="outlined" onClick={this.prev}>
+                                            <ArrowBackIcon/>
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button color="primary" variant="outlined" onClick={this.next}>
+                                            <ArrowForwardIcon/>
+                                        </Button>  
+                                    </TableCell>
+                                </TableRow>
+                            </TableFooter>
                         </Table>
                     </TableContainer>
                 </div>

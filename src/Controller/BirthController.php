@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 class BirthController extends AbstractController
 {
@@ -61,10 +62,14 @@ class BirthController extends AbstractController
     /**
      * @Route ("/births", name="birth")
      */
-    public function index(BirthRepository $birthRepository, SerializerInterface $serializer, PersonRepository $personRepository, NormalizerInterface  $normalizer)
+    public function index(BirthRepository $birthRepository, SerializerInterface $serializer, PersonRepository $personRepository, PaginatorInterface $paginator, Request $request)
     {
         $naissances = [];
-        $biths = $birthRepository->findAll();
+        $biths = $paginator->paginate(
+            $birthRepository->findBy([], ['id' => 'DESC']),
+            $request->query->getInt('page', 1),
+            7
+        );
         foreach ($biths as $key => $birth) {
             $naissance = [
                     'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,
