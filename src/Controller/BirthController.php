@@ -62,14 +62,10 @@ class BirthController extends AbstractController
     /**
      * @Route ("/births", name="birth")
      */
-    public function index(BirthRepository $birthRepository, SerializerInterface $serializer, PersonRepository $personRepository, PaginatorInterface $paginator, Request $request)
+    public function index(BirthRepository $birthRepository, SerializerInterface $serializer, PersonRepository $personRepository)
     {
         $naissances = [];
-        $biths = $paginator->paginate(
-            $birthRepository->findBy([], ['id' => 'DESC']),
-            $request->query->getInt('page', 1),
-            7
-        );
+        $biths =  $birthRepository->findBy([], ['id' => 'DESC']);
         foreach ($biths as $key => $birth) {
             $naissance = [
                     'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,

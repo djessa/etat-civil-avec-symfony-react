@@ -41,33 +41,51 @@ const styles = theme => ({
     }
 });
 
+const ROW_PER_PAGE = 7;
 
 class Naissances extends Component {
     constructor(props) {
         super(props);
         this.state = {
             fiches: [],
-            page: 1
+            numPage: 0,
+            nbrePage: 0,
+            rows: []
         }
         this.readFiches();
-        this.next = this.next.bind(this);
-        this.prev = this.prev.bind(this);
     }
+
     next () {
-        this.setState({page: (this.state.page) + 1});
-        this.readFiches();
-        console.log(this.state.fiches, this.state.page);
+        if(this.state.numPage  < this.state.nbrePage) {
+            let numPage = this.state.numPage;
+            numPage = numPage + 1;
+            const rows = (this.state.fiches).slice(numPage * ROW_PER_PAGE, (numPage * ROW_PER_PAGE) +ROW_PER_PAGE);
+            this.setState({numPage, rows});
+        }
+        console.log(this.state.numPage)
     }
+
     prev () {
-        this.setState({page: (this.state.page) - 1});
-        this.readFiches(this.state.page);
+        if (this.state.numPage !== 0) {
+            let numPage = this.state.numPage;
+            numPage = numPage - 1;
+            const rows = (this.state.fiches).slice(numPage * ROW_PER_PAGE, (numPage * ROW_PER_PAGE) +ROW_PER_PAGE);
+            this.setState({numPage, rows});
+        }
+        console.log(this.state.numPage)
     }
-    readFiches(page) {
-        axios.get('/births', {params: {page: this.state.page}})
+
+    readFiches() {
+        axios.get('/births')
             .then((response) => {
                 this.setState(
-                    {fiches: response.data}
+                    {
+                        fiches: response.data,
+                        rows: (response.data).slice(0, ROW_PER_PAGE),
+                        nbrePage: Math.round(((response.data).length) / ROW_PER_PAGE)
+                    }
                 );
+
             })
             .catch((error) => {
                 console.log(error)
@@ -90,6 +108,7 @@ class Naissances extends Component {
                         <Table>
                             <TableHead>
                                 <TableRow style={{backgroundColor: '#aaa'}}>
+                                    <TableCell style={{fontWeight: 'bold'}}>ID</TableCell>
                                     <TableCell style={{fontWeight: 'bold'}}>Nom</TableCell>
                                     <TableCell style={{fontWeight: 'bold'}}>Prénom</TableCell>
                                     <TableCell style={{fontWeight: 'bold'}}>Sexe</TableCell>
@@ -99,10 +118,11 @@ class Naissances extends Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {this.state.fiches.map((data, index) => {
+                                {this.state.rows.map((data, index) => {
                                     let fiche = JSON.parse(data);
                                     let person = JSON.parse(fiche.enfant);
                                     return<TableRow key={index}>
+                                        <TableCell>{person.id}</TableCell>
                                         <TableCell>{person.first_name}</TableCell>
                                         <TableCell>{person.last_name}</TableCell>
                                         <TableCell>{person.sexe}</TableCell>
@@ -115,23 +135,17 @@ class Naissances extends Component {
                                         </TableCell>
                                     </TableRow>
                                 })}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TableCell>
-                                        <Button color="primary" variant="outlined" onClick={this.prev}>
-                                            <ArrowBackIcon/>
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button color="primary" variant="outlined" onClick={this.next}>
-                                            <ArrowForwardIcon/>
-                                        </Button>  
-                                    </TableCell>
-                                </TableRow>
-                            </TableFooter>
+                            </TableBody> 
                         </Table>
                     </TableContainer>
+                    <div style={{margin: '25px'}}>
+                        <Button variant="primary" onClick={this.prev.bind(this)}>
+                            <ArrowBackIcon/>
+                        </Button>
+                        <Button variant="primary"  onClick={this.next.bind(this)}>
+                            <ArrowForwardIcon/>
+                        </Button> 
+                    </div>
                 </div>
                 <CssBaseline/>
             </ThemeProvider>
