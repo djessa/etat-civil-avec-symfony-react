@@ -5,7 +5,8 @@ import Header from "../../components/Header";
 import axios from "axios";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-
+import { Link } from 'react-router-dom';
+import  { mini_date } from  '../../variables/const';
 const theme = createMuiTheme({
     palette: {
       primary: {
@@ -126,10 +127,10 @@ class Naissances extends Component {
                                         <TableCell>{person.first_name}</TableCell>
                                         <TableCell>{person.last_name}</TableCell>
                                         <TableCell>{person.sexe}</TableCell>
-                                        <TableCell>{person.birthdate}</TableCell>
+                                        <TableCell>{mini_date(person.birthdate)}</TableCell>
                                         <TableCell>{person.birthplace}</TableCell>
                                         <TableCell>
-                                            <Button>
+                                            <Button component={Link} to={'/fiche/' + fiche.id }>
                                                 Afficher
                                             </Button>
                                         </TableCell>
@@ -139,10 +140,10 @@ class Naissances extends Component {
                         </Table>
                     </TableContainer>
                     <div style={{margin: '25px'}}>
-                        <Button variant="primary" onClick={this.prev.bind(this)}>
+                        <Button style={{marginRight: '25px'}} color="primary" variant="outlined" onClick={this.prev.bind(this)}>
                             <ArrowBackIcon/>
                         </Button>
-                        <Button variant="primary"  onClick={this.next.bind(this)}>
+                        <Button color="primary" variant="outlined"  onClick={this.next.bind(this)}>
                             <ArrowForwardIcon/>
                         </Button> 
                     </div>

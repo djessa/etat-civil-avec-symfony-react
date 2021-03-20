@@ -68,6 +68,7 @@ class BirthController extends AbstractController
         $biths =  $birthRepository->findBy([], ['id' => 'DESC']);
         foreach ($biths as $key => $birth) {
             $naissance = [
+                    'id' => $birth->getId(),
                     'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,
                     'mere' => $serializer->serialize($personRepository->find($birth->getMother()->getId()), 'json', ['groups' => 'read']) ,
                     'pere' => $serializer->serialize($personRepository->find($birth->getFather()->getId()), 'json', ['groups' => 'read']) ,
@@ -78,5 +79,22 @@ class BirthController extends AbstractController
             $naissances[] = $serializer->serialize($naissance, 'json', []);
         }
         return $this->json($naissances, 200, []);
+    }
+
+    /**
+     * @Route ("/birth/{id}", name="birth_show")
+     */
+    public function show (Birth $birth, SerializerInterface $serializer, PersonRepository $personRepository)
+    {
+        $naissance = [
+                    'id' => $birth->getId(),
+                    'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,
+                    'mere' => $serializer->serialize($personRepository->find($birth->getMother()->getId()), 'json', ['groups' => 'read']) ,
+                    'pere' => $serializer->serialize($personRepository->find($birth->getFather()->getId()), 'json', ['groups' => 'read']) ,
+                    'declarant' => $serializer->serialize($personRepository->find($birth->getDeclarant()->getId()), 'json', ['groups' => 'read']) ,
+                    'date_declaration' => $birth->getDateDeclaration(),
+                    'type_declaration' => $birth->getTypeDeclaration()
+        ];
+        return $this->json($naissance, 200, []);
     }
 }
