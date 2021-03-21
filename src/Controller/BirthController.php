@@ -24,6 +24,7 @@ class BirthController extends AbstractController
     {
         $this->manager = $em;
     }
+    
     /**
      * @Route("/birth/new", name="birth_new")
      */

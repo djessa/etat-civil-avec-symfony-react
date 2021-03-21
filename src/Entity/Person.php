@@ -83,16 +83,19 @@ class Person
 
     /**
      * @ORM\OneToMany(targetEntity=Birth::class, mappedBy="father")
+     * Fait reference à son fils ou sa fille en tant que père
      */
     private $son_father;
 
     /**
      * @ORM\OneToMany(targetEntity=Birth::class, mappedBy="mother")
+    * Fait reference à son fils ou sa fille en tant que mère
      */
     private $son_mother;
 
     /**
      * @ORM\OneToMany(targetEntity=Birth::class, mappedBy="declarant")
+     * Fait reference à son fils ou sa fille en tant que declarant
      */
     private $son_declarant;
 

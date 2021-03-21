@@ -44,6 +44,7 @@ class Birth
     /**
      * @ORM\OneToOne(targetEntity=Person::class, inversedBy="birth", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * le proprietaire de l'acte
      */
     private $person;
 
