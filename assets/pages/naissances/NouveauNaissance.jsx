@@ -25,8 +25,58 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {Close, Done} from '@material-ui/icons';
-import  {useStyles, theme, jours, mois, dateDuJour} from  '../../variables/const';
+import  { jours, mois, dateDuJour} from  '../../variables/const';
 import axios from 'axios';
+
+
+const useStyles = makeStyles((theme) => ({
+    appMain: {
+      paddingLeft: '275px',
+      width: '100%'
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    textField: { margin: theme.spacing(1)},
+    card: {
+        maxWidth: 400
+    },
+    containedPrimary: {
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(4)
+    }
+}));
+
+const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#333996",
+        light: '#3c44b126'
+      },
+      secondary: {
+        main: "#f83245",
+        light: '#f8324526'
+      },
+      background: {
+        default: "#f4f5fd"
+      },
+    },
+    overrides:{
+      MuiAppBar:{
+        root:{
+          transform:'translateZ(0)'
+        }
+      }
+    },
+    props:{
+      MuiIconButton:{
+        disableRipple:true
+      }
+    }
+});
+
+
 
 export default function NouveauNaissance () {
     const [openMessage, setOpenMessage] = useState(false);
@@ -196,51 +246,64 @@ export default function NouveauNaissance () {
             <form method="post" onSubmit={(e) => {e.preventDefault(); save();}}  className={classes.appMain}>
                 <Header> 
                     <Grid container justify="space-between">
-                        <Grid item lg={3}><h3>Enregistrement de  naissance</h3></Grid>
-                        <Grid item lg={3}>
+                        <Grid item lg={2}>
                             <TextField
                                 value={dateDuJour()}
                                 label="Date de déclaration"
                                 className={classes.textField}
                                 InputProps={{ readOnly: true }}
-                                name="date"
+                                fullWidth={true}
                             />
                         </Grid>
+                        <Grid item lg={1}></Grid>
                         <Grid item lg={2}>
-                            <FormControl className={classes.formControl}>
-                                <InputLabel htmlFor="multi">Type</InputLabel>
-                                <Select
-                                value={type}
-                                onChange={onChangeType}
-                                input={<Input id="multi" />}
-                                >
-                                    <MenuItem value={'normal'}>
-                                    Normal
-                                    </MenuItem>
-                                    <MenuItem value={'jugement'}>
-                                    Jugement
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
+                          <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Type de déclaration</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              value={type}
+                              onChange={onChangeType}
+                            >
+                              <MenuItem value={'normal'}>Normal</MenuItem>
+                              <MenuItem value={'jugement'}>Jugement</MenuItem>
+                            </Select>
+                          </FormControl>
                         </Grid>
-                        <Grid item lg={3}>
-                            {
-                                (type === 'jugement')
-                                ?
-                                <TextField
-                                    value={numeroJugement}
-                                    onChange={(e) => setNumeroJugement(e.target.value)}
-                                    onKeyUp={handleChangeNumero}
-                                    label="Numéro du jugement"
-                                    className={classes.textField}
-                                    fullWidth={true}
-                                    error={errors.numero}
-                                    helperText={errors.textNumero}
-                                />
-                                :
-                                ''
-                            }
-                        </Grid>
+                         {
+                        (type === 'jugement')
+                        ?
+                        <>
+                          <Grid item lg={1}></Grid>
+                          <Grid item lg={2}>
+                            <TextField
+                                value={numeroJugement}
+                                onChange={(e) => setNumeroJugement(e.target.value)}
+                                onKeyUp={handleChangeNumero}
+                                label="Numéro du jugement"
+                                className={classes.textField}
+                                fullWidth={true}
+                                error={errors.numero}
+                                helperText={errors.textNumero}
+                            />
+                          </Grid>
+                          <Grid item lg={2}>
+                            <TextField
+                                style={{marginLeft: '5px'}}
+                                label="Date du jugement"
+                                className={classes.textField}
+                                fullWidth={true}
+                                type="date"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                            />
+                          </Grid>
+                          <Grid item lg={1}></Grid>
+                        </>
+                          :
+                          <Grid item lg={6}></Grid>
+                        }
                         <Grid item lg={1}>
                             <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
                             <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>

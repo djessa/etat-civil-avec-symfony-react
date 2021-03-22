@@ -22,41 +22,9 @@ const style = {
     }
 }
 
-const ListItems = ({ items }) => items
-    .filter(({ hidden }) => !hidden)
-    .map(({ label, disabled, Icon, path }, i) => (
-    <MenuItem
-    key={i}
-    disabled={disabled}
-    style={{listStyleType: 'none', color: '#fff'}}
-    >
-    <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
-    <NavLink exact to={path} className="link">
-        {label}
-    </NavLink>
-    </Button>
-    </MenuItem>
-));
 
 const SideMenu = (props) => {
-    const [items] = useState({
-        naissance: [
-            { label: 'Déclaration', Icon: Add, path: '/declaration_naissance' },
-            { label: 'Régistre', Icon: Album, path: '/naissances' },
-        ],
-        deces: [
-            { label: 'Déclaration', Icon: Add, path: '/declaration_deces' },
-            { label: 'Régistre', Icon: Album , path: '/deces'},
-        ],
-        mariage: [
-            { label: 'Déclaration', Icon: Add, path: '/declaration_mariage' },
-            { label: 'Régistre', Icon: Album, path: '/mariages' },
-        ],
-        divorce: [
-            { label: 'Déclaration', Icon: Add, path: '/declaration_divorce' },
-            { label: 'Régistre', Icon: Album, path: '/divorces' },
-        ]
-    });
+
     const { classes } = props;
     return (
         <div className={classes.sideMenu}>
@@ -67,17 +35,107 @@ const SideMenu = (props) => {
             </div>
             <div className="navigation">
                 <Menu className="menu">
-                    <SubMenu title="Naissance" className="submenu">
-                        <ListItems items={items.naissance}>Déclaration</ListItems>
+                    <SubMenu title="Déclaration" className="submenu">
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_naissance" className="link">
+                                    Naissance
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_mariage" className="link">
+                                    Mariage
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_deces" className="link">
+                                    Décès
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_divorce" className="link">
+                                    Divorce
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_reconnaissance" className="link">
+                                    Réconnaissance
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_adoption" className="link">
+                                    Adoption
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_rejet" className="link">
+                                    Réjet
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
                     </SubMenu>
-                    <SubMenu title="Décès"  className="submenu">
-                        <ListItems items={items.deces}>Déclaration</ListItems>
-                    </SubMenu>
-                    <SubMenu title="Mariages" className="submenu">
-                        <ListItems items={items.mariage}>Déclaration</ListItems>
-                    </SubMenu>
-                    <SubMenu title="Divorces" className="submenu">
-                        <ListItems items={items.divorce}>Déclaration</ListItems>
+                    <SubMenu title="Régistre" className="submenu">
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/naissances" className="link">
+                                    Naissance
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_mariage" className="link">
+                                    Mariage
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_deces" className="link">
+                                    Décès
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_divorce" className="link">
+                                    Divorce
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_divorce" className="link">
+                                    Réconnaissance
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_divorce" className="link">
+                                    Adoption
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_divorce" className="link">
+                                    Réjet
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
                     </SubMenu>
                 </Menu>
             </div>

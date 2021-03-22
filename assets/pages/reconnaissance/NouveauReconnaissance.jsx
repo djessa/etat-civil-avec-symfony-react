@@ -77,7 +77,7 @@ const theme = createMuiTheme({
 
 
 
-export default function NouveauMariage () {
+export default function NouveauReconnaissance () {
     const [openMessage, setOpenMessage] = useState(false);
     const [backgroundMessage, setBackgroundMessage] = useState('');
     const [message, setMessage] = useState('');
@@ -245,12 +245,6 @@ export default function NouveauMariage () {
                         </Grid>
                     </Grid>
                 </Header>
-                <Tabs  value={formCategory} onChange={onChangeFormCategory}>
-                    <Tab label="Epoux"></Tab>
-                    <Tab label="Epouse"></Tab>
-                    <Tab label="Temoin 1"></Tab>
-                    <Tab label="Temoin 2"></Tab>
-                </Tabs>
                 <Snackbar autoHideDuration={6000} open={openMessage}>
                     <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
                         <Button onClick={()=>(setOpenMessage(false))} color="inherit" key='dismiss'>

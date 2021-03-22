@@ -30,13 +30,8 @@ class BirthController extends AbstractController
      */
     public function new (Request $request, SerializerInterface $serializer): Response
     {
-        $data = $request->getContent();
         try {
-            $birth = $serializer->deserialize($data, Birth::class, 'json');
-        } catch (NotEncodableValueException $e) {
-            return $this->json(['status' => 400, 'message' => $e->getMessage()]);
-        }
-        try {
+            $birth = $serializer->deserialize($request->getContent(), Birth::class, 'json');
             $person = $birth->getPerson();
             $this->manager->persist($person);
             $father = $birth->getFather();
@@ -56,7 +51,7 @@ class BirthController extends AbstractController
             $this->manager->flush();
             return $this->json(['message' => 'Une fiche de naissance a bien été ajoutée avec succès', 'birth' => $birth], 200);
         } catch (\Exception $e) {
-            return $this->json(['status' => 400, 'message' => $e->getMessage()]);
+            return $this->json(['status' => 400, 'message' => 'Impossible d\'enregistrer : ' . $e->getMessage()], 400);
         }
     }
 
