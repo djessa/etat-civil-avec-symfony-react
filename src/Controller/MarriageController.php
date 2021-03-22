@@ -29,7 +29,11 @@ class MarriageController extends AbstractController
     {
     	try {
     		$marriage = $serializer->deserialize($request->getContent(), Marriage::class, 'json');
-    		$man_cle = [
+		} catch (NotEncodableValueException $e) {
+            return $this->json(['status' => 400, 'message' => $e->getMessage()]);
+        }
+		try { 	
+			$man_cle = [
     			'first_name' => $marriage->getMan()->getFirstName(), 
     			'last_name' =>  $marriage->getMan()->getLastName(),
     			'birthdate' =>  $marriage->getMan()->getBirthdate(),
@@ -84,11 +88,9 @@ class MarriageController extends AbstractController
     		$marriage->setCreatedAt(new \DateTime());
     		$this->manager->persist($marriage);
     		$this->manager->flush();
-    		return $this->json(['marriage' => $marriage, 'message' => 'Une acte de mariage a bien été crée'], 200);
-    	} catch (NotEncodableValueException $e) {
+    		return $this->json(['message' => 'Une acte de mariage a bien été crée'], 200);
+    	} catch (Exception $e) {
             return $this->json(['status' => 400, 'message' => $e->getMessage()]);
-        }
-    	
-        return $this->render('marriage/index.html.twig');
+        } 	
     }
 }
