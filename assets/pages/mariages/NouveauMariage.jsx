@@ -234,10 +234,27 @@ export default function NouveauMariage () {
                         </Grid>
                         <Grid item lg={1}></Grid>
                         <Grid item lg={2}>
-                          
+                            <TextField
+                                label="Lieu de mariage"
+                                className={classes.textField}
+                                fullWidth={true}
+                            />
                         </Grid>
+                        <Grid lg={3}>
+                             <FormControl className={classes.formControl} fullWidth={true}>
+                                <InputLabel id="demo-simple-select-label">Régime matrimoniale</InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-label"
+                                  id="demo-simple-select"
+                                >
+                                  <MenuItem></MenuItem>
+                                  <MenuItem></MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item lg={1}></Grid>
                         <Grid item lg={1}>
-                            <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: "100%"}}>
                             <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
                                 <Done/>
                             </IconButton>

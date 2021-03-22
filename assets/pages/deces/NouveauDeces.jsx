@@ -234,8 +234,28 @@ export default function NouveauDeces () {
                         </Grid>
                         <Grid item lg={1}></Grid>
                         <Grid item lg={2}>
-                          
+                            <TextField
+                                label="Date de décès"
+                                className={classes.textField}
+                                type="date"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                fullWidth={true}
+                            />
                         </Grid>
+                        <Grid item lg={1}></Grid>
+                        <Grid item lg={2}>
+                            <TextField
+                                label="Heure de décès"
+                                className={classes.textField}
+                                type="time"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                fullWidth={true}
+                            />
+                        </Grid>       
                         <Grid item lg={1}>
                             <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
                             <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
@@ -245,6 +265,263 @@ export default function NouveauDeces () {
                         </Grid>
                     </Grid>
                 </Header>
+                <Tabs  value={formCategory} onChange={onChangeFormCategory}>
+                    <Tab label="Défunt(e)"></Tab>
+                    <Tab label="Père du défunt(e)"></Tab>
+                    <Tab label="Mère du défunt(e)"></Tab>
+                    <Tab label="Epoux du défunt(e)"></Tab>
+                    <Tab label="Déclarant"></Tab>
+                </Tabs>
+ {
+                    formCategory === 0 && 
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            label="Nom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                            >
+                              <MenuItem>Masculin</MenuItem>
+                              <MenuItem>Féminin</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            label="Date de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Lieu de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Profession"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="VIlle"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Adresse"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                    </div>
+                }
+                {
+                    formCategory === 1 && 
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            label="Nom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                            >
+                              <MenuItem>Masculin</MenuItem>
+                              <MenuItem>Féminin</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            label="Date de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Lieu de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Profession"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="VIlle"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Adresse"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                    </div>
+                }
+                {
+                    formCategory === 2 && 
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            label="Nom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                            >
+                              <MenuItem>Masculin</MenuItem>
+                              <MenuItem>Féminin</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            label="Date de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Lieu de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Profession"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="VIlle"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Adresse"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                    </div>
+                }
+                {
+                    formCategory === 3 && 
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            label="Nom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                            >
+                              <MenuItem>Masculin</MenuItem>
+                              <MenuItem>Féminin</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            label="Date de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Lieu de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Profession"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="VIlle"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Adresse"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                    </div>
+                }
+                {
+                    formCategory === 4 && 
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            label="Nom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl} fullWidth={true}>
+                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                            >
+                              <MenuItem>Masculin</MenuItem>
+                              <MenuItem>Féminin</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            label="Date de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Lieu de naissance"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Profession"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="VIlle"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                        <TextField
+                            label="Adresse"
+                            className={classes.textField}
+                            fullWidth={true}
+                        />
+                    </div>
+                }
                 <Snackbar autoHideDuration={6000} open={openMessage}>
                     <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
                         <Button onClick={()=>(setOpenMessage(false))} color="inherit" key='dismiss'>

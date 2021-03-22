@@ -30,11 +30,11 @@ const SideMenu = (props) => {
         <div className={classes.sideMenu}>
             <div style={{height: '150px', marginLeft: '5%', width: '90%'}}>
                 <hr/>
-                <img src="/images/flag.jpg" alt="drapeau" className="image"/>
-                <hr/>
+                <img src="/images/logo.jpeg" alt="drapeau" className="image"/>
             </div>
             <div className="navigation">
                 <Menu className="menu">
+                    <hr/>
                     <SubMenu title="Déclaration" className="submenu">
                         <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
                             <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
@@ -74,7 +74,14 @@ const SideMenu = (props) => {
                         <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
                             <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
                                 <NavLink exact to="/declaration_adoption" className="link">
-                                    Adoption
+                                    Adoption simple
+                                </NavLink>
+                            </Button>
+                        </MenuItem>
+                        <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
+                            <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
+                                <NavLink exact to="/declaration_adoption" className="link">
+                                    Adoption plenière
                                 </NavLink>
                             </Button>
                         </MenuItem>
@@ -86,6 +93,7 @@ const SideMenu = (props) => {
                             </Button>
                         </MenuItem>
                     </SubMenu>
+                    <hr/>
                     <SubMenu title="Régistre" className="submenu">
                         <MenuItem style={{listStyleType: 'none', color: '#fff'}}>
                             <Button color="inherit" style={{textTransform: 'capitalize', padding: '5px', fontSize: '1em'}}>
@@ -137,6 +145,7 @@ const SideMenu = (props) => {
                             </Button>
                         </MenuItem>
                     </SubMenu>
+                    <hr/>
                 </Menu>
             </div>
         </div>

@@ -14,7 +14,7 @@ import NouveauDeces from './pages/deces/NouveauDeces';
 import NouveauReconnaissance from './pages/reconnaissance/NouveauReconnaissance';
 import NouveauAdoption from './pages/adoption/NouveauAdoption';
 import NouveauRejet from './pages/rejet/NouveauRejet';
-
+import SignInSide from './components/SignInSide';
 import Home from './pages/Home';
 import Fiche from './pages/naissances/Fiche';
 

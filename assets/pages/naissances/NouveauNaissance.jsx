@@ -287,6 +287,7 @@ export default function NouveauNaissance () {
                                 helperText={errors.textNumero}
                             />
                           </Grid>
+                                                   <Grid item lg={1}></Grid>
                           <Grid item lg={2}>
                             <TextField
                                 style={{marginLeft: '5px'}}
@@ -299,13 +300,12 @@ export default function NouveauNaissance () {
                                 }}
                             />
                           </Grid>
-                          <Grid item lg={1}></Grid>
                         </>
                           :
                           <Grid item lg={6}></Grid>
                         }
                         <Grid item lg={1}>
-                            <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: 'center', alignItems: "center", height: "100%"}}>
                             <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
                                 <Done/>
                             </IconButton>
@@ -320,87 +320,65 @@ export default function NouveauNaissance () {
                     <Tab label="Déclarant"></Tab>
                 </Tabs>
                 {formCategory === 0 && (
-                    <>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
-                                    <TextField
-                                        onChange={(e) => {
-                                            const enfantChange = Object.assign({}, enfant);
-                                            enfantChange.nom = e.target.value;
-                                            setEnfant(enfantChange);
-                                        }}
-                                        value={enfant.nom
-                                        }
-                                        label="Nom" className={classes.textField} fullWidth={true}/>
-                                </Grid>
-                                <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
-                                    <TextField
-                                        label="Prénom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        error={false}
-                                        helperText=""
-                                        value={enfant.prenom}
-                                        onChange={(e) => {
-                                            const enfantChange = Object.assign({}, enfant);
-                                            enfantChange.prenom = e.target.value;
-                                            setEnfant(enfantChange);
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                            <Grid item lg={4}>
-                                <TextField
-                                    label="Date de naissance"
-                                    type="date"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                    fullWidth={true}
-                                    value={enfant.date_naissance}
-                                    onChange={(e) => {
-                                        const enfantChange = Object.assign({}, enfant);
-                                        enfantChange.date_naissance = e.target.value;
-                                        setEnfant(enfantChange);
-                                    }}
-                                />
-                            </Grid>
-                                <Grid item lg={2}></Grid>
-                            <Grid item lg={4}>
-                                <TextField
-                                    label="Heure de naissance"
-                                    type="time"
-                                    className={classes.textField}
-                                    style= {{marginRight: '10px'}}
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                    fullWidth={true}
-                                    value={enfant.heure_naissance}
-                                    onChange={(e) => {
+                    <div style={{padding: '20px'}}>
+                        <TextField
+                            onChange={(e) => {
+                                const enfantChange = Object.assign({}, enfant);
+                                enfantChange.nom = e.target.value;
+                                setEnfant(enfantChange);
+                                }
+                            }
+                            value={enfant.nom}
+                            label="Nom" className={classes.textField} fullWidth={true}
+                        />
+                        <TextField
+                            label="Prénom"
+                            className={classes.textField}
+                            fullWidth={true}
+                            error={false}
+                            helperText=""
+                            value={enfant.prenom}
+                            onChange={(e) => {
+                                const enfantChange = Object.assign({}, enfant);
+                                enfantChange.prenom = e.target.value;
+                                setEnfant(enfantChange);
+                                }
+                          }
+                        />
+                        <TextField
+                            label="Date de naissance"
+                            type="date"
+                            className={classes.textField}
+                            InputLabelProps={{
+                              shrink: true
+                            }}
+                            fullWidth={true}
+                            value={enfant.date_naissance}
+                            onChange={(e) => {
+                                const enfantChange = Object.assign({}, enfant);
+                                enfantChange.date_naissance = e.target.value;
+                                setEnfant(enfantChange);
+                              }
+                            }
+                        />
+                        <TextField
+                            label="Heure de naissance"
+                            type="time"
+                            className={classes.textField}
+                            style= {{marginRight: '10px'}}
+                                InputLabelProps={{
+                                  shrink: true
+                                }}
+                            fullWidth={true}
+                            value={enfant.heure_naissance}
+                            onChange={(e) => {
                                         const enfantChange = Object.assign({}, enfant);
                                         enfantChange.heure_naissance = e.target.value;
                                         setEnfant(enfantChange);
-                                    }}
-                                />
-                            </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                            <Grid item lg={4}>
-                                <TextField
+                            }}
+                        />
+
+                        <TextField
                                     value={enfant.lieu_naissance}
                                     onChange={(e) => {
                                         const enfantChange = Object.assign({}, enfant);
@@ -409,11 +387,9 @@ export default function NouveauNaissance () {
                                     }}
                                     label="Lieu de naissance"
                                     className={classes.textField}
-                                    fullWidth={true}/>
-                            </Grid>
-                                <Grid item lg={2}></Grid>
-                            <Grid item lg={3}>
-                                <FormControl className={classes.formControl}>
+                                    fullWidth={true}
+                        />
+                        <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="multi">Sexe</InputLabel>
                                     <Select
                                         value={enfant.sexe}
@@ -431,19 +407,11 @@ export default function NouveauNaissance () {
                                             Féminin
                                         </MenuItem>
                                     </Select>
-                                </FormControl>
-                            </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                    </>
-                    )}
+                        </FormControl>
+                    </div>
+                )}
                     {formCategory === 1 && (
-                        <>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
+                        <div style={{padding: '20px'}}>
                                     <TextField
                                         label="Nom"
                                         className={classes.textField}
@@ -455,9 +423,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Prénom"
                                         className={classes.textField}
@@ -469,14 +434,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                             <Grid container>
-                                 <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Date de naissance"
                                         type="date"
@@ -492,9 +449,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                 <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Lieu de naissance"
                                         className={classes.textField}
@@ -506,14 +460,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                 <Grid item lg={1}></Grid>
-                             </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                            <Grid item lg={1}></Grid>
-                            <Grid item lg={3}>
                                     <TextField
                                         label="Profession"
                                         className={classes.textField}
@@ -525,9 +471,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={2}>
                                     <TextField
                                         label="Ville"
                                         className={classes.textField}
@@ -539,9 +482,6 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
                                     <TextField
                                         label="Adresse"
                                         className={classes.textField}
@@ -553,18 +493,10 @@ export default function NouveauNaissance () {
                                             setPere(pereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
                         </div>
-                        </>
                     )}
                 {formCategory === 2 && (
-                    <>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
+                    <div style={{padding: '20px'}}>
                                     <TextField
                                         label="Nom"
                                         className={classes.textField}
@@ -576,9 +508,6 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Prénom"
                                         className={classes.textField}
@@ -590,14 +519,6 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Date de naissance"
                                         type="date"
@@ -614,9 +535,6 @@ export default function NouveauNaissance () {
                                         }}
 
                                     />
-                                </Grid>
-                                <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Lieu de naissance"
                                         className={classes.textField}
@@ -628,14 +546,6 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
                                     <TextField
                                         label="Profession"
                                         className={classes.textField}
@@ -647,9 +557,6 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={2}>
                                     <TextField
                                         label="Ville"
                                         className={classes.textField}
@@ -661,9 +568,6 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
                                     <TextField
                                         label="Adresse"
                                         className={classes.textField}
@@ -675,19 +579,11 @@ export default function NouveauNaissance () {
                                             setMere(mereChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                    </>
+                    </div>
 
                 )}
                 {formCategory === 3 && (
-                    <>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
+                    <div style={{padding: '20px'}}>
                                     <TextField
                                         label="Nom"
                                         className={classes.textField}
@@ -699,9 +595,6 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
                                     <TextField
                                         label="Prénom"
                                         className={classes.textField}
@@ -713,9 +606,6 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={2}>
                                     <FormControl className={classes.formControl}>
                                         <InputLabel htmlFor="multi">Sexe</InputLabel>
                                         <Select
@@ -735,14 +625,6 @@ export default function NouveauNaissance () {
                                             </MenuItem>
                                         </Select>
                                     </FormControl>
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Date de naissance"
                                         type="date"
@@ -758,9 +640,6 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={2}></Grid>
-                                <Grid item lg={4}>
                                     <TextField
                                         label="Lieu de naissance"
                                         className={classes.textField}
@@ -772,14 +651,7 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                        <div style={{flexGrow: 1}}>
-                            <Grid container>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
+
                                     <TextField
                                         label="Profession"
                                         className={classes.textField}
@@ -791,9 +663,6 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={2}>
                                     <TextField
                                         label="Ville"
                                         className={classes.textField}
@@ -805,9 +674,6 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                                <Grid item lg={3}>
                                     <TextField
                                         label="Adresse"
                                         className={classes.textField}
@@ -819,11 +685,7 @@ export default function NouveauNaissance () {
                                             setDeclarant(declarantChange);
                                         }}
                                     />
-                                </Grid>
-                                <Grid item lg={1}></Grid>
-                            </Grid>
-                        </div>
-                    </>
+                    </div>
                 )}
                 <Snackbar autoHideDuration={6000} open={openMessage}>
                     <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
