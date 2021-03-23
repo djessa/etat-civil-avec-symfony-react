@@ -224,6 +224,7 @@ export default function NouveauDivorce () {
                 <Header> 
                     <Grid container justify="space-between">
                         <Grid item lg={3}>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                             <TextField
                                 value={dateDuJour()}
                                 label="Date d'établissement"
@@ -231,17 +232,19 @@ export default function NouveauDivorce () {
                                 InputProps={{ readOnly: true }}
                                 fullWidth={true}
                             />
+                            </div>
                         </Grid>
-                        <Grid item lg={1}></Grid>
                         <Grid item lg={3}>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                             <TextField
                                 label="Numéro du décision"
                                 className={classes.textField}
                                 fullWidth={true}
-                            />          
+                            />  
+                        </div>        
                         </Grid>
-                        <Grid item lg={1}></Grid>
                         <Grid item lg={3}>
+                        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
                             <TextField
                                 label="Date de décision"
                                 className={classes.textField}
@@ -251,6 +254,7 @@ export default function NouveauDivorce () {
                                 }}
                                 fullWidth={true}
                             />
+                        </div>
                         </Grid>
                         <Grid item lg={1}>
                             <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
