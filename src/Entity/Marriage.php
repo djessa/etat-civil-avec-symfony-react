@@ -50,6 +50,11 @@ class Marriage
      */
     private $witness_woman;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $regime;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +128,18 @@ class Marriage
     public function setWitnessWoman(?Person $witness_woman): self
     {
         $this->witness_woman = $witness_woman;
+
+        return $this;
+    }
+
+    public function getRegime(): ?string
+    {
+        return $this->regime;
+    }
+
+    public function setRegime(string $regime): self
+    {
+        $this->regime = $regime;
 
         return $this;
     }

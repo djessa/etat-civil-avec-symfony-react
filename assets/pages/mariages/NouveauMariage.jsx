@@ -24,9 +24,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {Close, Done} from '@material-ui/icons';
-import  { jours, mois, dateDuJour} from  '../../variables/const';
+import  { jours, mois, dateDuJour, personne, personne_to_en} from  '../../variables/const';
 import axios from 'axios';
-
 
 const useStyles = makeStyles((theme) => ({
     appMain: {
@@ -75,33 +74,6 @@ const theme = createMuiTheme({
     }
 });
 
-const personne = {
-    nom: '',
-    prenom: '',
-    date_naissance: '',
-    lieu_naissance: '',
-    sexe: '',
-    profession: '',
-    ville: '',
-    adresse: ''
-};
-
-const personne_to_en = (personne_input) => {
-   return {
-        first_name: personne_input.nom, 
-        last_name: personne_input.prenom,
-        birthdate: personne_input.date_naissance,
-        sexe: personne_input.sexe,
-        birthplace: personne_input.lieu_naissance,
-        profession: personne_input.profession,
-        city: personne_input.ville,
-        address: personne_input.adresse     
-   } 
-}
-
-
-
-
 export default function NouveauMariage () {
 
     const [openMessage, setOpenMessage] = useState(false);
@@ -109,6 +81,7 @@ export default function NouveauMariage () {
     const [message, setMessage] = useState('');
     const classes = useStyles();
     const [lieu, setLieu] = useState('');
+    const [regime, setRegime] = useState('');
     const [man, setMan] = useState(Object.assign({}, personne));
     const [woman, setWoman] = useState(Object.assign({}, personne));
     const [witness_man, setWitness_man] = useState(Object.assign({}, personne));
@@ -121,6 +94,7 @@ export default function NouveauMariage () {
     const save = () => {
         const data = {
             lieu: lieu,
+            regime: regime,
             man : personne_to_en(man),
             woman : personne_to_en(woman),
             witness_man: personne_to_en(witness_man),
@@ -174,9 +148,11 @@ export default function NouveauMariage () {
                                 <Select
                                   labelId="demo-simple-select-label"
                                   id="demo-simple-select"
+                                  value={regime}
+                                  onChange={(e) => setRegime(e.target.value)}
                                 >
-                              <MenuItem value="masculin">Masculin</MenuItem>
-                              <MenuItem value="feminin">Féminin</MenuItem>
+                              <MenuItem value="communs">Séparation des biens</MenuItem>
+                              <MenuItem value="separation">Biens communs</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

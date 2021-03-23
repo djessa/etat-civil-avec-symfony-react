@@ -99,11 +99,35 @@ class Person
      */
     private $son_declarant;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Death::class, mappedBy="declarant")
+     */
+    private $declaration_deces;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Death::class, mappedBy="mother")
+     */
+    private $mother_son_death;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Death::class, mappedBy="epoux")
+     */
+    private $epoux_decede;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Death::class, mappedBy="father")
+     */
+    private $father_son_death;
+
     public function __construct()
     {
         $this->son_father = new ArrayCollection();
         $this->son_mother = new ArrayCollection();
         $this->son_declarant = new ArrayCollection();
+        $this->declaration_deces = new ArrayCollection();
+        $this->mother_son_death = new ArrayCollection();
+        $this->epoux_decede = new ArrayCollection();
+        $this->father_son_death = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -308,6 +332,126 @@ class Person
             // set the owning side to null (unless already changed)
             if ($sonDeclarant->getDeclarant() === $this) {
                 $sonDeclarant->setDeclarant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Death[]
+     */
+    public function getDeclarationDeces(): Collection
+    {
+        return $this->declaration_deces;
+    }
+
+    public function addDeclarationDece(Death $declarationDece): self
+    {
+        if (!$this->declaration_deces->contains($declarationDece)) {
+            $this->declaration_deces[] = $declarationDece;
+            $declarationDece->setDeclarant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeclarationDece(Death $declarationDece): self
+    {
+        if ($this->declaration_deces->removeElement($declarationDece)) {
+            // set the owning side to null (unless already changed)
+            if ($declarationDece->getDeclarant() === $this) {
+                $declarationDece->setDeclarant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Death[]
+     */
+    public function getMotherSonDeath(): Collection
+    {
+        return $this->mother_son_death;
+    }
+
+    public function addMotherSonDeath(Death $motherSonDeath): self
+    {
+        if (!$this->mother_son_death->contains($motherSonDeath)) {
+            $this->mother_son_death[] = $motherSonDeath;
+            $motherSonDeath->setMother($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMotherSonDeath(Death $motherSonDeath): self
+    {
+        if ($this->mother_son_death->removeElement($motherSonDeath)) {
+            // set the owning side to null (unless already changed)
+            if ($motherSonDeath->getMother() === $this) {
+                $motherSonDeath->setMother(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Death[]
+     */
+    public function getEpouxDecede(): Collection
+    {
+        return $this->epoux_decede;
+    }
+
+    public function addEpouxDecede(Death $epouxDecede): self
+    {
+        if (!$this->epoux_decede->contains($epouxDecede)) {
+            $this->epoux_decede[] = $epouxDecede;
+            $epouxDecede->setEpoux($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEpouxDecede(Death $epouxDecede): self
+    {
+        if ($this->epoux_decede->removeElement($epouxDecede)) {
+            // set the owning side to null (unless already changed)
+            if ($epouxDecede->getEpoux() === $this) {
+                $epouxDecede->setEpoux(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Death[]
+     */
+    public function getFatherSonDeath(): Collection
+    {
+        return $this->father_son_death;
+    }
+
+    public function addFatherSonDeath(Death $fatherSonDeath): self
+    {
+        if (!$this->father_son_death->contains($fatherSonDeath)) {
+            $this->father_son_death[] = $fatherSonDeath;
+            $fatherSonDeath->setFather($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFatherSonDeath(Death $fatherSonDeath): self
+    {
+        if ($this->father_son_death->removeElement($fatherSonDeath)) {
+            // set the owning side to null (unless already changed)
+            if ($fatherSonDeath->getFather() === $this) {
+                $fatherSonDeath->setFather(null);
             }
         }
 

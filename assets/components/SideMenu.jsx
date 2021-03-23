@@ -30,7 +30,7 @@ const SideMenu = (props) => {
         <div className={classes.sideMenu}>
             <div style={{height: '150px', marginLeft: '5%', width: '90%'}}>
                 <hr/>
-                <img src="/images/logo.jpeg" alt="drapeau" className="image"/>
+                <img src="/images/flag.jpg" alt="drapeau" className="image"/>
             </div>
             <div className="navigation">
                 <Menu className="menu">

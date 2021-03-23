@@ -29,7 +29,7 @@ class Death
     private $place_of_death;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $reason;
 
@@ -38,6 +38,27 @@ class Death
      * @ORM\JoinColumn(nullable=false)
      */
     private $person;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="declaration_deces")
+     */
+    private $declarant;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="mother_son_death")
+     */
+    private $mother;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="epoux_decede")
+     */
+    private $epoux;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="father_son_death")
+     */
+    private $father;
 
     public function getId(): ?int
     {
@@ -88,6 +109,54 @@ class Death
     public function setPerson(Person $person): self
     {
         $this->person = $person;
+
+        return $this;
+    }
+
+    public function getDeclarant(): ?Person
+    {
+        return $this->declarant;
+    }
+
+    public function setDeclarant(?Person $declarant): self
+    {
+        $this->declarant = $declarant;
+
+        return $this;
+    }
+
+    public function getMother(): ?Person
+    {
+        return $this->mother;
+    }
+
+    public function setMother(?Person $mother): self
+    {
+        $this->mother = $mother;
+
+        return $this;
+    }
+
+    public function getEpoux(): ?Person
+    {
+        return $this->epoux;
+    }
+
+    public function setEpoux(?Person $epoux): self
+    {
+        $this->epoux = $epoux;
+
+        return $this;
+    }
+
+    public function getFather(): ?Person
+    {
+        return $this->father;
+    }
+
+    public function setFather(?Person $father): self
+    {
+        $this->father = $father;
 
         return $this;
     }
