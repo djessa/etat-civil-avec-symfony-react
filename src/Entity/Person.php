@@ -119,6 +119,11 @@ class Person
      */
     private $father_son_death;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Divorce::class, mappedBy="man")
+     */
+    private $divorces;
+
     public function __construct()
     {
         $this->son_father = new ArrayCollection();
@@ -128,6 +133,7 @@ class Person
         $this->mother_son_death = new ArrayCollection();
         $this->epoux_decede = new ArrayCollection();
         $this->father_son_death = new ArrayCollection();
+        $this->divorces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -452,6 +458,36 @@ class Person
             // set the owning side to null (unless already changed)
             if ($fatherSonDeath->getFather() === $this) {
                 $fatherSonDeath->setFather(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Divorce[]
+     */
+    public function getDivorces(): Collection
+    {
+        return $this->divorces;
+    }
+
+    public function addDivorce(Divorce $divorce): self
+    {
+        if (!$this->divorces->contains($divorce)) {
+            $this->divorces[] = $divorce;
+            $divorce->setMan($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDivorce(Divorce $divorce): self
+    {
+        if ($this->divorces->removeElement($divorce)) {
+            // set the owning side to null (unless already changed)
+            if ($divorce->getMan() === $this) {
+                $divorce->setMan(null);
             }
         }
 

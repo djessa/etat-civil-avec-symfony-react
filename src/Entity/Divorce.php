@@ -34,16 +34,15 @@ class Divorce
     private $date_decision;
 
     /**
-     * @ORM\OneToOne(targetEntity=Person::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="divorces")
      */
     private $man;
 
     /**
-     * @ORM\OneToOne(targetEntity=Person::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="divorces")
      */
     private $woman;
+
 
     public function getId(): ?int
     {
@@ -91,7 +90,7 @@ class Divorce
         return $this->man;
     }
 
-    public function setMan(Person $man): self
+    public function setMan(?Person $man): self
     {
         $this->man = $man;
 
@@ -103,10 +102,11 @@ class Divorce
         return $this->woman;
     }
 
-    public function setWoman(Person $woman): self
+    public function setWoman(?Person $woman): self
     {
         $this->woman = $woman;
 
         return $this;
     }
+
 }

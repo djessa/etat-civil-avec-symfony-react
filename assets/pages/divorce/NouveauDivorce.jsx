@@ -117,13 +117,12 @@ export default function NouveauDivorce () {
                                     value={dateDuJour()}
                                     label="Date d'établissement"
                                     className={classes.textField}
-                                    InputProps={{ readOnly: true }}
                                     fullWidth={true}
                                 />
                             </div>
                         </Grid>
-                        <Grid item lg={3}>
-                            <div className="grid-menu">
+                        <Grid item lg={2}>
+                            <div>
                                 <TextField
                                     value={decision_number}
                                     onChange={(e) => setDecisionNumber(e.target.value)}
@@ -147,8 +146,8 @@ export default function NouveauDivorce () {
                                 />
                             </div>
                         </Grid>
-                        <Grid item lg={1}>
-                            <div style={{display: "flex", flexDirection: "row",alignItems: "flex-end", height: "100%"}}>
+                        <Grid item lg={2}>
+                            <div style={{display: "flex", flexDirection: "row",justifyContent: "flex-end",alignItems: "center", height: "100%"}}>
                                 <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
                                     <Done/>
                                 </IconButton>

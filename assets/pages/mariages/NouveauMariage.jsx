@@ -124,45 +124,48 @@ export default function NouveauMariage () {
             <form method="post" onSubmit={(e) => {e.preventDefault(); save();}}  className={classes.appMain}>
                 <Header> 
                     <Grid container justify="space-between">
-                        <Grid item lg={2}>
-                            <TextField
-                                value={dateDuJour()}
-                                label="Date de déclaration"
-                                className={classes.textField}
-                                InputProps={{ readOnly: true }}
-                                fullWidth={true}
-                            />
+                        <Grid item lg={3}>
+                            <div className="grid-menu">
+                                <TextField
+                                    value={dateDuJour()}
+                                    label="Date de déclaration"
+                                    className={classes.textField}
+                                    fullWidth={true}
+                                />
+                            </div>
                         </Grid>
-                        <Grid item lg={1}></Grid>
-                        <Grid item lg={2}>
-                            <TextField
-                                label="Lieu de mariage"
-                                value={lieu}
-                                onChange={(e)=> setLieu(e.target.value)}
-                                className={classes.textField}
-                                fullWidth={true}
-                            />
+                        <Grid item lg={3}>
+                            <div className="grid-menu">
+                                <TextField
+                                    label="Lieu de mariage"
+                                    value={lieu}
+                                    onChange={(e)=> setLieu(e.target.value)}
+                                    className={classes.textField}
+                                    fullWidth={true}
+                                />
+                            </div>
                         </Grid>
                         <Grid lg={3}>
-                             <FormControl className={classes.formControl} fullWidth={true}>
-                                <InputLabel id="demo-simple-select-label">Régime matrimoniale</InputLabel>
-                                <Select
-                                  labelId="demo-simple-select-label"
-                                  id="demo-simple-select"
-                                  value={regime}
-                                  onChange={(e) => setRegime(e.target.value)}
-                                >
-                              <MenuItem value="communs">Séparation des biens</MenuItem>
-                              <MenuItem value="separation">Biens communs</MenuItem>
-                                </Select>
-                            </FormControl>
+                            <div className="grid-menu">
+                                <FormControl className={classes.formControl} fullWidth={true}>
+                                    <InputLabel id="demo-simple-select-label">Régime matrimoniale</InputLabel>
+                                    <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={regime}
+                                    onChange={(e) => setRegime(e.target.value)}
+                                    >
+                                    <MenuItem value="communs">Séparation des biens</MenuItem>
+                                    <MenuItem value="separation">Biens communs</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
                         </Grid>
-                        <Grid item lg={1}></Grid>
-                        <Grid item lg={1}>
+                        <Grid item lg={2}>
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", height: "100%"}}>
-                            <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
-                                <Done/>
-                            </IconButton>
+                                <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
+                                    <Done/>
+                                </IconButton>
                             </div>
                         </Grid>
                     </Grid>

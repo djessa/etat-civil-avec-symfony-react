@@ -249,7 +249,6 @@ export default function NouveauNaissance () {
                                     value={dateDuJour()}
                                     label="Date de déclaration"
                                     className={classes.textField}
-                                    InputProps={{ readOnly: true }}
                                 />
                             </div>
                         </Grid>
