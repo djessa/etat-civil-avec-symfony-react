@@ -11,12 +11,7 @@ import NouveauNaissance from './pages/naissances/NouveauNaissance';
 import NouveauMariage from './pages/mariages/NouveauMariage';
 import NouveauDivorce from './pages/divorce/NouveauDivorce';
 import NouveauDeces from './pages/deces/NouveauDeces';
-import NouveauReconnaissance from './pages/reconnaissance/NouveauReconnaissance';
-import NouveauAdoption from './pages/adoption/NouveauAdoption';
-import NouveauRejet from './pages/rejet/NouveauRejet';
-import SignInSide from './components/SignInSide';
 import Home from './pages/Home';
-import Fiche from './pages/naissances/Fiche';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -27,13 +22,9 @@ ReactDOM.render(
       <Route path="/mariages" exact component={Mariages} />
       <Route path="/declaration_mariage" exact component={NouveauMariage} />
       <Route path="/divorces" exact component={Divorces} />
-      <Route path="/fiche/:id?" exact component={Fiche} />
       <Route path="/declaration_divorce" exact component={NouveauDivorce} />
       <Route path="/deces" exact component={Deces} />
       <Route path="/declaration_deces" exact component={NouveauDeces} />
-      <Route path="/declaration_reconnaissance" exact component={NouveauReconnaissance} />
-      <Route path="/declaration_adoption" exact component={NouveauAdoption} />
-      <Route path="/declaration_rejet" exact component={NouveauRejet} />
       <Route component={NotFound} />
     </Switch>
   </BrowserRouter>,

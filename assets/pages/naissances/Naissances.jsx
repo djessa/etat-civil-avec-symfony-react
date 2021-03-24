@@ -7,6 +7,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { Link } from 'react-router-dom';
 import  { mini_date } from  '../../variables/const';
+
 const theme = createMuiTheme({
     palette: {
       primary: {
@@ -37,7 +38,7 @@ const theme = createMuiTheme({
 
 const styles = theme => ({
     appMain: {
-        paddingLeft: '275px',
+        paddingLeft: '200px',
         width: '100%'
     }
 });

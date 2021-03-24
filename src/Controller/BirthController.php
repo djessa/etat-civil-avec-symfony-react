@@ -4,25 +4,28 @@ namespace App\Controller;
 
 use App\Entity\Birth;
 use App\Entity\Person;
+use App\Service\PersonSerivce;
 use App\Repository\BirthRepository;
 use App\Repository\PersonRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\Exception\NotEncodableValueException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 class BirthController extends AbstractController
 {
     private $manager;
+    private $personService;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, PersonSerivce $ps)
     {
         $this->manager = $em;
+        $this->personService = $ps;
     }
     
     /**
@@ -32,24 +35,37 @@ class BirthController extends AbstractController
     {
         try {
             $birth = $serializer->deserialize($request->getContent(), Birth::class, 'json');
-            $person = $birth->getPerson();
-            $this->manager->persist($person);
-            $father = $birth->getFather();
-            $father->setSexe('masculin');
-            $this->manager->persist($father);
-            $mother = $birth->getMother();
-            $mother->setSexe('feminin');
-            $this->manager->persist($mother);
-            $declarant = $birth->getDeclarant();
-            $this->manager->persist($declarant);
-            $birth->setDateDeclaration(new \DateTime());
-            $birth->setPerson($person)
-                ->setFather($father)
-                ->setMother($mother)
-                ->setDeclarant($declarant);
+            $person = $this->personService->isExist($birth->getPerson());
+            // person property
+            if($person) {
+                $birth->setPerson($person);
+            } else {
+                $this->manager->persist($birth->getPerson());
+            }
+            // father property
+            $father = $this->personService->isExist($birth->getFather());
+            if($father) {
+                $birth->setFather($father);
+            } else {
+                $this->manager->persist($birth->getFather());
+            }
+            // mother property
+            $mother = $this->personService->isExist($birth->getMother());
+            if($mother) {
+                $birth->setMother($mother);
+            } else {
+                $this->manager->persist($birth->getMother());
+            }
+            // declarant property
+            $declarant = $this->personService->isExist($birth->getDeclarant());
+            if($mother) {
+                $birth->setDeclarant($declarant);
+            } else {
+                $this->manager->persist($birth->getDeclarant());
+            }
             $this->manager->persist($birth);
             $this->manager->flush();
-            return $this->json(['message' => 'Une fiche de naissance a bien été ajoutée avec succès', 'birth' => $birth], 200);
+            return $this->json(['message' => 'Enregistré avec succès'], 200);
         } catch (\Exception $e) {
             return $this->json(['status' => 400, 'message' => 'Impossible d\'enregistrer : ' . $e->getMessage()], 400);
         }
@@ -62,6 +78,7 @@ class BirthController extends AbstractController
     {
         $naissances = [];
         $biths =  $birthRepository->findBy([], ['id' => 'DESC']);
+        dd($biths);
         foreach ($biths as $key => $birth) {
             $naissance = [
                     'id' => $birth->getId(),

@@ -30,6 +30,10 @@ const declaration_items = [
     {label: 'Décès', url: "/declaration_deces"}
 ];
 
+const registre_items = [
+    {label:'Naissance', url: '/naissances'}
+];
+
 
 const MenuItems = (props) => {
     return (props.items).map((item, index) => (
@@ -59,6 +63,7 @@ const SideMenu = (props) => {
                         <MenuItems items={declaration_items} />
                     </SubMenu>
                     <SubMenu title="Régistre" className="submenu">
+                        <MenuItems items={registre_items} />
                     </SubMenu>
                 </Menu>
             </div>
