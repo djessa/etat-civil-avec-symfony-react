@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 export const InputTextType = ({value, label, handleChange}) => {
     const [state, setstate] = useState(value);
     const classes = useStyles();
@@ -27,7 +26,6 @@ export const InputTextType = ({value, label, handleChange}) => {
         />
     );
 };
-
 
 export const InputDateType = ({value, label, handleChange}) => {
     const [state, setState] = useState(value);
@@ -50,20 +48,6 @@ export const InputDateType = ({value, label, handleChange}) => {
     );
 };
 
-export const InputCurrentDate = ({label}) => {
-    const classes = useStyles();
-    return (
-        <TextField
-            value={dateDuJour()}
-            label={label}
-            InputLabelProps={{
-                shrink: true
-            }}
-            className={classes.textField}
-            fullWidth={true}
-        />
-    ); 
-}
 
 export const InputTimeType = ({value, label, handleChange}) => {
     const [state, setState] = useState('');
