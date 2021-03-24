@@ -30,7 +30,7 @@ import PersonForm from '../../components/PersonForm';
 
 const useStyles = makeStyles((theme) => ({
     appMain: {
-      paddingLeft: '275px',
+      paddingLeft: '200px',
       width: '100%'
     },
     formControl: {

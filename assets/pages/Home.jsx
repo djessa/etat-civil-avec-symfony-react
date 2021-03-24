@@ -33,7 +33,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
     appMain: {
-      paddingLeft: '275px',
+      paddingLeft: '200px',
       width: '100%'
     }
 });

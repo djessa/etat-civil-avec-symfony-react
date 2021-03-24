@@ -25,9 +25,10 @@ import MessageDialog from '../../components/MessageDialog';
 
 
 
+
 const useStyles = makeStyles((theme) => ({
     appMain: {
-      paddingLeft: '275px',
+      paddingLeft: '200px',
       width: '100%'
     },
     formControl: {
@@ -134,7 +135,6 @@ export default function NouveauDeces () {
                                 <TextField
                                     value={dateDuJour()}
                                     label="Date de déclaration"
-                                    type="date"
                                     className={classes.textField}
                                     fullWidth={true}
                                 />

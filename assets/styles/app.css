@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: #fff;
+    background-color: #fff !important;
 }
 
 
@@ -13,17 +13,28 @@ body {
     margin-left: 5px;
     position: relative;
     right: 5px;
+    transition: transform 0.3s ease-out;
 }
+
+
+.image:hover {
+    transform: scale(1.075);
+}
+
 
 .logo {
     border-radius: 50%;
 }
 
 .link {
-    text-decoration: none;
+    text-decoration: none !important;
     color: #bbb;
     padding: 0;
     width: 100%;
+}
+
+.link:hover {
+    color: orangered;
 }
 
 .menu {
@@ -48,6 +59,7 @@ body {
     padding: 10px;
     margin: 10px 0px;
     box-shadow: 2px;
+    border-bottom: 1px solid white;
 }
 
 .grid-menu {
@@ -57,9 +69,6 @@ body {
     align-items: center;
 }
 
-.beforeMenu {
-    border-bottom: 1px solid white;
-}
 
 .MuiTabs-flexContainer {
     margin-top: 25px;
