@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react'
-import SideMenu from "../../components/SideMenu";
 import {
     makeStyles,
     CssBaseline,
@@ -10,23 +9,18 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Input,
     TextField,
-    Paper,
     Button,
     IconButton,
-    AppBar, Tabs, Tab, Snackbar, SnackbarContent
+    Tabs, Tab
 } from '@material-ui/core';
-import Header from "../../components/Header";
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import {Close, Done} from '@material-ui/icons';
-import  { jours, mois, dateDuJour} from  '../../variables/const';
 import axios from 'axios';
-
+import {Close, Done} from '@material-ui/icons';
+import Header from "../../components/Header";
+import SideMenu from "../../components/SideMenu";
+import  { jours, mois, dateDuJour, personne, personne_to_en} from  '../../variables/const';
+import PersonForm from '../../components/PersonForm';
+import MessageDialog from '../../components/MessageDialog';
 
 const useStyles = makeStyles((theme) => ({
     appMain: {
@@ -75,141 +69,35 @@ const theme = createMuiTheme({
     }
 });
 
-
-
 export default function NouveauDivorce () {
     const [openMessage, setOpenMessage] = useState(false);
     const [backgroundMessage, setBackgroundMessage] = useState('');
     const [message, setMessage] = useState('');
     const classes = useStyles();
-    const [lieu, setLieu] = useState('');
-    const [man, setMan] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        sexe: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    });
-    const [woman, setWoman] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        sexe: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    });
-    const [witness_man, setWitness_man] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        sexe: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    });
-    const [witness_woman, setWitness_woman] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        sexe: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    });
-
+    const [decision_number, setDecisionNumber] = useState('');
+    const [date_decision, setDateDecision] = useState('');
+    const [man, setMan] = useState(Object.assign({}, personne));
+    const [woman, setWoman] = useState(Object.assign({}, personne));
     const [formCategory, setFormCategory] = useState(0);
     const onChangeFormCategory = (e, value)  => {
         setFormCategory(value);
     }
     const save = () => {
         const data = {
-            lieu: lieu,
-            man : {
-                first_name: enfant.nom, 
-                last_name: enfant.prenom,
-                birthdate: enfant.date_naissance + ' ' + enfant.heure_naissance,
-                sexe: enfant.sexe,
-                birthplace: enfant.lieu_naissance
-            },
-            father: {
-                first_name: pere.nom, 
-                last_name: pere.prenom,
-                birthdate: pere.date_naissance,
-                birthplace: pere.lieu_naissance,
-                profession: pere.profession,
-                city: pere.ville,
-                address: pere.adresse
-            },
-            mother: {
-                first_name: mere.nom, 
-                last_name: mere.prenom,
-                birthdate: mere.date_naissance,
-                birthplace: mere.lieu_naissance,
-                profession: mere.profession,
-                city: mere.ville,
-                address: mere.adresse
-            },
-            declarant: {
-                first_name: declarant.nom, 
-                last_name: declarant.prenom,
-                sexe: declarant.sexe,
-                birthdate: declarant.date_naissance,
-                birthplace: declarant.lieu_naissance,
-                profession: declarant.profession,
-                city: declarant.ville,
-                address: declarant.adresse
-            }
+            decision_number,
+            date_decision,
+            man : personne_to_en(man),
+            woman: personne_to_en(woman)
         };
-       axios.post('/birth/new', data)
+       axios.post('/divorce/new', data)
              .then((response) => {
                  setBackgroundMessage('green');
                  setOpenMessage(true);
                  setMessage(response.data.message);
-                 setType('');
-                 setNumeroJugement('');
-                 setEnfant({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     heure_naissance: '',
-                     lieu_naissance: '',
-                     sexe: '',
-                 });
-                 setPere({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
-                 setMere({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
-                 setDeclarant({
-                     nom: '',
-                     prenom: '',
-                     sexe: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
+                 setDecisionNumber('');
+                 setDateDecision('');
+                 setMan(Object.assign({}, personne));
+                 setWoman(Object.assign({}, personne))
              })
              .catch((error) => {
                  setBackgroundMessage('red');
@@ -224,159 +112,57 @@ export default function NouveauDivorce () {
                 <Header> 
                     <Grid container justify="space-between">
                         <Grid item lg={3}>
-                            <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <TextField
-                                value={dateDuJour()}
-                                label="Date d'établissement"
-                                className={classes.textField}
-                                InputProps={{ readOnly: true }}
-                                fullWidth={true}
-                            />
+                            <div className="grid-menu">
+                                <TextField
+                                    value={dateDuJour()}
+                                    label="Date d'établissement"
+                                    className={classes.textField}
+                                    InputProps={{ readOnly: true }}
+                                    fullWidth={true}
+                                />
                             </div>
                         </Grid>
                         <Grid item lg={3}>
-                        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <TextField
-                                label="Numéro du décision"
-                                className={classes.textField}
-                                fullWidth={true}
-                            />  
-                        </div>        
+                            <div className="grid-menu">
+                                <TextField
+                                    value={decision_number}
+                                    onChange={(e) => setDecisionNumber(e.target.value)}
+                                    label="Numéro du décision"
+                                    className={classes.textField}
+                                    fullWidth={true}
+                                />  
+                            </div>        
                         </Grid>
                         <Grid item lg={3}>
-                        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-                            <TextField
-                                label="Date de décision"
-                                className={classes.textField}
-                                type="date"
-                                InputLabelProps={{
-                                  shrink: true,
-                                }}
-                                fullWidth={true}
-                            />
-                        </div>
+                            <div className="grid-menu">
+                                <TextField
+                                    label="Date de décision"
+                                    onChange={(e) => setDateDecision(e.target.value)}
+                                    className={classes.textField}
+                                    type="date"
+                                    InputLabelProps={{
+                                    shrink: true,
+                                    }}
+                                    fullWidth={true}
+                                />
+                            </div>
                         </Grid>
                         <Grid item lg={1}>
-                            <div style={{display: "flex", flexDirection: "row",alignItems: "center", height: "100%"}}>
-                            <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
-                                <Done/>
-                            </IconButton>
+                            <div style={{display: "flex", flexDirection: "row",alignItems: "flex-end", height: "100%"}}>
+                                <IconButton type="submit" style={{boxShadow: "3px", backgroundColor: 'green', color: '#fff'}}>
+                                    <Done/>
+                                </IconButton>
                             </div>
                         </Grid>
                     </Grid>
                 </Header>
-       <Tabs  value={formCategory} onChange={onChangeFormCategory}>
+                <Tabs  value={formCategory} onChange={onChangeFormCategory}>
                     <Tab label="Epoux"></Tab>
                     <Tab label="Epouse"></Tab>
                 </Tabs>
- {
-                    formCategory === 0 && 
-                    <div style={{padding: '20px'}}>
-                        <TextField
-                            label="Nom"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Prénom"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <FormControl className={classes.formControl} fullWidth={true}>
-                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                            >
-                              <MenuItem>Masculin</MenuItem>
-                              <MenuItem>Féminin</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <TextField
-                            label="Date de naissance"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Lieu de naissance"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Profession"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="VIlle"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Adresse"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                    </div>
-                }
-                {
-                    formCategory === 1 && 
-                    <div style={{padding: '20px'}}>
-                        <TextField
-                            label="Nom"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Prénom"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <FormControl className={classes.formControl} fullWidth={true}>
-                            <InputLabel id="demo-simple-select-label">Sexe</InputLabel>
-                            <Select
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                            >
-                              <MenuItem>Masculin</MenuItem>
-                              <MenuItem>Féminin</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <TextField
-                            label="Date de naissance"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Lieu de naissance"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Profession"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="VIlle"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                        <TextField
-                            label="Adresse"
-                            className={classes.textField}
-                            fullWidth={true}
-                        />
-                    </div>
-                }
-                <Snackbar autoHideDuration={6000} open={openMessage}>
-                    <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
-                        <Button onClick={()=>(setOpenMessage(false))} color="inherit" key='dismiss'>
-                            <Close/>
-                        </Button>
-                    ]}>
-                    </SnackbarContent>
-                </Snackbar>
+                { formCategory === 0 &&  <PersonForm objet={man} fonction={setMan} /> }
+                { formCategory === 1 &&  <PersonForm objet={woman} fonction={setWoman} /> }
+                <MessageDialog bg={backgroundMessage} message={message} open={openMessage} toggle={setOpenMessage} />
             <CssBaseline />
             </form>
         </ThemeProvider>
