@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react'
-import SideMenu from "../../components/SideMenu";
 import {
     makeStyles,
     CssBaseline,
@@ -10,23 +9,18 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Input,
     TextField,
-    Paper,
     Button,
     IconButton,
-    AppBar, Tabs, Tab, Snackbar, SnackbarContent
+    Tabs, Tab
 } from '@material-ui/core';
-import Header from "../../components/Header";
-import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/icons/Person';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import {Close, Done} from '@material-ui/icons';
-import  { jours, mois, dateDuJour} from  '../../variables/const';
 import axios from 'axios';
+import Header from "../../components/Header";
+import SideMenu from "../../components/SideMenu";
+import  { jours, mois, dateDuJour, personne_to_en, personne} from  '../../variables/const';
+import PersonForm from '../../components/PersonForm';
+import MessageDialog from '../../components/MessageDialog';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -74,8 +68,7 @@ const theme = createMuiTheme({
 });
 
 
-
-export default function NouveauNaissance () {
+const NouveauNaissance = () => {
     const [openMessage, setOpenMessage] = useState(false);
     const [backgroundMessage, setBackgroundMessage] = useState('');
     const [message, setMessage] = useState('');
@@ -90,34 +83,9 @@ export default function NouveauNaissance () {
         lieu_naissance: '',
         sexe: '',
     });
-    const [pere, setPere] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    })
-    const [mere, setMere] = useState({
-        nom: '',
-        prenom: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    })
-    const [declarant, setDeclarant] = useState({
-        nom: '',
-        prenom: '',
-        sexe: '',
-        date_naissance: '',
-        lieu_naissance: '',
-        profession: '',
-        ville: '',
-        adresse: ''
-    })
+    const [pere, setPere] = useState(Object.assign({}, personne));
+    const [mere, setMere] = useState(Object.assign({}, personne));
+    const [declarant, setDeclarant] = useState(Object.assign({}, personne));
     const onChangeType = e => {
         setNumeroJugement('')
         const erreur = errors.slice();
@@ -158,34 +126,9 @@ export default function NouveauNaissance () {
                 sexe: enfant.sexe,
                 birthplace: enfant.lieu_naissance
             },
-            father: {
-                first_name: pere.nom, 
-                last_name: pere.prenom,
-                birthdate: pere.date_naissance,
-                birthplace: pere.lieu_naissance,
-                profession: pere.profession,
-                city: pere.ville,
-                address: pere.adresse
-            },
-            mother: {
-                first_name: mere.nom, 
-                last_name: mere.prenom,
-                birthdate: mere.date_naissance,
-                birthplace: mere.lieu_naissance,
-                profession: mere.profession,
-                city: mere.ville,
-                address: mere.adresse
-            },
-            declarant: {
-                first_name: declarant.nom, 
-                last_name: declarant.prenom,
-                sexe: declarant.sexe,
-                birthdate: declarant.date_naissance,
-                birthplace: declarant.lieu_naissance,
-                profession: declarant.profession,
-                city: declarant.ville,
-                address: declarant.adresse
-            }
+            father: personne_to_en(pere),
+            mother: personne_to_en(mere),
+            declarant: personne_to_en(declarant)
         };
        axios.post('/birth/new', data)
              .then((response) => {
@@ -194,42 +137,10 @@ export default function NouveauNaissance () {
                  setMessage(response.data.message);
                  setType('');
                  setNumeroJugement('');
-                 setEnfant({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     heure_naissance: '',
-                     lieu_naissance: '',
-                     sexe: '',
-                 });
-                 setPere({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
-                 setMere({
-                     nom: '',
-                     prenom: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
-                 setDeclarant({
-                     nom: '',
-                     prenom: '',
-                     sexe: '',
-                     date_naissance: '',
-                     lieu_naissance: '',
-                     profession: '',
-                     ville: '',
-                     adresse: ''
-                 })
+                 setEnfant(Object.assign({}, personne));
+                 setPere(Object.assign({}, personne));
+                 setMere(Object.assign({}, personne));
+                 setDeclarant(Object.assign({}, personne));
              })
              .catch((error) => {
                  setBackgroundMessage('red');
@@ -396,7 +307,6 @@ export default function NouveauNaissance () {
                                             enfantChange.sexe = e.target.value;
                                             setEnfant(enfantChange);
                                         }}
-                                        input={<Input id="multi" />}
                                     >
                                         <MenuItem value="masculin">
                                             Masculin
@@ -408,293 +318,14 @@ export default function NouveauNaissance () {
                         </FormControl>
                     </div>
                 )}
-                    {formCategory === 1 && (
-                        <div style={{padding: '20px'}}>
-                                    <TextField
-                                        label="Nom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.nom}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.nom = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Prénom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.prenom}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.prenom = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Date de naissance"
-                                        type="date"
-                                        className={classes.textField}
-                                        InputLabelProps={{
-                                            shrink: true
-                                        }}
-                                        fullWidth={true}
-                                        value={pere.date_naissance}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.date_naissance = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Lieu de naissance"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.lieu_naissance}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.lieu_naissance = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Profession"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.profession}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.profession = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Ville"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.ville}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.ville = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Adresse"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={pere.adresse}
-                                        onChange={(e) => {
-                                            const pereChange = Object.assign({}, pere);
-                                            pereChange.adresse = e.target.value;
-                                            setPere(pereChange);
-                                        }}
-                                    />
-                        </div>
-                    )}
-                {formCategory === 2 && (
-                    <div style={{padding: '20px'}}>
-                                    <TextField
-                                        label="Nom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.nom}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.nom = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Prénom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.prenom}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.prenom = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Date de naissance"
-                                        type="date"
-                                        className={classes.textField}
-                                        InputLabelProps={{
-                                            shrink: true
-                                        }}
-                                        fullWidth={true}
-                                        value={mere.date_naissance}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.date_naissance = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-
-                                    />
-                                    <TextField
-                                        label="Lieu de naissance"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.lieu_naissance}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.lieu_naissance = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Profession"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.profession}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.profession = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Ville"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.ville}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.ville = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Adresse"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={mere.adresse}
-                                        onChange={(e) => {
-                                            const mereChange = Object.assign({}, mere);
-                                            mereChange.adresse = e.target.value;
-                                            setMere(mereChange);
-                                        }}
-                                    />
-                    </div>
-
-                )}
-                {formCategory === 3 && (
-                    <div style={{padding: '20px'}}>
-                                    <TextField
-                                        label="Nom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.nom}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.nom = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Prénom"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.prenom}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.prenom = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                                    <FormControl className={classes.formControl}>
-                                        <InputLabel htmlFor="multi">Sexe</InputLabel>
-                                        <Select
-                                            value={declarant.sexe}
-                                            onChange={(e) => {
-                                                const declarantChange = Object.assign({}, declarant);
-                                                declarantChange.sexe = e.target.value;
-                                                setDeclarant(declarantChange);
-                                            }}
-                                            input={<Input id="multi" />}
-                                        >
-                                            <MenuItem value="masculin">
-                                                Masculin
-                                            </MenuItem>
-                                            <MenuItem value="feminin">
-                                                Féminin
-                                            </MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                    <TextField
-                                        label="Date de naissance"
-                                        type="date"
-                                        className={classes.textField}
-                                        InputLabelProps={{
-                                            shrink: true
-                                        }}
-                                        fullWidth={true}
-                                        value={declarant.date_naissance}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.date_naissance = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Lieu de naissance"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.lieu_naissance}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.lieu_naissance = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-
-                                    <TextField
-                                        label="Profession"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.profession}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.profession = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Ville"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.ville}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.ville = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                                    <TextField
-                                        label="Adresse"
-                                        className={classes.textField}
-                                        fullWidth={true}
-                                        value={declarant.adresse}
-                                        onChange={(e) => {
-                                            const declarantChange = Object.assign({}, declarant);
-                                            declarantChange.adresse = e.target.value;
-                                            setDeclarant(declarantChange);
-                                        }}
-                                    />
-                    </div>
-                )}
-                <Snackbar autoHideDuration={6000} open={openMessage}>
-                    <SnackbarContent style={{backgroundColor: backgroundMessage, color: '#fff'}} message={message} action={[
-                        <Button onClick={()=>(setOpenMessage(false))} color="inherit" key='dismiss'>
-                            <Close/>
-                        </Button>
-                    ]}>
-                    </SnackbarContent>
-                </Snackbar>
+                { formCategory === 1 && <PersonForm objet={pere} fonction={setPere} /> }
+                { formCategory === 2 && <PersonForm objet={mere} fonction={setMere} /> }
+                {formCategory === 3 && <PersonForm objet={declarant} fonction={setDeclarant} />}
+            <MessageDialog message={message} toggle={setOpenMessage} open={openMessage} bg={backgroundMessage} />
             <CssBaseline />
             </form>
         </ThemeProvider>
     );
 }
+
+export default NouveauNaissance;
