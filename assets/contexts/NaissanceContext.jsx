@@ -7,13 +7,37 @@ import Header from '../components/Header';
 import SideMenu from '../components/SideMenu';
 import { theme, useStyles } from '../variables/Styles';
 
+const ROW_PER_PAGE = 7;
+
 export const NaissanceContext = createContext();
 
 class NaissanceContextProvider extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fiches: []
+            fiches: [],
+            rows: [],
+            nbrePage: 0,
+            numPage: 0
+        }
+        this.readFiches();
+    }
+
+    nextPage() {
+        if (this.state.numPage + 1 < this.state.nbrePage) {
+            let numPage = this.state.numPage;
+            numPage = numPage + 1;
+            const rows = (this.state.fiches).slice(numPage * ROW_PER_PAGE, (numPage * ROW_PER_PAGE) + ROW_PER_PAGE);
+            this.setState({ numPage, rows });
+        }
+    }
+
+    prevPage() {
+        if (this.state.numPage != 0) {
+            let numPage = this.state.numPage;
+            numPage = numPage - 1;
+            const rows = (this.state.fiches).slice(numPage * ROW_PER_PAGE, (numPage * ROW_PER_PAGE) + ROW_PER_PAGE);
+            this.setState({ numPage, rows });
         }
     }
 
@@ -26,7 +50,7 @@ class NaissanceContextProvider extends Component {
                 else
                     rows = response.data;
                 const nbrePage = Math.round(((response.data).length) / ROW_PER_PAGE);
-                this.setState({ rows, nbrePage });
+                this.setState({ rows, nbrePage , fiches: response.data});
             })
             .catch((error) => {
                 console.log(error)
@@ -36,27 +60,19 @@ class NaissanceContextProvider extends Component {
     render() {
 
         return (
-            <CopieContext.Provider value={{
+            <NaissanceContext.Provider value={{
                 ...this.state,
-                addCopie: this.addCopie.bind(this),
-                editCopie: this.editCopie.bind(this),
-                showCopie: this.showCopie.bind(this)
+                nextPage: this.nextPage.bind(this),
+                prevPage: this.prevPage.bind(this)
             }}>
                 <ThemeProvider theme={theme}>
                     <SideMenu />
                     <div style={{ paddingLeft: '200px', width: '100%' }}>
-                        <Header>
-                            <Grid item lg={3}>
-                                <NavLink to="/administration" className="nav-link">
-                                    Contenu de copie
-                                </NavLink>
-                            </Grid>
-                        </Header>
                         {this.props.children}
                     </div>
                     <CssBaseline />
                 </ThemeProvider>
-            </CopieContext.Provider>
+            </NaissanceContext.Provider>
         );
     }
 }
