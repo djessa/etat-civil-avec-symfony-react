@@ -79,7 +79,6 @@ class BirthController extends AbstractController
     {
         $naissances = [];
         $biths =  $birthRepository->findBy([], ['id' => 'DESC']);
-        dd($biths);
         foreach ($biths as $key => $birth) {
             $naissance = [
                     'id' => $birth->getId(),

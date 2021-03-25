@@ -49,7 +49,6 @@ class Naissances extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fiches: [],
             numPage: 0,
             nbrePage: 0,
             rows: []
@@ -80,14 +79,13 @@ class Naissances extends Component {
     readFiches() {
         axios.get('/births')
             .then((response) => {
-                this.setState(
-                    {
-                        fiches: response.data,
-                        rows: (response.data).slice(0, ROW_PER_PAGE),
-                        nbrePage: Math.round(((response.data).length) / ROW_PER_PAGE)
-                    }
-                );
-
+                let rows = [];
+                if( (response.data).length >= ROW_PER_PAGE)
+                    rows =  (response.data).slice(0, ROW_PER_PAGE);
+                else
+                    rows = response.data;
+                const nbrePage = Math.round(((response.data).length) / ROW_PER_PAGE);
+                this.setState({rows, nbrePage});
             })
             .catch((error) => {
                 console.log(error)
@@ -101,7 +99,7 @@ class Naissances extends Component {
                 <div className={classes.appMain}>
                     <Header>
                         <Grid container justify="space-between">
-                            <Grid item lg={4}><h3>Régistre des naissances</h3></Grid>
+                            <Grid item lg={4}><h4>Régistre des naissances</h4></Grid>
                             <Grid item lg={8}>
                             </Grid>
                         </Grid>
@@ -109,7 +107,7 @@ class Naissances extends Component {
                     <TableContainer>
                         <Table>
                             <TableHead>
-                                <TableRow style={{backgroundColor: '#aaa'}}>
+                                <TableRow className="bg-primary">
                                     <TableCell style={{fontWeight: 'bold'}}>ID</TableCell>
                                     <TableCell style={{fontWeight: 'bold'}}>Nom</TableCell>
                                     <TableCell style={{fontWeight: 'bold'}}>Prénom</TableCell>
@@ -131,9 +129,12 @@ class Naissances extends Component {
                                         <TableCell>{mini_date(person.birthdate)}</TableCell>
                                         <TableCell>{person.birthplace}</TableCell>
                                         <TableCell>
-                                            <Button component={Link} to={'/fiche/' + fiche.id }>
-                                                Afficher
-                                            </Button>
+                                            <button className="btn-sm btn-default">
+                                                Copie
+                                            </button>
+                                            <button className="btn-sm ml-1 btn-default">
+                                                Extrait
+                                            </button>
                                         </TableCell>
                                     </TableRow>
                                 })}
@@ -141,12 +142,18 @@ class Naissances extends Component {
                         </Table>
                     </TableContainer>
                     <div style={{margin: '25px'}}>
-                        <Button style={{marginRight: '25px'}} color="primary" variant="outlined" onClick={this.prev.bind(this)}>
-                            <ArrowBackIcon/>
-                        </Button>
-                        <Button color="primary" variant="outlined"  onClick={this.next.bind(this)}>
-                            <ArrowForwardIcon/>
-                        </Button> 
+                        {
+                            this.state.numPage > 0 &&
+                            <Button style={{marginRight: '25px'}} color="primary" variant="outlined" onClick={this.prev.bind(this)}>
+                                <ArrowBackIcon/>
+                            </Button>
+                        }
+                        {
+                            this.state.numPage < this.state.nbrePage &&
+                            <Button color="primary" variant="outlined"  onClick={this.next.bind(this)}>
+                                <ArrowForwardIcon/>
+                            </Button>
+                        } 
                     </div>
                 </div>
                 <CssBaseline/>

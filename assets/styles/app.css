@@ -77,6 +77,11 @@ body {
     justify-content: center !important;
 }
 
+th, td {
+    text-align: center !important;
+}
+
 th {
-    font-weight: bold;
+    font-weight: bold !important;
+    color: white !important;
 }
