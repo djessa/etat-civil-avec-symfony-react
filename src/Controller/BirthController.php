@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\Birth;
 use App\Entity\Person;
 use App\Service\PersonSerivce;
@@ -95,19 +97,29 @@ class BirthController extends AbstractController
     }
 
     /**
-     * @Route ("/birth/{id}", name="birth_show")
+     * @Route ("/birth/copie/{id}", name="birth_copie")
      */
-    public function show (Birth $birth, SerializerInterface $serializer, PersonRepository $personRepository)
+    public function copie (Birth $birth)
     {
-        $naissance = [
-                    'id' => $birth->getId(),
-                    'enfant' => $serializer->serialize($personRepository->find($birth->getPerson()->getId()), 'json', ['groups' => 'read']) ,
-                    'mere' => $serializer->serialize($personRepository->find($birth->getMother()->getId()), 'json', ['groups' => 'read']) ,
-                    'pere' => $serializer->serialize($personRepository->find($birth->getFather()->getId()), 'json', ['groups' => 'read']) ,
-                    'declarant' => $serializer->serialize($personRepository->find($birth->getDeclarant()->getId()), 'json', ['groups' => 'read']) ,
-                    'date_declaration' => $birth->getDateDeclaration(),
-                    'type_declaration' => $birth->getTypeDeclaration()
-        ];
-        return $this->json($naissance, 200, []);
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        // Retrieve the HTML generated in our twig file
+
+        $html = $this->renderView('template.html.twig');
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("copie.pdf", [
+            "Attachment" => false
+        ]);
     }
 }

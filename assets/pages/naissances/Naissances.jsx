@@ -129,12 +129,12 @@ class Naissances extends Component {
                                         <TableCell>{mini_date(person.birthdate)}</TableCell>
                                         <TableCell>{person.birthplace}</TableCell>
                                         <TableCell>
-                                            <button className="btn-sm btn-default">
+                                            <a className="btn btn-success" href={'/birth/copie/' + fiche.id } target="_blank">
                                                 Copie
-                                            </button>
-                                            <button className="btn-sm ml-1 btn-default">
+                                            </a>
+                                            <a className="btn ml-1 btn-success" href={'/birth/extrait/' + fiche.id} target="_blank">
                                                 Extrait
-                                            </button>
+                                            </a>
                                         </TableCell>
                                     </TableRow>
                                 })}
