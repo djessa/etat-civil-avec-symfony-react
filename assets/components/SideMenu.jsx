@@ -35,6 +35,7 @@ const registre_items = [
 ];
 
 
+
 const MenuItems = (props) => {
     return (props.items).map((item, index) => (
         <MenuItem key={index} style={{listStyleType: 'none', color: '#fff'}}>
@@ -64,6 +65,9 @@ const SideMenu = (props) => {
                     </SubMenu>
                     <SubMenu title="Régistre" className="submenu">
                         <MenuItems items={registre_items} />
+                    </SubMenu>
+                    <SubMenu className="submenu" title={<NavLink exact to="/administration" className="link">Administration</NavLink>}>
+                        
                     </SubMenu>
                 </Menu>
             </div>

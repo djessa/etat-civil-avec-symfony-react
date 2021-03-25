@@ -12,6 +12,8 @@ import NouveauMariage from './pages/mariages/NouveauMariage';
 import NouveauDivorce from './pages/divorce/NouveauDivorce';
 import NouveauDeces from './pages/deces/NouveauDeces';
 import Home from './pages/Home';
+import Administration from './pages/admin/Administration';
+import ContenuCopie from './pages/admin/ContenuCopie';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -25,6 +27,8 @@ ReactDOM.render(
       <Route path="/declaration_divorce" exact component={NouveauDivorce} />
       <Route path="/deces" exact component={Deces} />
       <Route path="/declaration_deces" exact component={NouveauDeces} />
+      <Route path="/administration" exact component={Administration} />
+      <Route path="/copie" exact component={ContenuCopie} />
       <Route component={NotFound} />
     </Switch>
   </BrowserRouter>,

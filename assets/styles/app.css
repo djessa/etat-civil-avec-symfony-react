@@ -1,3 +1,6 @@
+@import 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+
+
 body {
     padding: 0;
     margin: 0;
@@ -69,6 +72,13 @@ body {
     align-items: center;
 }
 
+.navigation li {
+    list-style-type: none;
+}
+
+.navigation li button {
+    width: 90%;
+}
 
 .MuiTabs-flexContainer {
     margin-top: 25px;
