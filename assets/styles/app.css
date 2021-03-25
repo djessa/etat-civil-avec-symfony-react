@@ -91,7 +91,7 @@ th, td {
     text-align: center !important;
 }
 
-th {
+.registre th {
     font-weight: bold !important;
     color: white !important;
 }
