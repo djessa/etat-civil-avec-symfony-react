@@ -63,6 +63,7 @@ class BirthController extends AbstractController
             } else {
                 $this->manager->persist($birth->getDeclarant());
             }
+            $birth->setDateDeclaration(new \DateTime);
             $this->manager->persist($birth);
             $this->manager->flush();
             return $this->json(['message' => 'Enregistré avec succès'], 200);

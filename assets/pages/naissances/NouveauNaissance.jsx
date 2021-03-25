@@ -75,6 +75,7 @@ const NouveauNaissance = () => {
     const classes = useStyles();
     const [type, setType] = useState('');
     const [numeroJugement, setNumeroJugement] = useState('');
+    const [dateJugement, setDateJugement] = useState('');
     const [enfant, setEnfant] = useState({
         nom: '',
         prenom: '',
@@ -118,7 +119,6 @@ const NouveauNaissance = () => {
     const save = () => {
         const data = {
             type_declaration: type,
-            judgment_number: numeroJugement,
             person : {
                 first_name: enfant.nom, 
                 last_name: enfant.prenom,
@@ -130,6 +130,10 @@ const NouveauNaissance = () => {
             mother: personne_to_en(mere),
             declarant: personne_to_en(declarant)
         };
+        if(type === 'jugement') {
+            data.judgment_number =  numeroJugement;
+            data.date_jugement =  dateJugement;
+        }
        axios.post('/birth/new', data)
              .then((response) => {
                  setBackgroundMessage('green');
@@ -199,6 +203,8 @@ const NouveauNaissance = () => {
                         <Grid item lg={3}>
                             <div className="grid-menu">
                                 <TextField
+                                    value={dateJugement}
+                                    onChange={(e) => setDateJugement(e.target.value)}
                                     style={{marginLeft: '5px'}}
                                     label="Date du jugement"
                                     className={classes.textField}
