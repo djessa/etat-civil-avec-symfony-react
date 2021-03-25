@@ -42,6 +42,11 @@ class Birth
     private $judgment_number;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_jugement;
+
+    /**
      * @ORM\OneToOne(targetEntity=Person::class, inversedBy="birth", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * le proprietaire de l'acte
@@ -150,6 +155,18 @@ class Birth
     public function setMother(?Person $mother): self
     {
         $this->mother = $mother;
+
+        return $this;
+    }
+
+    public function getDateJugement(): ?\DateTimeInterface
+    {
+        return $this->date_jugement;
+    }
+
+    public function setDateJugement(?\DateTimeInterface $date_jugement): self
+    {
+        $this->date_jugement = $date_jugement;
 
         return $this;
     }
