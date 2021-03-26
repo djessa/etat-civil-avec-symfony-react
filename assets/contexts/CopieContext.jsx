@@ -15,8 +15,11 @@ class CopieContextProvider extends Component {
             copies: []
         }
     }
-    addCopie() {
-
+    
+    addCopie(category, content) {
+        const copies = [...(this.state.copies).slice(), {category, content}];
+        this.setState({copies});
+        console.log(this.state.copies);
     }
 
     editCopie() {
