@@ -1,5 +1,6 @@
 import { CssBaseline, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
+import axios from 'axios';
 import React, { Component, createContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import Header from '../components/Header';
@@ -14,12 +15,23 @@ class CopieContextProvider extends Component {
         this.state = {
             copies: []
         }
+        this.showCopie();
     }
     
     addCopie(category, content) {
-        const copies = [...(this.state.copies).slice(), {category, content}];
-        this.setState({copies});
-        console.log(this.state.copies);
+        axios.post('/copie/new', {category, content})
+            .then((response) => console.log(response))
+            .catch((error) => console.log(error))
+    }
+
+    getCategoryCopie(id) {
+        const copie = (this.state.copies).filter(copie => copie.id == id);
+        return copie.category;
+    }
+
+    getContentCopie(id) {
+        const copie = (this.state.copies).filter(copie => copie.id == id);
+        return copie.content;
     }
 
     editCopie() {
@@ -27,7 +39,17 @@ class CopieContextProvider extends Component {
     }
 
     showCopie() {
-    
+        axios.get('/copie')
+            .then((response) => {
+                this.setState({copies: response.data})
+            })
+            .catch((error) => console.log(error))
+    }
+
+    deleteCopie(id) {
+        axios.get('/copie/delete/' + id)
+            .then((response) => this.showCopie())
+            .catch((error) => console.log(error))
     }
 
     render() {
@@ -37,7 +59,9 @@ class CopieContextProvider extends Component {
                 ...this.state,
                 addCopie: this.addCopie.bind(this),
                 editCopie: this.editCopie.bind(this),
-                showCopie: this.showCopie.bind(this)
+                deleteCopie: this.deleteCopie.bind(this),
+                getCategoryCopie: this.getCategoryCopie.bind(this),
+                getContentCopie: this.getContentCopie.bind(this)
             }}>
                 <ThemeProvider theme={theme}>
                     <SideMenu />

@@ -15,6 +15,7 @@ import Home from './pages/Home';
 import Administration from './pages/admin/Administration';
 import Copie from './pages/admin/copie/Copie';
 import AddCopie from './pages/admin/copie/AddCopie';
+import EditCopie from './pages/admin/copie/EditCopie';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -31,6 +32,7 @@ ReactDOM.render(
       <Route path="/administration" exact component={Administration} />
       <Route path="/copie" exact component={Copie} />
       <Route path="/copie/add" exact component={AddCopie} />
+      <Route path="/copie/edit/:id" exact component={EditCopie} />
       <Route component={NotFound} />
     </Switch>
   </BrowserRouter>,

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { IconButton, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import { Add, Photo, Edit } from '@material-ui/icons';
+import { Add, Photo, Edit, Delete } from '@material-ui/icons';
 import CopieContextProvider, { CopieContext } from '../../../contexts/CopieContext'
 import { useStyles } from '../../../variables/Styles';
 import AddCopie from './AddCopie';
@@ -24,10 +24,10 @@ const Index = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {context.copies.map((copie, index) => (
-                            <TableRow key={index}>
+                        {context.copies.map(copie => (
+                            <TableRow key={copie.id}>
                                 <TableCell>{copie.category}</TableCell>
-                                <TableCell><a href="" className="link mr-2"><Photo /></a><a href="" className="link"><Edit /></a></TableCell>
+                                <TableCell align="right"><NavLink to={'/copie' }><Edit /></NavLink><IconButton onClick={() => {context.deleteCopie(copie.id)}}><Delete /></IconButton></TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
