@@ -16,7 +16,7 @@ const SideMenu = (props) => {
             <div className="navigation">
                 <List>
                     <ListItem>
-                        <NavLink to="/" className="link">
+                        <NavLink to="/declaration" className="link">
                             <Add  />
                             <span>Déclaration</span>
                         </NavLink>
