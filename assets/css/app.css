@@ -1,0 +1,109 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.appMain {
+    padding-left: 200px;
+    width: 100%;
+}
+
+.sideMenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0px;
+    width: 200px;
+    height: 100%;
+    direction: inherit;
+    box-sizing: border-box !important;
+    visibility: visible;
+    background-color: rgba(17, 134, 170, 0.9);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    border: 1px solid violet;
+    margin-right: 10px;
+    margin-left: 5px;
+    position: relative;
+    right: 5px;
+    transition: transform 0.3s ease-out;
+}
+
+.image:hover {
+    transform: scale(1.075);
+}
+
+
+.logo {
+    border-radius: 50%;
+}
+
+.link {
+    text-decoration: none !important;
+    color: #bbb;
+    padding: 0;
+    width: 100%;
+}
+
+.link:hover {
+    color: orangered;
+}
+
+.menu {
+    list-style: none;
+}
+
+.link::after {
+    color: white;
+}
+
+.navigation {
+    position: absolute;
+    top: 200px;
+    color: white;
+}
+
+.submenu {
+    list-style-type: none;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px 0px;
+    box-shadow: 2px;
+    border-bottom: 1px solid white;
+}
+
+.grid-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation li {
+    list-style-type: none;
+}
+
+.navigation li button {
+    width: 90%;
+}
+
+.MuiTabs-flexContainer {
+    margin-top: 25px;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+}
+
+th, td {
+    text-align: center !important;
+}
+
+.registre th {
+    font-weight: bold !important;
+    color: white !important;
+}
