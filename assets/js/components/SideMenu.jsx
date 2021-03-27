@@ -9,14 +9,41 @@ const SideMenu = (props) => {
 
     return (
         <div className="sideMenu">
-            <div  style={{height: '150px', marginLeft: '5%', width: '90%', marginTop: '5px'}}>
-                <div className="w-100 overflow-hidden">
-                    <img src="/images/flag.jpg" alt="drapeau" className="image rounded shadow" width="80" height="80"/>
-                </div>
+            <div  className="appLogo">
+                <img src="/images/flag.jpg" alt="drapeau" className="img-fluid rounded shadow"/>
+                <span>Etat civil</span>
             </div>
             <div className="navigation">
-
+                <List>
+                    <ListItem>
+                        <NavLink to="/" className="link">
+                            <Add  />
+                            <span>Déclaration</span>
+                        </NavLink>
+                    </ListItem>
+                    <ListItem>
+                        <NavLink to="/" className="link">
+                            <Album  />
+                            <span>Régistre</span>
+                        </NavLink>
+                    </ListItem>
+                    <ListItem>
+                        <NavLink to="/" className="link">
+                            <Album  />
+                            <span>Statistique</span>
+                        </NavLink>
+                    </ListItem>
+                    <ListItem>
+                        <NavLink to="/" className="link">
+                            <Album  />
+                            <span>Administration</span>
+                        </NavLink>
+                    </ListItem>
+                </List>
             </div>
+            <div className="footer">
+                coopyright &copy; 2021
+            </div> 
         </div>
     )
 }
