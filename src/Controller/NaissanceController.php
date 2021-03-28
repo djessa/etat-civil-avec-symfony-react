@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Naissance;
-use App\Service\PersonSerivce;
+use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,14 +27,24 @@ class NaissanceController extends AbstractController
     /**
      * @Route("/naissance/declaration", name="naissance_declaration")
      */
-    public function declaration(PersonSerivce $personSerivce, Request $request, EntityManagerInterface $em, SerializerInterface $serializerInterface): Response
+    public function declaration(Request $request, SerializerInterface $serializerInterface, EntityManagerInterface $em): Response
     {
         try {
             $naissance = $serializerInterface->deserialize($request->getContent(), Naissance::class, 'json');
-            $em->persist($naissance->getEnfant());
-            $em->persist($naissance);
+            $enfant = $naissance->getEnfant();
+            $em->persist($enfant);
+            $pere = $naissance->getParents()[0];
+            $em->persist($pere);
+            $mere = $naissance->getParents()[1];
+            $em->persist($mere);
+            $declarant = $naissance->getDeclarant();
+            $em->persist($declarant);
+            $officier = $naissance->getOfficier();
+            $info_officier = $officier->getInformationPersonnel();
+            $em->persist($info_officier);
+            $em->persist($officier);
             $em->flush();
-            return $this->json(['message' => 'Enregistré avec succès', 'naissance' => $naissance], 200);
+            return $this->json(['message' => 'Enregistré avec succès'], 200);
         } catch(NotEncodableValueException $e) {
             return $this->json($e->getMessage(), 400);
         }

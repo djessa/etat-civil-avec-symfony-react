@@ -32,11 +32,6 @@ class Officier
      */
     private $naissances_declarees;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Commune::class, inversedBy="officiers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $poste;
 
     public function __construct()
     {
@@ -86,18 +81,6 @@ class Officier
                 $naissancesDeclaree->setOfficier(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPoste(): ?Commune
-    {
-        return $this->poste;
-    }
-
-    public function setPoste(?Commune $poste): self
-    {
-        $this->poste = $poste;
 
         return $this;
     }

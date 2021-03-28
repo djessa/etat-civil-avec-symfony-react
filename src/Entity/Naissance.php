@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\NaissanceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\NaissanceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=NaissanceRepository::class)
@@ -16,36 +17,43 @@ class Naissance
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("read")
      */
     private $date_declaration;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("read")
      */
     private $type_declaration;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read")
      */
     private $numero_jugement;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("read")
      */
     private $date_jugement;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("read")
      */
     private $date_naissance;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("read")
      */
     private $lieu_naissance;
 

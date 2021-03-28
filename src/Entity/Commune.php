@@ -30,11 +30,6 @@ class Commune
      */
     private $district;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Officier::class, mappedBy="poste", orphanRemoval=true)
-     */
-    private $officiers;
-
     public function __construct()
     {
         $this->officiers = new ArrayCollection();
@@ -69,33 +64,4 @@ class Commune
         return $this;
     }
 
-    /**
-     * @return Collection|Officier[]
-     */
-    public function getOfficiers(): Collection
-    {
-        return $this->officiers;
-    }
-
-    public function addOfficier(Officier $officier): self
-    {
-        if (!$this->officiers->contains($officier)) {
-            $this->officiers[] = $officier;
-            $officier->setPoste($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOfficier(Officier $officier): self
-    {
-        if ($this->officiers->removeElement($officier)) {
-            // set the owning side to null (unless already changed)
-            if ($officier->getPoste() === $this) {
-                $officier->setPoste(null);
-            }
-        }
-
-        return $this;
-    }
 }
