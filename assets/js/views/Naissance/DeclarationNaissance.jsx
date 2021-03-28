@@ -1,10 +1,14 @@
 import React from 'react'
 import DeclarationLayout from '../../components/Layouts/DeclarationLayout'
+import NaissanceContextProvider  from '../../contexts/NaissanceContext'
+import NaissanceForm from '../../components/NaissanceForm'
 
 export default function DeclarationNaissance() {
 	return (
 		<DeclarationLayout>
-			Déclaration de naissance
+			<NaissanceContextProvider>
+				<NaissanceForm />
+			</NaissanceContextProvider>
 		</DeclarationLayout>
 	)
 }
