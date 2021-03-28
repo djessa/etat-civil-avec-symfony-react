@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommuneRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,16 @@ class Commune
      * @ORM\JoinColumn(nullable=false)
      */
     private $district;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Officier::class, mappedBy="poste", orphanRemoval=true)
+     */
+    private $officiers;
+
+    public function __construct()
+    {
+        $this->officiers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,6 +65,36 @@ class Commune
     public function setDistrict(?District $district): self
     {
         $this->district = $district;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Officier[]
+     */
+    public function getOfficiers(): Collection
+    {
+        return $this->officiers;
+    }
+
+    public function addOfficier(Officier $officier): self
+    {
+        if (!$this->officiers->contains($officier)) {
+            $this->officiers[] = $officier;
+            $officier->setPoste($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOfficier(Officier $officier): self
+    {
+        if ($this->officiers->removeElement($officier)) {
+            // set the owning side to null (unless already changed)
+            if ($officier->getPoste() === $this) {
+                $officier->setPoste(null);
+            }
+        }
 
         return $this;
     }

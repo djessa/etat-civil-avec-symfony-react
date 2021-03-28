@@ -20,7 +20,7 @@ class Naissance
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $date_declaration;
 
@@ -40,7 +40,7 @@ class Naissance
     private $date_jugement;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $date_naissance;
 
@@ -70,6 +70,16 @@ class Naissance
      */
     private $declarant;
 
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $heure_declaration;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $heure_naissance;
+
     public function __construct()
     {
         $this->parents = new ArrayCollection();
@@ -85,7 +95,7 @@ class Naissance
         return $this->date_declaration;
     }
 
-    public function setDateDeclaration(\DateTimeInterface $date_declaration): self
+    public function setDateDeclaration( $date_declaration): self
     {
         $this->date_declaration = $date_declaration;
 
@@ -133,7 +143,7 @@ class Naissance
         return $this->date_naissance;
     }
 
-    public function setDateNaissance(\DateTimeInterface $date_naissance): self
+    public function setDateNaissance( $date_naissance): self
     {
         $this->date_naissance = $date_naissance;
 
@@ -216,6 +226,30 @@ class Naissance
     public function setDeclarant(?Personne $declarant): self
     {
         $this->declarant = $declarant;
+
+        return $this;
+    }
+
+    public function getHeureDeclaration(): ?\DateTimeInterface
+    {
+        return $this->heure_declaration;
+    }
+
+    public function setHeureDeclaration( $heure_declaration): self
+    {
+        $this->heure_declaration = $heure_declaration;
+
+        return $this;
+    }
+
+    public function getHeureNaissance(): ?\DateTimeInterface
+    {
+        return $this->heure_naissance;
+    }
+
+    public function setHeureNaissance($heure_naissance): self
+    {
+        $this->heure_naissance = $heure_naissance;
 
         return $this;
     }

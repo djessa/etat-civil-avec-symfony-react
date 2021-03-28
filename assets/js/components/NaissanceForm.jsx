@@ -13,15 +13,18 @@ export default function NaissanceForm() {
 		naissanceChange[e.target.name] = e.target.value
 		setNaissance(naissanceChange)
 	}
-	const hanldeChangeObjectData = (e, property) => {
+	const hanldeChangeObjectData = (e, property, num) => {
 		const naissanceChange = Object.assign({}, naissance)
-		naissanceChange[property][e.target.name] = e.target.value
+		if(property === 'parents') naissanceChange[property][num][e.target.name] = e.target.value
+		else naissanceChange[property][e.target.name] = e.target.value
 		setNaissance(naissanceChange)
 	}
 	return ( 
-	    <div className="mt-5 mx-3">
+	    <div className="mt-5">
+			<div className="row">
+			<div className="col-lg-10 mx-auto">
 		    <div className="naissanceForm">
-			    <TextField name="_date_declaration"  type="date" 
+			    <TextField name="date_declaration"  type="date" 
 			    	label="Date de déclaration"  InputLabelProps={{ shrink: true }}
 			        onChange={handleChangeData}
 			        value={naissance._date_declaration}
@@ -31,9 +34,20 @@ export default function NaissanceForm() {
 			       	onChange={handleChangeData}
 			       	value={naissance.heure_declaration}
 		       	/>
+				<FormControl>
+				    <InputLabel id="demo-simple-select-label">Type de déclaration</InputLabel>
+				    <Select name="type_declaration"    
+				    	labelId="demo-simple-select-label"
+				    	value={naissance.type_declaration}
+				    	onChange={handleChangeData}
+				    >
+				    <MenuItem value="Normal">Normal</MenuItem>
+				    <MenuItem value="Jugement">Jugement</MenuItem>
+				    </Select>
+				</FormControl>
 		    </div>
 		    <div className="naissanceForm">
-		        <TextField name="_date_naissance" type="date" 
+		        <TextField name="date_naissance" type="date" 
 			        label="Date de naissance"  InputLabelProps={{ shrink: true }}
 			        onChange={handleChangeData}
 			        value={naissance._date_naissance}
@@ -56,11 +70,22 @@ export default function NaissanceForm() {
 					value={naissance.enfant.nom}
 					onChange={(e) => hanldeChangeObjectData(e, 'enfant')}	
 				/>
-				<TextField name="prenom" id="enfant" 
+				<TextField name="prenom"
 					label="Prénom de l'enfant"  
 					value={naissance.enfant.prenom}
 					onChange={(e) => hanldeChangeObjectData(e, 'enfant')}	
 				/>
+				<FormControl>
+				    <InputLabel id="demo-simple-select-label">Sexe de  l'enfant</InputLabel>
+				    <Select name="sexe"    
+				    	labelId="demo-simple-select-label"
+				    	value={naissance.enfant.sexe}
+				    	onChange={(e) => hanldeChangeObjectData(e, 'enfant')}
+				    >
+				    <MenuItem value="masculin">Masculin</MenuItem>
+				    <MenuItem value="feminin">Feminin</MenuItem>
+				    </Select>
+				</FormControl>
 			</div>
 			<Tabs  value={formCategory}  onChange={(e, value) => setFormCategory(value)}>
 				<Tab label="Père"></Tab>
@@ -69,13 +94,13 @@ export default function NaissanceForm() {
 				<Tab label="Officier"></Tab>
 			</Tabs>
 			{ formCategory === 0 && 
-				<PersonneForm  property="pere" object={naissance}  handleChange={hanldeChangeObjectData}/>
+				<PersonneForm  property="parents" num={0} object={naissance}  handleChange={hanldeChangeObjectData}/>
 			}
 			{ formCategory === 1 && 
-				<PersonneForm  property="mere" object={naissance}  handleChange={hanldeChangeObjectData}/>
+				<PersonneForm  property="parents" num={1} object={naissance}  handleChange={hanldeChangeObjectData}/>
 			}
 			{ formCategory === 2 && 
-				<PersonneForm  property="declarant" object={naissance}  handleChange={hanldeChangeObjectData}/>
+				<PersonneForm  property="declarant" num={0} object={naissance}  handleChange={hanldeChangeObjectData}/>
 			}
 			{ formCategory === 3 && 
 				<>
@@ -84,16 +109,21 @@ export default function NaissanceForm() {
 				    <Select name="officier"    
 				    	labelId="demo-simple-select-label"
 				    	onChange={handleChangeData}
+				    	value={naissance.officier}
 				    >
-				    <MenuItem value="Jean Dupont">Jean Dupont</MenuItem>
-				    <MenuItem value="Jeanne Doe">Jeanne Doe</MenuItem>
+					{
+						context.officiers.map((officier) => (
+							<MenuItem key={officier.id} value={officier.id}>{officier.information_personnel.nom + ' ' + officier.information_personnel.prenom}</MenuItem>
+						))
+					}
 				    </Select>
 				</FormControl>
 				<div align="center" className="mt-5">
-					<Button variant="contained" color="secondary">Enregistrer</Button>
+					<Button variant="contained" color="secondary" onClick={() => context.declare_naissance(naissance)}>Enregistrer</Button>
 				</div>
 				</>
 			}
+			</div></div>
 	    </div>
 	)
 }

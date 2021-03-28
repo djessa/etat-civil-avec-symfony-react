@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\OfficierRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,12 +16,14 @@ class Officier
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("read")
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("read")
      */
     private $information_personnel;
 
@@ -29,6 +31,12 @@ class Officier
      * @ORM\OneToMany(targetEntity=Naissance::class, mappedBy="officier", orphanRemoval=true)
      */
     private $naissances_declarees;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Commune::class, inversedBy="officiers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $poste;
 
     public function __construct()
     {
@@ -78,6 +86,18 @@ class Officier
                 $naissancesDeclaree->setOfficier(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPoste(): ?Commune
+    {
+        return $this->poste;
+    }
+
+    public function setPoste(?Commune $poste): self
+    {
+        $this->poste = $poste;
 
         return $this;
     }

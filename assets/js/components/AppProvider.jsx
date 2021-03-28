@@ -2,19 +2,6 @@ import React, { Component } from 'react'
 import SideMenu from "./SideMenu";
 import { CssBaseline, createMuiTheme, ThemeProvider, makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    textField: { margin: theme.spacing(1)},
-    containedPrimary: {
-        paddingLeft: theme.spacing(4),
-        paddingRight: theme.spacing(4)
-    }
-}));
-
-
 const theme = createMuiTheme({
     palette: {
       primary: {
