@@ -27,7 +27,7 @@ const SideMenu = (props) => {
                         </NavLink>
                     </ListItem>
                     <ListItem>
-                        <NavLink to="/" className="link">
+                        <NavLink to={WEBROOT + "registre"} className="link">
                             <ViewListIcon />
                             <span>Régistre</span>
                         </NavLink>

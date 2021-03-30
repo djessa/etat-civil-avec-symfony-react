@@ -10,7 +10,7 @@ export default function DeclarationLayout({ children }) {
 		<AppProvider>
 			<Header>
 				<div className="declaration_nav">
-					<div className="declaration_nav_item"><Link to={WEBROOT + "declaration/naissance"}>Déclaration de aissance</Link></div>
+					<div className="declaration_nav_item"><Link to={WEBROOT + "declaration/naissance"}>Déclaration de naissance</Link></div>
 				</div>
 			</Header>
 			<div className="declaration_content">{children}</div>

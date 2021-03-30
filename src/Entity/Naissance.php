@@ -59,32 +59,38 @@ class Naissance
 
     /**
      * @ORM\OneToOne(targetEntity=Personne::class, mappedBy="naissance", cascade={"persist", "remove"})
+     * @Groups("read")
      */
     private $enfant;
 
     /**
      * @ORM\ManyToMany(targetEntity=Personne::class, mappedBy="fils")
+     * @Groups("read")
      */
     private $parents;
 
     /**
      * @ORM\ManyToOne(targetEntity=Officier::class, inversedBy="naissances_declarees")
      * @ORM\JoinColumn(nullable=true)
+     * @Groups("read")
      */
     private $officier;
 
     /**
      * @ORM\ManyToOne(targetEntity=Personne::class, inversedBy="naissances_declarees")
+     * @Groups("read")
      */
     private $declarant;
 
     /**
      * @ORM\Column(type="time", nullable=true)
+     * @Groups("read")
      */
     private $heure_declaration;
 
     /**
      * @ORM\Column(type="time", nullable=true)
+     * @Groups("read")
      */
     private $heure_naissance;
 

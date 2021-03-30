@@ -1,0 +1,8 @@
+.MuiTable-root {
+    width: 98% !important;
+    margin: auto !important;
+}
+
+.MuiTableCell-head {
+    color: white !important;
+}
