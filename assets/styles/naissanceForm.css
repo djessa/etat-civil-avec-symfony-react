@@ -1,0 +1,65 @@
+.declaration_naissance {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: normal;
+    height: 100%;
+}
+
+.information_naissance {
+    border: 1px solid rgba(18, 18, 18, 0.4);
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.naissanceForm {
+    padding: 0px 10px;
+}
+
+.naissanceFormGroup {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.naissanceFormGroup div {
+    width: 100%;
+    padding: 3px;
+}
+.naissanceFormGroup div label {
+    text-align: center;
+}
+
+.complementaireNaissanceForm {
+	height: 275px;
+	border: 1px solid black;
+    border: 1px solid rgba(18, 18, 18, 0.4);
+    margin: 10px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.complementaireNaissanceForm .header .MuiTabs-flexContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.complementaireNaissanceForm .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fin {
+    display: flex;
+    flex-direction: column;
+}
+
+.fin button {
+    margin: 25px;
+}

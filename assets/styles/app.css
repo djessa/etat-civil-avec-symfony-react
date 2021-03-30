@@ -70,18 +70,6 @@ body {
     margin-top: 10px;
 }
 
-.naissanceForm {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-}
-
-.naissanceForm  div {
-    margin-bottom: 6px;
-    margin-right: 2px;
-    margin-left: 2px;
-    width: 80%;
-}
 
 .link {
     text-decoration: none !important;
@@ -116,5 +104,9 @@ a {
 
 .link::after {
     color: white;
+}
+
+th {
+    font-weight: bold;
 }
 

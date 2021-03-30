@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Repository\OfficierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,10 @@ class OfficierController extends AbstractController
      */
     public function index(OfficierRepository $officierRepository, NormalizerInterface $normalizerInterface)
     {
-        return $this->json($normalizerInterface->normalize($officierRepository->findAll(), 'json', ['groups' => 'read']), 200);
+        $officiers = [];
+        foreach ($officierRepository->findAll() as $officier) {
+            array_push($officiers, $officier->getInformationPersonnel());
+        }
+        return $this->json($normalizerInterface->normalize($officiers, 'json', ['groups' => 'read']), 200);
     }
 }

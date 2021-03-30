@@ -22,13 +22,13 @@ class Naissance
     private $id;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      * @Groups("read")
      */
     private $date_declaration;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("read")
      */
     private $type_declaration;
@@ -69,7 +69,7 @@ class Naissance
 
     /**
      * @ORM\ManyToOne(targetEntity=Officier::class, inversedBy="naissances_declarees")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $officier;
 

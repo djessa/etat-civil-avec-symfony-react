@@ -7,39 +7,40 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { WEBROOT } from '../uses/const';
 
 const SideMenu = (props) => {
 
     return (
         <div className="sideMenu">
-            <div  className="appLogo">
-                <img src="/images/flag.jpg" alt="drapeau" className="img-fluid rounded shadow"/>
+            <div className="appLogo">
+                <img src={WEBROOT + "images/flag.jpg"} alt="drapeau" className="img-fluid rounded shadow" />
                 <span>Etat civil</span>
             </div>
             <div className="space"></div>
             <div className="navigation">
                 <List>
                     <ListItem>
-                        <NavLink to="/declaration" className="link">
-                            <GroupAddIcon  />
+                        <NavLink to={WEBROOT + "declaration"} className="link">
+                            <GroupAddIcon />
                             <span>Déclaration</span>
                         </NavLink>
                     </ListItem>
                     <ListItem>
                         <NavLink to="/" className="link">
-                            <ViewListIcon  />
+                            <ViewListIcon />
                             <span>Régistre</span>
                         </NavLink>
                     </ListItem>
                     <ListItem>
                         <NavLink to="/" className="link">
-                            <EqualizerIcon  />
+                            <EqualizerIcon />
                             <span>Statistique</span>
                         </NavLink>
                     </ListItem>
                     <ListItem>
-                        <NavLink to="/" className="link">
-                            <SettingsIcon  />
+                        <NavLink to="/administration" className="link">
+                            <SettingsIcon />
                             <span>Administration</span>
                         </NavLink>
                     </ListItem>
@@ -47,7 +48,7 @@ const SideMenu = (props) => {
             </div>
             <div className="footer">
                 coopyright &copy; 2021
-            </div> 
+            </div>
         </div>
     )
 }
