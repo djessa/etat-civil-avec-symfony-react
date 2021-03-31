@@ -9,6 +9,7 @@ import Registre from './views/registre/Registre';
 import RegistreNaissance from './views/registre/RegistreNaissance';
 import Administration from './views/administration/Administraton';
 import Acte from './views/administration/Acte';
+import Acte_new from './views/administration/Acte_new';
 
 export default function Routes() {
   return (
@@ -21,6 +22,7 @@ export default function Routes() {
         <Route path={WEBROOT + "registre/naissance"} exact component={RegistreNaissance} />
         <Route path={WEBROOT + "administration"} exact component={Administration} />
         <Route path={WEBROOT + "administration/acte"} exact component={Acte} />
+        <Route path={WEBROOT + "administration/acte_new"} exact component={Acte_new} />
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
