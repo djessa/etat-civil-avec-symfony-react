@@ -39,7 +39,7 @@ const SideMenu = (props) => {
                         </NavLink>
                     </ListItem>
                     <ListItem>
-                        <NavLink to="/administration" className="link">
+                        <NavLink to={WEBROOT + "administration"} className="link">
                             <SettingsIcon />
                             <span>Administration</span>
                         </NavLink>
