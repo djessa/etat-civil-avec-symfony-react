@@ -1,4 +1,4 @@
-import {currentDate, currentTime} from '../uses/const.js'
+import { currentDate, currentTime } from '../uses/const.js'
 
 export class Naissance {
 

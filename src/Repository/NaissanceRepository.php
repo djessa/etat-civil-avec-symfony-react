@@ -19,6 +19,22 @@ class NaissanceRepository extends ServiceEntityRepository
         parent::__construct($registry, Naissance::class);
     }
 
+    public function getAll(int $offset)
+    {
+        $em =$this->getEntityManager();
+        $query = $em->createQuery('SELECT n from App\Entity\Naissance n  WHERE n.date_declaration IS NOT NULL ORDER BY n.id desc');
+        $query->setFirstResult($offset);
+        $query->setMaxResults(2);
+        return $query->getResult();
+    }
+
+    public function total()
+    {
+        $em =$this->getEntityManager();
+        $query = $em->createQuery('SELECT n from App\Entity\Naissance n  WHERE n.date_declaration IS NOT NULL');
+        return count($query->getResult());    
+    }
+
     // /**
     //  * @return Naissance[] Returns an array of Naissance objects
     //  */
