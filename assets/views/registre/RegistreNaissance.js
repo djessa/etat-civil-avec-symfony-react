@@ -1,6 +1,7 @@
 import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, IconButton, TextField } from '@material-ui/core';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import RegistreLayout from '../../layouts/RegistreLayout'
 import { mini_date, WEBROOT } from '../../uses/const';
 import TableCellsHead from '../../components/TableCellsHead';
@@ -89,7 +90,7 @@ export default function RegistreNaissance() {
         </div>
         <Table>
             <TableHead className="registre">
-                <TableCellsHead bgClass="bg-primary" columns={['ID', 'Nom', 'Prénom', 'Sexe', 'Date de naissance', 'Lieu de naissance', 'Action']} />
+                <TableCellsHead bgClass="bg-primary" columns={['ID', 'Nom', 'Prénom', 'Sexe', 'Date de naissance', 'Lieu de naissance', '']} />
             </TableHead>
             <TableBody>
                 {
@@ -104,9 +105,12 @@ export default function RegistreNaissance() {
                                 <TableCell>{mini_date(data.date_naissance)}</TableCell>
                                 <TableCell>{data.lieu_naissance}</TableCell>
                                 <TableCell>
-                                    <a className="btn btn-success" href={'/birth/copie/' + data.id} target="_blank">
-                                        Aperçu
-                                            </a>
+                                    <Link className="btn btn-success mr-1" to={WEBROOT + 'show/copie/naissance/' + data.id}>
+                                        Copie
+                                    </Link>
+                                    <Link className="btn btn-success mr-1" to={WEBROOT + 'show/extrait/naissance/' + data.id}>
+                                        Extrait
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         })

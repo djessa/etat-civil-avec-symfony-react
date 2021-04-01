@@ -30,7 +30,8 @@
         "react-dom": "^17.0.1",
         "react-pro-sidebar": "^0.6.0",
         "react-router": "^5.2.0",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "react-to-print": "^2.12.3"
     },
     "error-ex": "git+https://github.com/Qix-/node-error-ex.git"
 }
