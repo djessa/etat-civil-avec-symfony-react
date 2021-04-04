@@ -7,6 +7,7 @@ use App\Repository\NaissanceRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=NaissanceRepository::class)
@@ -25,12 +26,14 @@ class Naissance
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Date de declaration doit être indiquer")
      */
     private $date_declaration;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Type de declaration doit être indiquer")
      */
     private $type_declaration;
 
@@ -74,12 +77,14 @@ class Naissance
     /**
      * @ORM\Column(type="time", nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Heure de declaration doit être indiquer")
      */
     private $heure_declaration;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Heure de naissance doit être indiquer")
      */
     private $heure_naissance;
 
