@@ -18,7 +18,7 @@ class Agent
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist"})
      */
     private $information_personnel;
 

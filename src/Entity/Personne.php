@@ -7,6 +7,7 @@ use App\Repository\PersonneRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PersonneRepository::class)
@@ -25,12 +26,14 @@ class Personne
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("read")
+     * @Assert\NotBlank(message="Le nom ne doit pas être vide")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Le prénom ne doit pas être vide")
      */
     private $prenom;
 
@@ -43,12 +46,14 @@ class Personne
     /**
      * @ORM\Column(type="date", nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="La date de naissance  doit  être indiquer")
      */
     private $date_naissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("read")
+     * @Assert\NotBlank(message="Le lieu de naissance  doit  être indiquer")
      */
     private $lieu_naissance;
 
@@ -123,6 +128,30 @@ class Personne
     public function setSexe(?string $sexe): self
     {
         $this->sexe = $sexe;
+
+        return $this;
+    }
+
+        public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->date_naissance;
+    }
+
+    public function setDateNaissance( $date_naissance): self
+    {
+        $this->date_naissance = $date_naissance;
+
+        return $this;
+    }
+
+    public function getLieuNaissance(): ?string
+    {
+        return $this->lieu_naissance;
+    }
+
+    public function setLieuNaissance(string $lieu_naissance): self
+    {
+        $this->lieu_naissance = $lieu_naissance;
 
         return $this;
     }

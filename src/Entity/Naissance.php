@@ -141,30 +141,6 @@ class Naissance
         return $this;
     }
 
-    public function getDateNaissance(): ?\DateTimeInterface
-    {
-        return $this->date_naissance;
-    }
-
-    public function setDateNaissance( $date_naissance): self
-    {
-        $this->date_naissance = $date_naissance;
-
-        return $this;
-    }
-
-    public function getLieuNaissance(): ?string
-    {
-        return $this->lieu_naissance;
-    }
-
-    public function setLieuNaissance(string $lieu_naissance): self
-    {
-        $this->lieu_naissance = $lieu_naissance;
-
-        return $this;
-    }
-
     public function getEnfant(): ?Personne
     {
         return $this->enfant;

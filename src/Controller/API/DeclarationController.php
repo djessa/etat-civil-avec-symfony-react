@@ -4,7 +4,7 @@ namespace App\Controller\API;
 
 use App\Entity\Personne;
 use App\Entity\Naissance;
-use App\Services\DeclarationService;
+use App\Service\DeclarationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 /**
-* @Route("/declaration")
+* @Route("/api/declaration")
 */
 class DeclarationController extends AbstractController
 {

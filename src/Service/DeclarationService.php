@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Service;
 
 use App\Repository\OfficierRepository;
 use App\Repository\PersonneRepository;
@@ -28,13 +28,13 @@ class DeclarationService {
             'nom' => $personne->getNom(),
             'prenom' => $personne->getPrenom(),
             'sexe' => $personne->getSexe(),
-            'naissance' => $this->naissances->findOneBy(['date_naissance' => $personne->getNaissance()->getDateNaissance(), 'lieu_naissance' => $personne->getNaissance()->getLieuNaissance()])
+            'date_naissance' => $personne->getDateNaissance(),
+            'lieu_naissance' => $personne->getLieuNaissance()
         ];
         $personneEnBase = $this->personnes->findOneBy($predicat);
         if($personneEnBase) {
             return $personneEnBase;
         } else {
-            $this->manager->persist($personne->getNaissance());
             $this->manager->persist($personne);
             return $personne;
         }

@@ -2,37 +2,37 @@
 
 namespace App\Controller\API;
 
-use App\Entity\Officier;
+use App\Entity\Agent;
 use App\Entity\Personne;
 use App\Service\JSONService;
 use App\Service\OnPersistPerson;
-use App\Repository\OfficierRepository;
+use App\Repository\AgentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
     /**
-     * @Route("/api/officier")
+     * @Route("/api/agent")
      */
-class OfficierController extends AbstractController
+class AgentController extends AbstractController
 {
     /**
-     * @Route("", name="officier", methods="GET")
+     * @Route("", name="agent", methods="GET")
      */
-    public function index(OfficierRepository $officierRepository, JSONService $json)
+    public function index(AgentRepository $agentRepository, JSONService $json)
     {
-        $officiers = [];
-        foreach ($officierRepository->findAll() as $officier) {
-            $officiers[] =  $officier->getInformationPersonnel();
+        $agents = [];
+        foreach ($agentRepository->findAll() as $agent) {
+            $agents[] =  $agent->getInformationPersonnel();
         }
-        return $this->json($json->normalize($officiers), 200);
+        return $this->json($json->normalize($agents), 200);
     }
 
     /**
-     * @Route("", name="officier_new", methods="POST")
+     * @Route("", name="agent_new", methods="POST")
      */
     public function new(Request $request, EntityManagerInterface $em, SerializerInterface $serializer, OnPersistPerson $peristPersonne, ValidatorInterface $validator)
     {
@@ -47,9 +47,13 @@ class OfficierController extends AbstractController
                 return $this->json(['status' => 400, 'message' => $data]);
             }
             $personne = $peristPersonne->save($personne);
-            $officier = new Officier;
-            $officier->setInformationPersonnel($personne);
-            $em->persist($officier);
+            if($personne->getId() != null) {
+                if($em->getRepository(Agent::class)->findBy(['information_personnel' => $personne]))
+                    return $this->json(['status' => 400, 'message' => 'Ce personne existe déjà dans la liste des agents']);
+            }
+            $agent = new Agent;
+            $em->persist($agent);
+            $agent->setInformationPersonnel($personne);
             $em->flush();
             return $this->json(['status' => 200, 'message' => 'Enregistré avec succès'], 200);
         } catch (NotEncodableValueException $e) {
@@ -58,12 +62,12 @@ class OfficierController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="officier_edit", methods="PUT")
+     * @Route("/{id}", name="agent_edit", methods="PUT")
      */
-    public function edit(Officier $officier, Request $request, ValidatorInterface $validator, EntityManagerInterface $em)
+    public function edit(Agent $agent, Request $request, ValidatorInterface $validator, EntityManagerInterface $em)
     {
         try {
-           $info_perso =  $officier->getInformationPersonnel();
+           $info_perso =  $agent->getInformationPersonnel();
            $data = json_decode($request->getContent());
            foreach ($data as $key => $value) {
                $method = 'set' . \ucfirst($key);
@@ -84,11 +88,11 @@ class OfficierController extends AbstractController
         }
     }
     /**
-     * @Route("/{id}", name="officier_delete", methods="DELETE")
+     * @Route("/{id}", name="agent_delete", methods="DELETE")
      */
-    public function delete(Officier $officier, EntityManagerInterface $em)
+    public function delete(Agent $agent, EntityManagerInterface $em)
     {
-        $em->remove($officier);
+        $em->remove($agent);
         $em->flush();
         return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
     }
