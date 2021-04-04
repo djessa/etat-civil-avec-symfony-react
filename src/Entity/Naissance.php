@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=NaissanceRepository::class)
+ * @ORM\Table(name="naissances")
  */
 class Naissance
 {
@@ -44,18 +45,6 @@ class Naissance
      * @Groups("read")
      */
     private $date_jugement;
-
-    /**
-     * @ORM\Column(type="date")
-     * @Groups("read")
-     */
-    private $date_naissance;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups("read")
-     */
-    private $lieu_naissance;
 
     /**
      * @ORM\OneToOne(targetEntity=Personne::class, mappedBy="naissance", cascade={"persist", "remove"})

@@ -5,7 +5,6 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import SettingsIcon from '@material-ui/icons/Settings';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
-import { Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { WEBROOT } from '../uses/const';
 

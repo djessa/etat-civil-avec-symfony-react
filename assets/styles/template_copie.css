@@ -1,0 +1,62 @@
+.copie {
+    width: 90%;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.copie .header {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 80px;
+    margin-top: 10px;
+}
+
+.copie .section {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.copie .footer {
+    width: 100%;
+}
+
+.copie .logo {
+    width: 100px;
+    height: 100%;
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+}
+.target {
+   
+}
+
+.target .title {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.target h3 {
+    font-size: 1.2em;
+}
+
+.lois {
+    width: 200px;
+    height: 150px;
+    border: 2px solid black;
+    padding: 10px;
+}
+

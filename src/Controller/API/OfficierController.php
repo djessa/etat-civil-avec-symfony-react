@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
 use App\Repository\OfficierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

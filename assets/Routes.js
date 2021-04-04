@@ -10,7 +10,7 @@ import RegistreNaissance from './views/registre/RegistreNaissance';
 import Administration from './views/administration/Administraton';
 import Acte from './views/administration/Acte';
 import Acte_new from './views/administration/Acte_new';
-import CopieNaissance from './views/affichage/CopieNaissance';
+import CopieNaissance from './views/template/CopieNaissance';
 
 export default function Routes() {
   return (

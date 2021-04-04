@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=PersonneRepository::class)
+ * @ORM\Table(name="personnes")
  */
 class Personne
 {
@@ -38,6 +39,18 @@ class Personne
      * @Groups("read")
      */
     private $sexe;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     * @Groups("read")
+     */
+    private $date_naissance;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read")
+     */
+    private $lieu_naissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)

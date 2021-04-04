@@ -16,7 +16,7 @@ export default function Acte() {
             </tbody>
         </table>
         <div className="m-3 float-right">
-            <IconButton component={Link} to={WEBROOT + 'administration/acte_new'} fab="true" color="primary" size="small" style={{ background: 'blue', color: 'white' }} >
+            <IconButton component={Link} to={WEBROOT + 'administration/acte_new'} fab="true" color="primary" style={{ background: 'blue', color: 'white' }} >
                 <Add />
             </IconButton>
         </div>

@@ -1,18 +1,33 @@
-import { IconButton, TextField } from '@material-ui/core'
+import { IconButton, TextField, Button } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import AdministrationLayout from '../../layouts/AdministrationLayout'
 import '../../styles/admin.css';
 import { Editor } from '@tinymce/tinymce-react';
 import MessageDialog from '../../components/MessageDialog';
+import axios from 'axios';
+import { WEBROOT } from '../../uses/const';
 
 export default function Acte_new() {
     const [categorie, setCategorie] = useState('');
-    const [contentu, setContentu] = useState('');
     const [openMessage, setOpenMessage] = useState(false);
+    const [message, setMessage] = useState('');
+    const [bg, setBg] = useState('blue');
+    const file = useRef('');
 
     const handleSubmit = () => {
-        console.log(categorie, contentu);
+        const formData = new FormData();
+        formData.append('category', categorie);
+        formData.append('contenu', file.current.files[0]);
+        axios.post(WEBROOT + 'administration/acte/new', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then((response) => {
+            setBg('green');
+            setMessage(response.data.message)
+            setOpenMessage(true)
+        }).catch(error => console.log(error))
     }
 
     return <AdministrationLayout>
@@ -29,35 +44,25 @@ export default function Acte_new() {
                             />
                         </div>
                         <div className="naissancFormGroup">
-                            <Editor
-                                apiKey="9v5h0ap0p04wx297dglcaj1n7vqbtaxvxbkd1qs51pgyzx49"
-                                init={{
-                                    height: 500,
-                                    plugins: [
-                                        'advlist autolink link image lists charmap print preview hr anchor pagebreak',
-                                        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-                                        'table emoticons template paste help'
-                                    ],
-                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
-                                        'bullist numlist outdent indent | link image | print preview media fullpage | ' +
-                                        'forecolor backcolor emoticons | help',
-                                    menu: {
-                                        favs: { title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons' }
-                                    },
-                                    menubar: 'favs file edit view insert format tools table help',
-                                    content_css: 'css/content.css'
-                                }}
-                                value={contentu}
-                                onEditorChange={(e) => setContentu(e.target.value)}
+                            <input
+                                style={{ display: "none" }}
+                                id="contained-button-file"
+                                type="file"
+                                ref={file}
                             />
+                            <label htmlFor="contained-button-file">
+                                <Button variant="contained" color="primary" component="span">
+                                    Contenu
+                                </Button>
+                            </label>
                         </div>
                         <div className="naissanceFormGroup">
-                            <button className="btn btn-success" onClick={() => setOpenMessage(true)}>Ajouter</button>
+                            <button className="btn btn-success" onClick={handleSubmit}>Ajouter</button>
                         </div>
                     </>
                     :
 
-                    <MessageDialog bg="green" message="coucou" open={openMessage} toggle={setOpenMessage} />
+                    <MessageDialog bg={bg} message={message} open={openMessage} toggle={setOpenMessage} />
             }
         </div>
     </AdministrationLayout>
