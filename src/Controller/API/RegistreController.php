@@ -4,11 +4,11 @@ namespace App\Controller\API;
 
 use App\Entity\Personne;
 use App\Entity\Naissance;
+use App\Service\JSONService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
 * @Route("/api/registre")
@@ -25,7 +25,7 @@ class RegistreController extends AbstractController
     /**
      * @Route("/naissance", name="registre_naissance", methods="GET")
      */
-    public function naissance (NormalizerInterface $nomalizer, Request $request): Response
+    public function naissance (JSONService $json, Request $request): Response
     {
         \define('PER_PAGE', 7);
         $naissanceRepository = $this->manager->getRepository(Naissance::class);
@@ -34,15 +34,15 @@ class RegistreController extends AbstractController
         $naissances = $naissanceRepository->findBy([], ['id' => 'DESC'], PER_PAGE, $offset);
         if($page == 0) {
             $pages = ceil(($naissanceRepository->count([]) / PER_PAGE)) ;
-            return $this->json($nomalizer->normalize(['naissances' => $naissances, 'total' => $pages], 'json', ['groups' => 'read']), 200);
+            return $this->json($json->normalize(['naissances' => $naissances, 'total' => $pages]), 200);
         }
-        return $this->json($nomalizer->normalize($naissances, 'json', ['groups' => 'read']), 200);
+        return $this->json($json->normalize($naissances), 200);
     }
 
     /**
      * @Route("/naissance/search", name="registre_naissance_search", methods="POST")
      */
-    public function search_naissance (NormalizerInterface $nomalizer, Request $request): Response
+    public function search_naissance (JSONService $json, Request $request): Response
     {
         $naissanceRepository = $this->manager->getRepository(Naissance::class);
         $personneRepository = $this->manager->getRepository(Personne::class);
@@ -53,6 +53,6 @@ class RegistreController extends AbstractController
             if($personne->getNaissance() != null)
                 $naissances[] = $personne->getNaissance();
         }
-        return $this->json($nomalizer->normalize($naissances, 'json', ['groups' => 'read']), 200);
+        return $this->json($json->normalize($naissances), 200);
     }
 }
