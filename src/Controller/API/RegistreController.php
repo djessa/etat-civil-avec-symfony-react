@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
-* @Route("/registre")
+* @Route("/api/registre")
 */
 class RegistreController extends AbstractController
 {
@@ -23,36 +23,36 @@ class RegistreController extends AbstractController
     }
 
     /**
-     * @Route("/naissance", name="registre_naissance")
+     * @Route("/naissance", name="registre_naissance", methods="GET")
      */
     public function naissance (NormalizerInterface $nomalizer, Request $request): Response
     {
+        \define('PER_PAGE', 7);
         $naissanceRepository = $this->manager->getRepository(Naissance::class);
         $page = $request->query->get('page', 0);
-        $offset = $page * 2;
-        $naissances = $naissanceRepository->getAll($offset);
+        $offset = $page * PER_PAGE;
+        $naissances = $naissanceRepository->findBy([], ['id' => 'DESC'], PER_PAGE, $offset);
         if($page == 0) {
-            $pages = ($naissanceRepository->total() / 2);
+            $pages = ceil(($naissanceRepository->count([]) / PER_PAGE)) ;
             return $this->json($nomalizer->normalize(['naissances' => $naissances, 'total' => $pages], 'json', ['groups' => 'read']), 200);
         }
         return $this->json($nomalizer->normalize($naissances, 'json', ['groups' => 'read']), 200);
     }
 
     /**
-     * @Route("/naissance/search", name="registre_naissance_search")
+     * @Route("/naissance/search", name="registre_naissance_search", methods="POST")
      */
     public function search_naissance (NormalizerInterface $nomalizer, Request $request): Response
     {
         $naissanceRepository = $this->manager->getRepository(Naissance::class);
         $personneRepository = $this->manager->getRepository(Personne::class);
         $data = json_decode($request->getContent(), true);
+        $personnes = $personneRepository->search($data);
         $naissances = [];
-        $personnes = $personneRepository->findBy($data);
-        foreach ($personnes as $personne) {
-            $naissances[] = $personne->getNaissance();
+        foreach($personnes as $personne) {
+            if($personne->getNaissance() != null)
+                $naissances[] = $personne->getNaissance();
         }
-        if(count($naissances) > 0)
-            return $this->json($nomalizer->normalize(['naissances' => $naissances, 'vide' => false], 'json', ['groups' => 'read']), 200);
-        return $this->json(['vide' => true], 200);
+        return $this->json($nomalizer->normalize($naissances, 'json', ['groups' => 'read']), 200);
     }
 }

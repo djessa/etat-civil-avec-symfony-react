@@ -19,6 +19,20 @@ class PersonneRepository extends ServiceEntityRepository
         parent::__construct($registry, Personne::class);
     }
 
+    public function search($data)
+    {
+        $query = $this->createQueryBuilder('n');
+        foreach($data as $key =>  $value) {
+            $query->andWhere("n.$key LIKE '$value%'");
+            $query->orderBy("n.$key", 'ASC');
+        }
+        return $query
+            ->setMaxResults(7)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return Personne[] Returns an array of Personne objects
     //  */

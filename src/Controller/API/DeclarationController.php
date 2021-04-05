@@ -48,7 +48,6 @@ class DeclarationController extends AbstractController
                 $officier = $this->service->getOfficierFromDataRequest($data);
                 if(!$officier)
                     $errors['officier'] = 'Officier introuvable';
-                // recuperation de l'objet personne en  persistant s'il n'est pas encore persisté
                 if(!isset($data->pere) || !isset($data->mere) || !isset($data->enfant) || !isset($data->naissance))
                     return $this->json(['status' => 400, 'message' => ['Obligatoire' => 'Un categorie d\'information introuvable']]);
                 $pere = $serializer->deserialize(json_encode($data->pere), Personne::class, 'json');
