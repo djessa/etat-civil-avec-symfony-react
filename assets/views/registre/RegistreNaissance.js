@@ -18,7 +18,7 @@ export default function RegistreNaissance() {
 
     useEffect(() => {
         setChargement(true);
-        axios.get(WEBROOT + 'registre/naissance?page=' + page)
+        axios.get(WEBROOT + 'api/naissance?page=' + page)
             .then(response => {
                 if (page == 0) {
                     setRegistre(response.data.naissances);
@@ -50,15 +50,16 @@ export default function RegistreNaissance() {
         }
         if (valid) {
             setChargement(true);
-            axios.post(WEBROOT + 'registre/naissance/search', data)
+            axios.post(WEBROOT + 'api/naissance/search', data)
                 .then((response) => {
-                    if (!(response.data.vide))
-                        setRegistre(response.data.naissances)
+                    if (response.data.length > 0) {
+                        setRegistre(response.data)
+                        setChargement(false);
+                    }
                     else {
                         alert('Aucune resultat pour ces informations');
                         setRefresh(!refresh);
                     }
-                    setChargement(false);
                 })
                 .catch(error => console.log(error))
         }
@@ -102,8 +103,8 @@ export default function RegistreNaissance() {
                                 <TableCell>{data.enfant.nom}</TableCell>
                                 <TableCell>{data.enfant.prenom}</TableCell>
                                 <TableCell>{data.enfant.sexe}</TableCell>
-                                <TableCell>{mini_date(data.date_naissance)}</TableCell>
-                                <TableCell>{data.lieu_naissance}</TableCell>
+                                <TableCell>{mini_date(data.enfant.date_naissance)}</TableCell>
+                                <TableCell>{data.enfant.lieu_naissance}</TableCell>
                                 <TableCell>
                                     <Link className="btn btn-success mr-1" to={WEBROOT + 'show/copie/naissance/' + data.id}>
                                         Copie

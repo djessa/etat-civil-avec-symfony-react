@@ -45,23 +45,15 @@ export default function AdultForm({ object, setObject }) {
 					type="date"
 					label="Date de naissance"
 					InputLabelProps={{ shrink: true }}
-					value={adult.naissance.date_naissance}
-					onChange={(e) => {
-						const objectChange = Object.assign({}, adult);
-						objectChange.naissance.date_naissance = e.target.value;
-						setAdult(objectChange);
-						setObject(objectChange);
-					}}
+					name="date_naissance"
+					value={adult.date_naissance}
+					onChange={handleChange}
 				/>
 				<TextField
 					label="Lieu de naissance"
-					value={adult.naissance.lieu_naissance}
-					onChange={(e) => {
-						const objectChange = Object.assign({}, adult);
-						objectChange.naissance.lieu_naissance = e.target.value;
-						setAdult(objectChange);
-						setObject(objectChange);
-					}}
+					name="lieu_naissance"
+					value={adult.lieu_naissance}
+					onChange={handleChange}
 				/>
 			</div>
 			<div className="naissanceForm">

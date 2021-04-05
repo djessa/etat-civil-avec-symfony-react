@@ -24,10 +24,7 @@ class OfficierController extends AbstractController
      */
     public function index(OfficierRepository $officierRepository, JSONService $json)
     {
-        $officiers = [];
-        foreach ($officierRepository->findAll() as $officier) {
-            $officiers[] =  $officier->getInformationPersonnel();
-        }
+        $officiers = $officierRepository->findAll();
         return $this->json($json->normalize($officiers), 200);
     }
 

@@ -16,7 +16,8 @@ const SelectControl = (props) => {
 					const objectChange = Object.assign({}, props.object);
 					objectChange[props.property] = e.target.value;
 					props.setObject(objectChange);
-					props.setObjectParent(objectChange);
+					if (props.setObjectParent)
+						props.setObjectParent(objectChange);
 				}}
 			>
 				{props.items.map((item, i) => <MenuItem key={i} value={item}>{item}</MenuItem>)}
