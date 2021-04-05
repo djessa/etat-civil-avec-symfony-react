@@ -32,6 +32,18 @@ class OfficierController extends AbstractController
     }
 
     /**
+     * @Route("/{id}", name="officier_show", methods="GET")
+     */
+    public function show(OfficierRepository $officierRepository, JSONService $json, $id)
+    {
+        $officier = $officierRepository->find($id);
+        if($officier){
+            return $this->json($json->normalize($officier->getInformationPersonnel()), 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Aucun officier pour cet numéro'], 200);
+    }
+
+    /**
      * @Route("", name="officier_new", methods="POST")
      */
     public function new(Request $request, EntityManagerInterface $em, SerializerInterface $serializer, OnPersistPerson $peristPersonne, ValidatorInterface $validator)
@@ -86,10 +98,14 @@ class OfficierController extends AbstractController
     /**
      * @Route("/{id}", name="officier_delete", methods="DELETE")
      */
-    public function delete(Officier $officier, EntityManagerInterface $em)
+    public function delete($id, EntityManagerInterface $em)
     {
-        $em->remove($officier);
-        $em->flush();
-        return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
+        $officier = $em->getRepository(Officier::class)->find($id);
+        if($officier) {
+            $em->remove($officier);
+            $em->flush();
+            return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Impossible de supprimer'], 200);
     }
 }

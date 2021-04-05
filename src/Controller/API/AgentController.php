@@ -87,13 +87,30 @@ class AgentController extends AbstractController
             return $this->json(['status' => 404, 'message' => $e->getMessage()], 404);
         }
     }
+
+    /**
+     * @Route("/{id}", name="agent_show", methods="GET")
+     */
+    public function show(JSONService $json, $id, AgentRepository $agents)
+    {
+        $agent = $agents->find($id);
+        if($agent){
+            return $this->json($json->normalize($agent->getInformationPersonnel()), 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Aucune agent pour cet numéro'], 200);
+    }
     /**
      * @Route("/{id}", name="agent_delete", methods="DELETE")
      */
-    public function delete(Agent $agent, EntityManagerInterface $em)
+    public function delete(AgentRepository $agentRepository, EntityManagerInterface $em, $id)
     {
-        $em->remove($agent);
-        $em->flush();
-        return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
+        $agent = $agentRepository->find($id);
+        if($agent) {
+            $em->remove($agent);
+            $em->flush();
+            return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Impossible de supprimer'], 200);
     }
 }
+

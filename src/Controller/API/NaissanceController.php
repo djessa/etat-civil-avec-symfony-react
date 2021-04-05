@@ -45,6 +45,58 @@ class NaissanceController extends AbstractController
         }
         return $this->json($json->normalize($naissances), 200);
     }
+
+    /**
+     * @Route("/{id}", name="naissance", methods="GET")
+     */
+    public function show (JSONService $json, $id): Response
+    {
+        $naissance = $this->manager->getRepository(Naissance::class)->find($id);
+        if($naissance) {
+            return $this->json($json->normalize($naissance), 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Aucune fiche de naissance à cet numero'], 200);
+    } 
+
+    /**
+     * @Route("/{id}", name="edit_naissance", methods="PUT")
+     */
+    public function edit (JSONService $json, Naissance $naissance, Request $request): Response
+    {
+        try {
+            try {
+                $data = json_decode($request->getContent());
+                foreach ($data as $key => $value) {
+                    $method = 'set' . \ucfirst($key);
+                    if(in_array($key, ['dateDeclaration', 'heureDeclaration']))
+                        $naissance->$method(new \DateTime($value));
+                    else
+                        $naissance->$method($value);
+                }
+                $this->manager->flush();
+                return $this->json(['status' => 200, 'message' => 'Modification éffectuée'], 200);
+            } catch(NotNormalizableValueException $e) {
+                return $this->json(['status' => 400, 'message' => $e->getMessage()], 400);
+            }
+        } catch (NotEncodableValueException $e) {
+            return $this->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="delete_naissance", methods="DELETE")
+     */
+    public function delete ($id): Response
+    {
+        $naissance = $this->manager->getRepository(Naissance::class)->find($id);
+        if($naissance) {
+            $this->manager->remove($naissance);
+            $this->manager->flush();
+            return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);
+        }
+        return $this->json(['status' => 400, 'message' => 'Impossible de supprimer'], 200);
+    }
+
     /**
      * @Route("", name="declaration_naissance", methods="POST")
      */
@@ -118,7 +170,7 @@ class NaissanceController extends AbstractController
     }
 
     /**
-     * @Route("/search", name="registre_naissance_search", methods="POST")
+     * @Route("/search", name="search_naissance", methods="POST")
      */
     public function search_naissance (JSONService $json, Request $request): Response
     {
