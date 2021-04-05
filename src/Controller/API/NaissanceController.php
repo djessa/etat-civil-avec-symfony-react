@@ -5,6 +5,8 @@ namespace App\Controller\API;
 use App\Entity\Personne;
 use App\Entity\Naissance;
 use App\Service\DeclarationService;
+use App\Service\JSONService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,21 +15,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 /**
-* @Route("/api/declaration")
+* @Route("/api/naissance")
 */
-class DeclarationController extends AbstractController
+class NaissanceController extends AbstractController
 {
 
     private $service;
+    private $manager;
 
-    public function __construct(DeclarationService $declarationService)
+    public function __construct(DeclarationService $declarationService, EntityManagerInterface $em)
     {
         $this->service = $declarationService;
+        $this->manager = $em;
+    }
+
+    /**
+     * @Route("", name="registre_naissance", methods="GET")
+     */
+    public function index (JSONService $json, Request $request): Response
+    {
+        \define('PER_PAGE', 7);
+        $naissanceRepository = $this->manager->getRepository(Naissance::class);
+        $page = $request->query->get('page', 0);
+        $offset = $page * PER_PAGE;
+        $naissances = $naissanceRepository->findBy([], ['id' => 'DESC'], PER_PAGE, $offset);
+        if($page == 0) {
+            $pages = ceil(($naissanceRepository->count([]) / PER_PAGE)) ;
+            return $this->json($json->normalize(['naissances' => $naissances, 'total' => $pages]), 200);
+        }
+        return $this->json($json->normalize($naissances), 200);
     }
     /**
-     * @Route("/naissance", name="declaration_naissance", methods="POST")
+     * @Route("", name="declaration_naissance", methods="POST")
      */
-    public function naissance(Request $request, SerializerInterface $serializer): Response
+    public function new (Request $request, SerializerInterface $serializer): Response
     {
         try {
             try {
@@ -94,5 +115,22 @@ class DeclarationController extends AbstractController
         } catch (NotEncodableValueException $e) {
             return $this->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+    /**
+     * @Route("/search", name="registre_naissance_search", methods="POST")
+     */
+    public function search_naissance (JSONService $json, Request $request): Response
+    {
+        $naissanceRepository = $this->manager->getRepository(Naissance::class);
+        $personneRepository = $this->manager->getRepository(Personne::class);
+        $data = json_decode($request->getContent(), true);
+        $personnes = $personneRepository->search($data);
+        $naissances = [];
+        foreach($personnes as $personne) {
+            if($personne->getNaissance() != null)
+                $naissances[] = $personne->getNaissance();
+        }
+        return $this->json($json->normalize($naissances), 200);
     }
 }
