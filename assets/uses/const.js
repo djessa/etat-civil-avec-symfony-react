@@ -2,7 +2,7 @@ export const WEBROOT = '/etat-civil/public/';
 
 const date = new Date();
 
-const formatNumDate = num => (parseInt(num) > 9) ? num : '0' + num
+export const formatNumDate = num => (parseInt(num) > 9) ? num : '0' + num
 
 export const currentDate = date.getFullYear() + '-' + formatNumDate(date.getMonth() + 1) + '-' + formatNumDate(date.getDate());
 
