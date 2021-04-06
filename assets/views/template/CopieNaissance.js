@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import { WEBROOT } from '../../uses/const';
 import '../../styles/template_copie.css';
 import axios from 'axios';
-import { daty } from '../../uses/convert';
+import { annee, daty, daty_feno, ora } from '../../uses/convert';
 
 class ComponentToPrint extends React.PureComponent {
     constructor(props) {
@@ -80,26 +80,23 @@ class ComponentToPrint extends React.PureComponent {
                                 SORA-PIANKOHONANA
                                 </h5>
                                 <div style={{ fontSize: '1.1em' }}>
-                                    <p>Nalaina tamin'ny bokim-piankohonana taona fito sy roa arivo, kaominina Mahajanga izao soratra
+                                    <p>Nalaina tamin'ny bokim-piankohonana taona {annee(new Date(data.date_declaration))}, kaominina Mahajanga izao soratra
                             manaraka izao :</p>
                                     <p>
-                                        Tamin'ny roa jona taona fito sy roa arivo tamin'ny telo ora sy dimy amby roapolo minitra
-                                        maraina no teraka tao {data.enfant.lieu_naissance}: {data.enfant.nom + ' ' + data.enfant.prenom}, {data.enfant.sexe == 'Masculin' ? 'zazalahy' : 'zazavavy'} zanak'i {(data.parents)[0].nom + ' ' + (data.parents)[0].prenom}, {(data.parents)[0].profession}, teraka
+                                        Tamin'ny {daty_feno(new Date(data.enfant.date_naissance))} tamin'ny {ora(new Date(data.heure_naissance))} no teraka tao {data.enfant.lieu_naissance}: {data.enfant.nom + ' ' + data.enfant.prenom}, {data.enfant.sexe == 'Masculin' ? 'zazalahy' : 'zazavavy'} zanak'i {(data.parents)[0].nom + ' ' + (data.parents)[0].prenom}, {(data.parents)[0].profession}, teraka
                                         tao
-                                        {(data.parents)[0].lieu_naissance + ' '}
-                                        tamin'ny valo ambin'ny folo septambra taona valo amby fitopolo sy sivin-jato sy arivo, monina
+                                        {' ' + (data.parents)[0].lieu_naissance + ' '}
+                                        tamin'ny {daty_feno(new Date((data.parents)[0].date_naissance))}, monina
                                         ao
                                         {' ' + (data.parents)[0].residence + ' '} sy
-                                        {(data.parents)[1].nom + ' ' + (data.parents)[1].prenom + ' '}, {(data.parents)[1].profession}, teraka tao {(data.parents)[1].lieu_naissance} tamin'ny iray semptambra taona telo amby
-                                        valopolo sy
-                                        sivin-jato sy arivo, monina ao {(data.parents)[1].residence}
+                                        {' ' + (data.parents)[1].nom + ' ' + (data.parents)[1].prenom + ' '}, {(data.parents)[1].profession}, teraka tao {' ' + (data.parents)[1].lieu_naissance + ' '} tamin'ny {daty_feno(new Date((data.parents)[1].date_naissance))}, monina ao {(data.parents)[1].residence}
                                     </p>
                                     <p>
-                                        Nosoratana androany dimy jona taona fito sy roa arivo tamin'ny sivy ora sy roapolo minitra
+                                        Nosoratana androany {daty_feno(new Date(data.date_declaration))} tamin'ny {ora(new Date(data.heure_declaration))}
                                         {
                                             (data.declarant) && `
-                                        , araka ny fanambarana nataon'i ${data.declarant.nom + ' ' + data.declarant.prenom}, ${data.declarant.profession} teraka tao ${data.declarant.lieu_naissance} tamin'ny roa
-                                        ambin'ny folo oktobra taona valo amby diman-polo sy sivin-jato sy arivo, monina ao ${data.declarant.residence} izay miara-manao sonia
+                                        , araka ny fanambarana nataon'i ${data.declarant.nom + ' ' + data.declarant.prenom}, ${data.declarant.profession} teraka tao ${data.declarant.lieu_naissance} tamin'ny 
+                                        ${daty_feno(new Date(data.declarant.date_naissance))}, monina ao ${data.declarant.residence} izay miara-manao sonia
                                         aminay
                                         `
                                         }, {data.officier.information_personnel.nom + ' ' + data.officier.information_personnel.prenom}, Mpiandraikitra sora-piankohonana ao amin'ny kaominina Mahajanga, rehefa
@@ -107,9 +104,9 @@ class ComponentToPrint extends React.PureComponent {
                         </p>
                                 </div>
                             </div>
-                            <div className="text-center">
+                            <div style={{ fontSize: '1.1em' }} className="text-center">
                                 <p className="text-center">---------- Manaraka ny sonia ----------</p>
-                                <p className="text-center">Kopia nadika manontolo boky androany fito jona taona fito sy roa arivo</p>
+                                <p className="text-center">Kopia nadika manontolo boky androany {daty_feno(new Date())}</p>
                                 <p className="float-right m-5">Ny Mpiandraikitra ny sora-piankohonana</p>
                             </div>
                         </div>
