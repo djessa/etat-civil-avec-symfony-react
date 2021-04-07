@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Header({children}) {
+export default function Header({ children }) {
 
     const classes = useStyles();
 
@@ -16,7 +16,7 @@ export default function Header({children}) {
         <AppBar position="static" className={classes.root}>
             <Toolbar>
                 <Grid container alignItems="center" justify="space-between">
-                {children}
+                    {children}
                 </Grid>
             </Toolbar>
         </AppBar>

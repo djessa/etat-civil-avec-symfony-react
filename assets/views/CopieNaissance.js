@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import ReactToPrint from 'react-to-print';
-import Header from '../../components/Header'
-import AppProvider from '../../components/AppProvider'
+import Header from '../components/Header'
+import AppProvider from '../components/AppProvider'
 import { Link } from "react-router-dom"
-import { WEBROOT } from '../../uses/const';
-import '../../styles/template_copie.css';
+import { WEBROOT } from '../uses/const';
+import '../styles/template_copie.css';
 import axios from 'axios';
-import { annee, daty, daty_feno, ora } from '../../uses/convert';
+import { annee, daty, daty_feno, ora } from '../uses/convert';
 
 class ComponentToPrint extends React.PureComponent {
     constructor(props) {
