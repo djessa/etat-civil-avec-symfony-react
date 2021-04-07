@@ -245,4 +245,15 @@ class Personne
 
         return $this;
     }
+
+    public function info ()
+    {
+        return [
+            'nom' => $this->getNom(),
+            'prenom' => $this->getPrenom(),
+            'sexe' => $this->getSexe(),
+            'date_naissance' => $this->getDateNaissance(),
+            'lieu_naissance' => $this->getLieuNaissance()
+        ];
+    }
 }
