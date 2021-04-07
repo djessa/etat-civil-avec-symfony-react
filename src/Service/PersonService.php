@@ -33,7 +33,7 @@ class PersonService {
             return $personne;
         }
     }
-    public function isExistPerson($personne)
+    public function avoirFicheNaissance($personne)
     {
         $personneEnBase = $this->repository->findOneBy($personne->info());
         if($personneEnBase) {

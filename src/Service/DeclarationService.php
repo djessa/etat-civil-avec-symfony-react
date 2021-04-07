@@ -1,38 +1,14 @@
 <?php
-
 namespace App\Service;
-
-use App\Service\OnPersistPerson;
-use App\Repository\OfficierRepository;
-use App\Repository\PersonneRepository;
-use App\Repository\NaissanceRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 class DeclarationService {
-
     private $manager;
     private $officiers;
-    private $naissances;
-    private $personnes;
-    private $persistence;
-    private $validator;
-
-    public function  __construct(EntityManagerInterface $em, OfficierRepository $officiers, NaissanceRepository $naissances, PersonneRepository $personnes, OnPersistPerson $p, ValidatorInterface $validator)
+    public function  __construct(EntityManagerInterface $em)
     {
         $this->manager = $em;
-        $this->officiers = $officiers;
-        $this->naissances = $naissances;
-        $this->personnes = $personnes;
-        $this->persistence = $p;
-        $this->validator = $validator;
+        $this->officiers = $em->getRepository();
     }
-
-    public function onPersistPerson($personne)
-    {
-        return $this->persistence->save($personne);
-    }
-
     public function naissance($naissance, $enfant, $pere, $mere, $declarant, $officier)
     {
         try {
@@ -49,46 +25,10 @@ class DeclarationService {
             return ['status' => 400, 'message' => 'Impossible d\'enregistrer'];
         }
     }
-
     public function getOfficierFromDataRequest($data)
     {
         if(isset($data->officier)) {
             return $this->officiers->find($data->officier) ?: false;
-        }
-        return false;
-    }
-
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
-    public function isErrorExist($object)
-    {
-        $errors = $this->validator->validate($object);
-        if(count($errors) > 0) {
-            $data = [];
-            foreach($errors as $error) {
-                $data[$error->getPropertyPath()] = $error->getMessage();
-            }
-            return $data;
-        }
-        return false;
-    }
-
-    public function isExistPerson($personne)
-    {
-        $predicat = [
-            'nom' => $personne->getNom(),
-            'prenom' => $personne->getPrenom(),
-            'sexe' => $personne->getSexe(),
-            'date_naissance' => $personne->getDateNaissance(),
-            'lieu_naissance' => $personne->getLieuNaissance()
-        ];
-        $personneEnBase = $this->personnes->findOneBy($predicat);
-        if($personneEnBase) {
-            if($personneEnBase->getNaissance() != null)
-                return true;
         }
         return false;
     }
