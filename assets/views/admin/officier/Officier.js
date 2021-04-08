@@ -9,7 +9,7 @@ import ModalDialog from '../../../components/ModalDialog';
 import EditOfficier from './EditOfficier';
 import AddOfficier from './AddOfficier';
 
-const ListOfficier = () => {
+const Officier = () => {
     const [list, setList] = useState([]);
     const [change, setChange] = useState('none');
     const [addForm, setAddForm] = useState('none');
@@ -75,4 +75,4 @@ const ListOfficier = () => {
     );
 }
 
-export default ListOfficier;
+export default Officier;
