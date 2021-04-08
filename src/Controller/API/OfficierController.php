@@ -14,18 +14,18 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-    /**
-     * @Route("/api/officier")
-     */
+
+/**
+ * @Route("/api/officier")
+ */
 class OfficierController extends AbstractController
 {
     /**
      * @Route("", name="officier", methods="GET")
      */
-    public function index(OfficierRepository $officierRepository, JSONService $json)
+    public function index(OfficierRepository $officiers, JSONService $json)
     {
-        $officiers = $officierRepository->findAll();
-        return $this->json($json->normalize($officiers), 200);
+        return $this->json($json->normalize($officiers->findAll()), 200);
     }
 
     /**
@@ -34,7 +34,7 @@ class OfficierController extends AbstractController
     public function show(OfficierRepository $officierRepository, JSONService $json, $id)
     {
         $officier = $officierRepository->find($id);
-        if($officier){
+        if ($officier) {
             return $this->json($json->normalize($officier->getInformationPersonnel()), 200);
         }
         return $this->json(['status' => 400, 'message' => 'Aucun officier pour cet numéro'], 200);
@@ -48,9 +48,9 @@ class OfficierController extends AbstractController
         try {
             $personne = $serializer->deserialize($request->getContent(), Personne::class, 'json');
             $errors = $validator->validate($personne);
-            if(count($errors) > 0) {
+            if (count($errors) > 0) {
                 $data = [];
-                foreach($errors as $error) {
+                foreach ($errors as $error) {
                     $data[$error->getPropertyPath()] = $error->getMessage();
                 }
                 return $this->json(['status' => 400, 'message' => $data]);
@@ -72,24 +72,24 @@ class OfficierController extends AbstractController
     public function edit(Officier $officier, Request $request, ValidatorInterface $validator, EntityManagerInterface $em)
     {
         try {
-           $info_perso =  $officier->getInformationPersonnel();
-           $data = json_decode($request->getContent());
-           foreach ($data as $key => $value) {
-               if($key == 'id')
-                continue;
-               if(str_contains($key, '_')) {
-                   $key = str_replace('_naissance', 'Naissance', $key);
-               }
-               $method = 'set' . \ucfirst($key);
-               if($key == 'dateNaissance')
+            $info_perso =  $officier->getInformationPersonnel();
+            $data = json_decode($request->getContent());
+            foreach ($data as $key => $value) {
+                if ($key == 'id')
+                    continue;
+                if (str_contains($key, '_')) {
+                    $key = str_replace('_naissance', 'Naissance', $key);
+                }
+                $method = 'set' . \ucfirst($key);
+                if ($key == 'dateNaissance')
                     $info_perso->$method(new \DateTime($value));
                 else
                     $info_perso->$method($value);
-           }
+            }
             $errors = $validator->validate($info_perso);
-            if(count($errors) > 0) {
+            if (count($errors) > 0) {
                 $data = [];
-                foreach($errors as $error) {
+                foreach ($errors as $error) {
                     $data[$error->getPropertyPath()] = $error->getMessage();
                 }
                 return $this->json(['status' => 400, 'message' => $data]);
@@ -106,7 +106,7 @@ class OfficierController extends AbstractController
     public function delete($id, EntityManagerInterface $em)
     {
         $officier = $em->getRepository(Officier::class)->find($id);
-        if($officier) {
+        if ($officier) {
             $em->remove($officier);
             $em->flush();
             return $this->json(['status' => 200, 'message' => 'Suppression réussie'], 200);

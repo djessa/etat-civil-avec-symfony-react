@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\AgentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AgentRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AgentRepository::class)
@@ -14,11 +15,13 @@ class Agent
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("read")
      */
     private $id;
 
     /**
      * @ORM\OneToOne(targetEntity=Personne::class, cascade={"persist"})
+     * @Groups("read")
      */
     private $information_personnel;
 
