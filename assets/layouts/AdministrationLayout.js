@@ -10,7 +10,7 @@ export default function AdministrationLayout({ children }) {
         <AppProvider>
             <Header>
                 <div className="declaration_nav">
-                    <div className="declaration_nav_item"><Link to={WEBROOT + "admin/officier"}>Gestion des officiers</Link></div>
+                    <div className="declaration_nav_item"><Link to={WEBROOT + "admin/officiers"}>Gestion des officiers</Link></div>
                     <div className="declaration_nav_item"><Link to={WEBROOT + "admin/agents"}>Gestion des agents</Link></div>
                 </div>
             </Header>
