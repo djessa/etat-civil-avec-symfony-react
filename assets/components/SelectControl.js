@@ -6,7 +6,7 @@ const SelectControl = (props) => {
 	const [state, setState] = React.useState((props.object)[props.property]);
 
 	return (
-		<FormControl>
+		<FormControl fullWidth={true}>
 			<InputLabel id="demo-simple-select-label">{props.label}</InputLabel>
 			<Select
 				labelId="demo-simple-select-label"

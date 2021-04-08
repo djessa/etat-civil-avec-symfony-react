@@ -1,4 +1,4 @@
-export const WEBROOT = '/etat-civil/public/';
+export const WEBROOT = '/etat_civil/public/';
 
 const date = new Date();
 

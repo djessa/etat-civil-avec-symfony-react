@@ -1,5 +1,4 @@
 export class Personne {
-
 	constructor() {
 		this.nom = ''
 		this.prenom = ''
@@ -9,5 +8,4 @@ export class Personne {
 		this.profession = ''
 		this.residence = ''
 	}
-
 }

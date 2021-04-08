@@ -75,8 +75,16 @@ class OfficierController extends AbstractController
            $info_perso =  $officier->getInformationPersonnel();
            $data = json_decode($request->getContent());
            foreach ($data as $key => $value) {
+               if($key == 'id')
+                continue;
+               if(str_contains($key, '_')) {
+                   $key = str_replace('_naissance', 'Naissance', $key);
+               }
                $method = 'set' . \ucfirst($key);
-               $info_perso->$method($value);
+               if($key == 'dateNaissance')
+                    $info_perso->$method(new \DateTime($value));
+                else
+                    $info_perso->$method($value);
            }
             $errors = $validator->validate($info_perso);
             if(count($errors) > 0) {
