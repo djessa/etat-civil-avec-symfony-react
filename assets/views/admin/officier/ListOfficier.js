@@ -69,8 +69,8 @@ const ListOfficier = () => {
                 </TableBody>
             </Table>
             <Button variant="outlined" className="m-3" onClick={add}>Nouveau</Button>
-            <ModalDialog body={id != 0 ? <EditOfficier objet={officier} setRefresh={setChange} /> : ''} changeValue={change} setChangeValue={setChange} />
-            <ModalDialog body={<AddOfficier setRefresh={setAddForm} />} changeValue={addForm} setChangeValue={setAddForm} />
+            <ModalDialog title="Information personnel" body={id != 0 ? <EditOfficier objet={officier} setRefresh={setChange} /> : ''} changeValue={change} setChangeValue={setChange} />
+            <ModalDialog title="Nouveau officier" body={<AddOfficier setRefresh={setAddForm} />} changeValue={addForm} setChangeValue={setAddForm} />
         </AdministrationLayout>
     );
 }

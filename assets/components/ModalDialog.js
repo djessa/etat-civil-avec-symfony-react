@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 
-export default function ModalDialog({ body, changeValue, setChangeValue }) {
+export default function ModalDialog({ body, title, changeValue, setChangeValue }) {
   const [show, setShow] = useState(changeValue);
 
   const change = () => {
@@ -22,6 +22,7 @@ export default function ModalDialog({ body, changeValue, setChangeValue }) {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
+              <h6>{title}</h6>
               <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={change}>
                 <span aria-hidden="true">&times;</span>
               </button>
