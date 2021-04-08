@@ -59,4 +59,18 @@ class PersonneController extends AbstractController
         }
         return $this->json([], 200);
     }
+    /**
+     * @Route("/parent/{id}", name="personne_pere", methods="GET")
+     */
+    public function getParent(NormalizerInterface $normalizer, Request $request, PersonneRepository $personnes, $id)
+    {
+        $personne = $personnes->find($id);
+        if ($personne) {
+            $naissance = $personne->getNaissance();
+            if ($naissance) {
+                return $this->json($normalizer->normalize($naissance->getParents(), 'json', ['groups' => 'read']), 200);
+            }
+        }
+        return $this->json([], 200);
+    }
 }
