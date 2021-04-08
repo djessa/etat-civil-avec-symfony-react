@@ -68,7 +68,7 @@ const Officier = () => {
                     }
                 </TableBody>
             </Table>
-            <Button variant="outlined" className="m-3" onClick={add}>Nouveau</Button>
+            <Button variant="contained" className="m-3" onClick={add}>Nouveau</Button>
             <ModalDialog title="Information personnel" body={id != 0 ? <EditOfficier objet={officier} setRefresh={setChange} /> : ''} changeValue={change} setChangeValue={setChange} />
             <ModalDialog title="Nouveau officier" body={<AddOfficier setRefresh={setAddForm} />} changeValue={addForm} setChangeValue={setAddForm} />
         </AdministrationLayout>
