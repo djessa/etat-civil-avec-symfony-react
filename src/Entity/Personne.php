@@ -132,12 +132,12 @@ class Personne
         return $this;
     }
 
-        public function getDateNaissance(): ?\DateTimeInterface
+    public function getDateNaissance(): ?\DateTimeInterface
     {
         return $this->date_naissance;
     }
 
-    public function setDateNaissance( $date_naissance): self
+    public function setDateNaissance($date_naissance): self
     {
         $this->date_naissance = $date_naissance;
 
