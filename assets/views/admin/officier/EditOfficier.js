@@ -61,10 +61,10 @@ const EditOfficier = (props) => {
                             <p className="text-center display-5">En cours de traitement...</p>
                             :
                             <>
-                                <Button variant="outlined" color="primary" onClick={handleSubmit}>
+                                <Button variant="contained" color="primary" onClick={handleSubmit}>
                                     Modifier
                                 </Button>
-                                <Button variant="outlined" color="secondary" onClick={suppression}>
+                                <Button variant="contained" color="secondary" onClick={suppression}>
                                     Supprimer
                                 </Button>
                             </>

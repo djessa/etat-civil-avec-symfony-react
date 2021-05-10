@@ -10,6 +10,9 @@ import Administration from './views/admin/Administraton';
 import CopieNaissance from './views/CopieNaissance';
 import Agent from './views/admin/agent/Agent';
 import Officier from './views/admin/officier/Officier';
+import Fiche from './views/Fiche';
+import Stats from './views/Stats';
+import StatNaissance from './views/StatNaissance';
 
 
 export default function Routes() {
@@ -20,9 +23,12 @@ export default function Routes() {
         <Route path={WEBROOT + "declaration"} exact component={Declaration} />
         <Route path={WEBROOT + "declaration/naissance"} exact component={DeclarationNaissance} />
         <Route path={WEBROOT + "registre"} exact component={Registre} />
+        <Route path={WEBROOT + "stats"} exact component={Stats} />
+        <Route path={WEBROOT + "stat_naissance"} exact component={StatNaissance} />
         <Route path={WEBROOT + "admin"} exact component={Administration} />
         <Route path={WEBROOT + "admin/officiers"} exact component={Officier} />
         <Route path={WEBROOT + "admin/agents"} exact component={Agent} />
+        <Route path={WEBROOT + "fiche/:id"} exact component={Fiche} />
         <Route path={WEBROOT + "show/copie/naissance/:id"} exact component={CopieNaissance} />
         <Route component={NotFound} />
       </Switch>

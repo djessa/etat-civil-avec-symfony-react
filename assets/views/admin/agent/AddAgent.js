@@ -38,7 +38,7 @@ const AddAgent = (props) => {
                 ?
                 <p className="text-center mt-3">En cours de traitement...</p>
                 :
-                <Button className="mt-3" variant="outlined" color="primary" onClick={handleSubmit}>Ajouter</Button>
+                <Button className="mt-3" variant="contained" color="primary" onClick={handleSubmit}>Ajouter</Button>
             }
         </div>
     </>);

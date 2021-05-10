@@ -1,4 +1,4 @@
-import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, IconButton, TextField, Grid } from '@material-ui/core';
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, IconButton, TextField, Grid, Button } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Search } from '@material-ui/icons';
 import AppProvider from '../components/AppProvider';
 import Header from '../components/Header';
 
-export default function RegistreNaissance() {
+export default function Registre() {
 
     const [registre, setRegistre] = useState([]);
     const [page, setPage] = useState(0);
@@ -20,10 +20,10 @@ export default function RegistreNaissance() {
 
     useEffect(() => {
         setChargement(true);
-        axios.get(WEBROOT + 'api/naissance?page=' + page)
+        axios.get(WEBROOT + 'api/personne?page=' + page)
             .then(response => {
                 if (page == 0) {
-                    setRegistre(response.data.naissances);
+                    setRegistre(response.data.registre);
                     setNbrePage(response.data.total)
                 } else setRegistre(response.data)
                 setChargement(false)
@@ -40,31 +40,19 @@ export default function RegistreNaissance() {
     }
 
     const search = () => {
-        const data = {};
-        let valid = false;
-        if (searchData.nom !== '') {
-            data.nom = searchData.nom
-            valid = true
-        }
-        if (searchData.prenom !== '') {
-            data.prenom = searchData.prenom
-            valid = true
-        }
-        if (valid) {
-            setChargement(true);
-            axios.post(WEBROOT + 'api/naissance/search', data)
-                .then((response) => {
-                    if (response.data.length > 0) {
-                        setRegistre(response.data)
-                        setChargement(false);
-                    }
-                    else {
-                        alert('Aucune resultat pour ces informations');
-                        setRefresh(!refresh);
-                    }
-                })
-                .catch(error => console.log(error))
-        }
+        setChargement(true);
+        axios.post(WEBROOT + 'api/personne/search', searchData)
+            .then((response) => {
+                if (response.data.length > 0) {
+                    setRegistre(response.data)
+                    setChargement(false);
+                }
+                else {
+                    alert('Aucune resultat pour ces informations');
+                    setRefresh(!refresh);
+                }
+            })
+            .catch(error => console.log(error))
     }
 
     const handleChange = (property, e) => {
@@ -82,6 +70,7 @@ export default function RegistreNaissance() {
                         fullWidth={true}
                         value={searchData.nom}
                         onChange={(e) => handleChange('nom', e)}
+                        onKeyUp={search}
                     />
                 </Grid>
                 <Grid lg={5} md={5} item>
@@ -90,6 +79,7 @@ export default function RegistreNaissance() {
                         fullWidth={true}
                         value={searchData.prenom}
                         onChange={(e) => handleChange('prenom', e)}
+                        onKeyUp={search}
                     />
                 </Grid>
                 <Grid item>
@@ -110,18 +100,15 @@ export default function RegistreNaissance() {
                                 registre.map((data, index) => {
                                     return <TableRow key={index}>
                                         <TableCell>{data.id}</TableCell>
-                                        <TableCell>{data.enfant.nom}</TableCell>
-                                        <TableCell>{data.enfant.prenom}</TableCell>
-                                        <TableCell>{data.enfant.sexe}</TableCell>
-                                        <TableCell>{mini_date(data.enfant.date_naissance)}</TableCell>
-                                        <TableCell>{data.enfant.lieu_naissance}</TableCell>
+                                        <TableCell>{data.nom}</TableCell>
+                                        <TableCell>{data.prenom}</TableCell>
+                                        <TableCell>{data.sexe}</TableCell>
+                                        <TableCell>{mini_date(data.date_naissance)}</TableCell>
+                                        <TableCell>{data.lieu_naissance}</TableCell>
                                         <TableCell>
-                                            <Link className="btn btn-success mr-1" to={WEBROOT + 'show/copie/naissance/' + data.id}>
-                                                Copie
-                                    </Link>
-                                            <Link className="btn btn-success mr-1" to={WEBROOT + 'show/extrait/naissance/' + data.id}>
-                                                Extrait
-                                    </Link>
+                                            <Button variant="contained" component={Link} to={WEBROOT + 'fiche/' + data.id}>
+                                                Aperçu
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 })

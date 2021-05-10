@@ -31,6 +31,15 @@ body {
     text-align: center;
 }
 
+#root {
+	transition: 0.2s;
+	opacity: 1;
+}
+
+html.is-animating #root {
+	opacity: 0;
+}
+
 .space {
     height: 5%;
     width: 100%;
