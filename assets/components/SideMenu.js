@@ -13,7 +13,7 @@ const SideMenu = (props) => {
     return (
         <div className="sideMenu">
             <div className="appLogo">
-                <img src={WEBROOT + "images/flag.jpg"} alt="drapeau" className="img-fluid rounded shadow" />
+                <img src={WEBROOT + "images/logo.jpg"} alt="drapeau" className="img-fluid rounded shadow" />
                 <span>Etat civil</span>
             </div>
             <div className="space"></div>
@@ -32,7 +32,7 @@ const SideMenu = (props) => {
                         </NavLink>
                     </ListItem>
                     <ListItem>
-                        <NavLink to="/" className="link">
+                        <NavLink to={WEBROOT + "stats"} className="link">
                             <EqualizerIcon />
                             <span>Statistique</span>
                         </NavLink>
